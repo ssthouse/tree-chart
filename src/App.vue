@@ -1,13 +1,17 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+<div></div>
 </template>
 
 <script>
+import init from './canvas'
+// import run from './origin.js'
+
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    init()
+    // run()
+  }
 }
 </script>
 
