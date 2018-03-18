@@ -37,9 +37,69 @@ class OrgChart {
         {'name': 'Chun Miao', 'title': 'department manager'}
       ]
     }
+
+    for (let i = 0; i < 40; i++) {
+      data['children'].push({
+        'name': 'Lao Lao',
+        'title': 'general manager',
+        'children': [
+          {'name': 'Bo Miao', 'title': 'department manager'},
+          {
+            'name': 'Su Miao',
+            'title': 'department manager',
+            'children': [
+              {'name': 'Tie Hua', 'title': 'senior engineer'},
+              {
+                'name': 'Hei Hei',
+                'title': 'senior engineer',
+                'children': [
+                  {'name': 'Pang Pang', 'title': 'engineer'},
+                  {'name': 'Xiang Xiang', 'title': 'UE engineer'}
+                ]
+              }
+            ]
+          },
+          {'name': 'Hong Miao', 'title': 'department manager'},
+          {'name': 'Chun Miao', 'title': 'department manager'}
+        ]
+      })
+    }
+
+    let temp = data
+    for (let i = 0; i < 10; i++) {
+      if (!temp.children) {
+        temp.children = []
+      }
+      temp.children.push({
+        'name': 'Lao Lao',
+        'title': 'general manager',
+        'children': [
+          {'name': 'Bo Miao', 'title': 'department manager'},
+          {
+            'name': 'Su Miao',
+            'title': 'department manager',
+            'children': [
+              {'name': 'Tie Hua', 'title': 'senior engineer'},
+              {
+                'name': 'Hei Hei',
+                'title': 'senior engineer',
+                'children': [
+                  {'name': 'Pang Pang', 'title': 'engineer'},
+                  {'name': 'Xiang Xiang', 'title': 'UE engineer'}
+                ]
+              }
+            ]
+          },
+          {'name': 'Hong Miao', 'title': 'department manager'},
+          {'name': 'Chun Miao', 'title': 'department manager'}
+        ]
+      })
+      temp = temp.children[0]
+    }
+
     data = this.d3.hierarchy(data)
     let tree = this.d3.tree()
-      .size([400, 400])
+      .size([1000, 1000])
     this.update(tree, data)
   }
 
@@ -60,7 +120,7 @@ class OrgChart {
         return node.y
       })
       .attr('fillStyle', '#ff0000')
-      .attr('size', 25)
+      .attr('size', 10)
 
     this.addColorKey()
 
@@ -73,12 +133,12 @@ class OrgChart {
     this.container = this.d3.select('#container')
     this.canvasNode = this.container
       .append('canvas')
-      .attr('width', 400)
-      .attr('height', 400)
+      .attr('width', 1000)
+      .attr('height', 1000)
     this.hiddenCanvasNode = this.container
       .append('canvas')
-      .attr('width', 400)
-      .attr('height', 400)
+      .attr('width', 1000)
+      .attr('height', 1000)
       .style('visibility', 'hidden')
     this.context = this.canvasNode.node().getContext('2d')
     this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
