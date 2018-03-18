@@ -17,7 +17,6 @@ export default {
   },
   created () {
     this.orgChart = new OrgChart()
-    this.orgChart.init()
     // run()
   },
   methods: {

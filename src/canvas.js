@@ -3,6 +3,16 @@ import * as d3 from 'd3'
 class OrgChart {
   constructor () {
     this.d3 = d3
+    this.init()
+  }
+
+  init () {
+    this.initCanvas()
+    this.initVirtualNode()
+    this.setCanvasListener()
+  }
+
+  initCanvas () {
     this.container = this.d3.select('#container')
     this.canvasNode = this.container
       .append('canvas')
@@ -14,16 +24,12 @@ class OrgChart {
       .attr('height', 400)
     this.context = this.canvasNode.node().getContext('2d')
     this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
+  }
+
+  initVirtualNode () {
     let virtualContainer = document.createElement('root')
     this.virtualContainerNode = this.d3.select(virtualContainer)
     this.colorNodeMap = {}
-
-    this.init()
-  }
-
-  init () {
-    // this.drawCustom([1, 2, 13, 20, 23])
-    this.setCanvasListener()
   }
 
   drawCustom (data) {
