@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import init from './canvas'
+import OrgChart from './canvas'
 // import run from './origin.js'
 
 export default {
   name: 'App',
   created () {
-    init()
+    new OrgChart().init()
     // run()
   }
 }
