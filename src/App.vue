@@ -1,5 +1,7 @@
 <template>
-<div></div>
+<div>
+<button @click='load()'>click to load</button>
+</div>
 </template>
 
 <script>
@@ -8,9 +10,20 @@ import OrgChart from './canvas'
 
 export default {
   name: 'App',
+  data: function () {
+    return {
+      orgChart: null
+    }
+  },
   created () {
-    new OrgChart().init()
+    this.orgChart = new OrgChart()
+    this.orgChart.init()
     // run()
+  },
+  methods: {
+    load(){
+      this.orgChart.drawCustom([1, 2, 13, 20, 23])
+    }
   }
 }
 </script>

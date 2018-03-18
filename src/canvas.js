@@ -1,24 +1,28 @@
+import * as d3 from 'd3'
+
 class OrgChart {
   constructor () {
-    this.d3 = require('d3')
+    this.d3 = d3
     this.container = this.d3.select('#container')
-    this.canvasNode = this.container.append('canvas')
+    this.canvasNode = this.container
+      .append('canvas')
       .attr('width', 400)
       .attr('height', 400)
-    this.hiddenCanvasNode = this.container.append('canvas')
+    this.hiddenCanvasNode = this.container
+      .append('canvas')
       .attr('width', 400)
       .attr('height', 400)
-    this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
     this.context = this.canvasNode.node().getContext('2d')
-    this.detachedContainer = document.createElement('root')
-    this.dataContainerNode = this.d3.select(this.detachedContainer)
+    this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
+    let virtualContainer = document.createElement('root')
+    this.virtualContainerNode = this.d3.select(virtualContainer)
     this.colorNodeMap = {}
 
     this.init()
   }
 
   init () {
-    this.drawCustom([1, 2, 13, 20, 23])
+    // this.drawCustom([1, 2, 13, 20, 23])
     this.setCanvasListener()
   }
 
@@ -26,7 +30,7 @@ class OrgChart {
     let scale = this.d3.scaleLinear()
       .range([10, 390])
       .domain([1, 23])
-    let dataBinding = this.dataContainerNode.selectAll('.node')
+    let dataBinding = this.virtualContainerNode.selectAll('.node')
       .data(data, d => d)
 
     dataBinding.enter()
@@ -42,31 +46,27 @@ class OrgChart {
       .attr('y', 100)
       .attr('fillStyle', 'red')
 
-    // give each node a unique color
+    this.addColorKey()
     let self = this
-    this.dataContainerNode.selectAll('.rect')
-      .each(function () {
-        let node = self.d3.select(this)
-        let newColor = self.randomColor()
-        while (self.colorNodeMap[newColor]) {
-          newColor = self.randomColor()
-        }
-        node.attr('colorKey', newColor)
-        self.colorNodeMap[newColor] = node
-        console.log('color: ' + node.attr('colorKey'))
-      })
     this.d3.timer(function () {
       self.drawCanvas()
     })
   }
 
-  randomColor () {
-    let letters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    let color = '#'
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
-    }
-    return color
+  addColorKey () {
+    // give each node a unique color
+    let self = this
+    this.virtualContainerNode.selectAll('.rect')
+      .each(function () {
+        let node = self.d3.select(this)
+        let newColor = OrgChart.randomColor()
+        while (self.colorNodeMap[newColor]) {
+          newColor = OrgChart.randomColor()
+        }
+        node.attr('colorKey', newColor)
+        self.colorNodeMap[newColor] = node
+        console.log('color: ' + node.attr('colorKey'))
+      })
   }
 
   drawCanvas () {
@@ -80,8 +80,8 @@ class OrgChart {
     this.context.fill()
 
     let self = this
-    this.dataContainerNode.selectAll('.rect')
-      .each(function (rectNode) {
+    this.virtualContainerNode.selectAll('.rect')
+      .each(function () {
         let node = self.d3.select(this)
         self.context.beginPath()
         self.context.fillStyle = node.attr('fillStyle')
@@ -97,8 +97,8 @@ class OrgChart {
     this.hiddenContext.fill()
 
     let self = this
-    this.dataContainerNode.selectAll('.rect')
-      .each(function (rectNode) {
+    this.virtualContainerNode.selectAll('.rect')
+      .each(function () {
         let node = self.d3.select(this)
         self.hiddenContext.beginPath()
         self.hiddenContext.fillStyle = node.attr('colorKey')
@@ -112,9 +112,9 @@ class OrgChart {
     let self = this
     this.canvasNode.node().addEventListener('click', function (e) {
       let pixelData = self.hiddenContext.getImageData(e.layerX, e.layerY, 1, 1).data
-      let colorStr = '#' + self.appendFront0(pixelData[0].toString(16)) +
-        self.appendFront0(pixelData[1].toString(16)) +
-        self.appendFront0(pixelData[2].toString(16))
+      let colorStr = '#' + OrgChart.appendFront0(pixelData[0].toString(16)) +
+        OrgChart.appendFront0(pixelData[1].toString(16)) +
+        OrgChart.appendFront0(pixelData[2].toString(16))
       let node = self.colorNodeMap[colorStr]
       if (node) {
         node.transition()
@@ -125,12 +125,21 @@ class OrgChart {
     })
   }
 
-  appendFront0 (numStr) {
+  static appendFront0 (numStr) {
     if (numStr.length !== 2) {
       return '0' + numStr
     } else {
       return numStr
     }
+  }
+
+  static randomColor () {
+    let letters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    let color = '#'
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+    return color
   }
 }
 
