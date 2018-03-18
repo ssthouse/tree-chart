@@ -9,7 +9,7 @@ class OrgChart {
   init () {
     this.width = 1000
     this.height = 1000
-    this.padding = 0
+    this.padding = 50
     this.unitWidth = 10
     this.unitHeight = 15
     this.scale = 1
@@ -124,10 +124,10 @@ class OrgChart {
       .append('orgUnit')
       .attr('class', 'orgUnit')
       .attr('x', function (node) {
-        return node.x
+        return node.x + self.width / 2
       })
       .attr('y', function (node) {
-        return node.y
+        return node.y + self.padding
       })
       .attr('fillStyle', '#ff0000')
 
@@ -137,16 +137,16 @@ class OrgChart {
       .append('link')
       .attr('class', 'link')
       .attr('sourceX', function (link) {
-        return link.source.x
+        return link.source.x + self.width / 2
       })
       .attr('sourceY', function (link) {
-        return link.source.y
+        return link.source.y + self.padding
       })
       .attr('targetX', function (link) {
-        return link.target.x
+        return link.target.x + self.width / 2
       })
       .attr('targetY', function (link) {
-        return link.target.y
+        return link.target.y + self.padding
       })
 
     this.addColorKey()
@@ -168,7 +168,7 @@ class OrgChart {
       .attr('height', this.height)
       .style('visibility', 'hidden')
     this.context = this.canvasNode.node().getContext('2d')
-    this.context.translate(this.width / 2, this.padding)
+    // this.context.translate(this.width / 2, this.padding)
     this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
   }
 
@@ -228,7 +228,7 @@ class OrgChart {
   }
 
   drawShowCanvas () {
-    this.context.clearRect(-(this.width / 2), -this.padding, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
+    this.context.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
 
     let self = this
 
@@ -294,18 +294,12 @@ class OrgChart {
   }
 
   bigger () {
-    // this.context.setTransform(1, 0, 0, 1, 0, 0)
-    this.context.clearRect((this.width / 2), -this.padding, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
-
-    // this.context.translate(this.width / 2, this.padding)
+    this.context.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
     this.context.scale(2, 2)
   }
 
   smaller () {
-    // this.context.setTransform(1, 0, 0, 1, 0, 0)
-    this.context.clearRect((this.width / 2), -this.padding, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
-
-    // this.context.translate(this.width / 2, this.padding)
+    this.context.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
     this.context.scale(0.5, 0.5)
   }
 
