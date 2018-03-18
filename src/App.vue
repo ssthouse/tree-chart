@@ -2,6 +2,8 @@
 <div>
 <button @click='load()'>click to load</button>
 <button @click='test()'>text</button>
+<button @click='bigger()'>+</button>
+<button @click='smaller()'>-</button>
 </div>
 </template>
 
@@ -26,6 +28,12 @@ export default {
     },
     test () {
       this.orgChart.test()
+    },
+    bigger () {
+      this.orgChart.bigger()
+    },
+    smaller () {
+      this.orgChart.smaller()
     }
   }
 }

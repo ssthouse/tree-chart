@@ -7,6 +7,12 @@ class OrgChart {
   }
 
   init () {
+    this.width = 1000
+    this.height = 1000
+    this.padding = 0
+    this.unitWidth = 10
+    this.unitHeight = 15
+    this.scale = 1
     this.initCanvas()
     this.initVirtualNode()
     this.setCanvasListener()
@@ -38,33 +44,33 @@ class OrgChart {
       ]
     }
 
-    for (let i = 0; i < 40; i++) {
-      data['children'].push({
-        'name': 'Lao Lao',
-        'title': 'general manager',
-        'children': [
-          {'name': 'Bo Miao', 'title': 'department manager'},
-          {
-            'name': 'Su Miao',
-            'title': 'department manager',
-            'children': [
-              {'name': 'Tie Hua', 'title': 'senior engineer'},
-              {
-                'name': 'Hei Hei',
-                'title': 'senior engineer',
-                'children': [
-                  {'name': 'Pang Pang', 'title': 'engineer'},
-                  {'name': 'Xiang Xiang', 'title': 'UE engineer'}
-                ]
-              }
-            ]
-          },
-          {'name': 'Hong Miao', 'title': 'department manager'},
-          {'name': 'Chun Miao', 'title': 'department manager'}
-        ]
-      })
-    }
-
+    // for (let i = 0; i < 40; i++) {
+    //   data['children'].push({
+    //     'name': 'Lao Lao',
+    //     'title': 'general manager',
+    //     'children': [
+    //       {'name': 'Bo Miao', 'title': 'department manager'},
+    //       {
+    //         'name': 'Su Miao',
+    //         'title': 'department manager',
+    //         'children': [
+    //           {'name': 'Tie Hua', 'title': 'senior engineer'},
+    //           {
+    //             'name': 'Hei Hei',
+    //             'title': 'senior engineer',
+    //             'children': [
+    //               {'name': 'Pang Pang', 'title': 'engineer'},
+    //               {'name': 'Xiang Xiang', 'title': 'UE engineer'}
+    //             ]
+    //           }
+    //         ]
+    //       },
+    //       {'name': 'Hong Miao', 'title': 'department manager'},
+    //       {'name': 'Chun Miao', 'title': 'department manager'}
+    //     ]
+    //   })
+    // }
+    //
     let temp = data
     for (let i = 0; i < 10; i++) {
       if (!temp.children) {
@@ -91,6 +97,8 @@ class OrgChart {
             ]
           },
           {'name': 'Hong Miao', 'title': 'department manager'},
+          {'name': 'Chun Miao', 'title': 'department manager'},
+          {'name': 'Hong Miao', 'title': 'department manager'},
           {'name': 'Chun Miao', 'title': 'department manager'}
         ]
       })
@@ -99,18 +107,20 @@ class OrgChart {
 
     data = this.d3.hierarchy(data)
     let tree = this.d3.tree()
-      .size([1000, 1000])
+      .size([this.width - this.padding, this.height - this.padding])
+      .nodeSize([25, 100])
     this.update(tree, data)
   }
 
   update (tree, source) {
-    let nodes = tree(source).descendants()
+    let treeData = tree(source)
+    let nodes = treeData.descendants()
+    let links = treeData.links()
     let self = this
 
-    let dataBinding = this.virtualContainerNode.selectAll('.node')
+    this.virtualContainerNode.selectAll('.node')
       .data(nodes, d => d)
-
-    dataBinding.enter()
+      .enter()
       .append('orgUnit')
       .attr('class', 'orgUnit')
       .attr('x', function (node) {
@@ -120,7 +130,24 @@ class OrgChart {
         return node.y
       })
       .attr('fillStyle', '#ff0000')
-      .attr('size', 10)
+
+    this.virtualContainerNode.selectAll('.node')
+      .data(links, l => l)
+      .enter()
+      .append('link')
+      .attr('class', 'link')
+      .attr('sourceX', function (link) {
+        return link.source.x
+      })
+      .attr('sourceY', function (link) {
+        return link.source.y
+      })
+      .attr('targetX', function (link) {
+        return link.target.x
+      })
+      .attr('targetY', function (link) {
+        return link.target.y
+      })
 
     this.addColorKey()
 
@@ -133,14 +160,15 @@ class OrgChart {
     this.container = this.d3.select('#container')
     this.canvasNode = this.container
       .append('canvas')
-      .attr('width', 1000)
-      .attr('height', 1000)
+      .attr('width', this.width)
+      .attr('height', this.height)
     this.hiddenCanvasNode = this.container
       .append('canvas')
-      .attr('width', 1000)
-      .attr('height', 1000)
+      .attr('width', this.width)
+      .attr('height', this.height)
       .style('visibility', 'hidden')
     this.context = this.canvasNode.node().getContext('2d')
+    this.context.translate(this.width / 2, this.padding)
     this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
   }
 
@@ -200,17 +228,33 @@ class OrgChart {
   }
 
   drawShowCanvas () {
-    this.context.fillStyle = '#fff'
-    this.context.rect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
-    this.context.fill()
+    this.context.clearRect(-(this.width / 2), -this.padding, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
 
     let self = this
+
+    // draw links
+    this.virtualContainerNode.selectAll('.link')
+      .each(function () {
+        let node = self.d3.select(this)
+        self.context.beginPath()
+        self.context.fillStyle = '#aaaaaa'
+        self.context.moveTo(node.attr('sourceX'), node.attr('sourceY'))
+        self.context.lineTo(node.attr('targetX'), node.attr('targetY'))
+        self.context.stroke()
+      })
+
     this.virtualContainerNode.selectAll('.orgUnit')
       .each(function () {
         let node = self.d3.select(this)
         self.context.beginPath()
-        self.context.fillStyle = node.attr('fillStyle')
-        self.context.rect(node.attr('x'), node.attr('y'), node.attr('size'), node.attr('size'))
+        self.context.fillStyle = 'steelblue'
+        self.context.arc(node.attr('x'), node.attr('y'), self.unitWidth, 0, 2 * Math.PI)
+        self.context.fill()
+        self.context.closePath()
+
+        self.context.beginPath()
+        self.context.fillStyle = 'white'
+        self.context.arc(node.attr('x'), node.attr('y'), self.unitWidth - 2, 0, 2 * Math.PI)
         self.context.fill()
         self.context.closePath()
       })
@@ -244,10 +288,25 @@ class OrgChart {
       if (node) {
         node.transition()
           .duration(1000)
-          .attr('fillStyle', colorStr)
-          .attr('size', 50 * Math.random() + 20)
+          .attr('fillStyle', OrgChart.randomColor())
       }
     })
+  }
+
+  bigger () {
+    // this.context.setTransform(1, 0, 0, 1, 0, 0)
+    this.context.clearRect((this.width / 2), -this.padding, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
+
+    // this.context.translate(this.width / 2, this.padding)
+    this.context.scale(2, 2)
+  }
+
+  smaller () {
+    // this.context.setTransform(1, 0, 0, 1, 0, 0)
+    this.context.clearRect((this.width / 2), -this.padding, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
+
+    // this.context.translate(this.width / 2, this.padding)
+    this.context.scale(0.5, 0.5)
   }
 
   static appendFront0 (numStr) {
