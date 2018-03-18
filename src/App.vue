@@ -1,6 +1,7 @@
 <template>
 <div>
 <button @click='load()'>click to load</button>
+<button @click='test()'>text</button>
 </div>
 </template>
 
@@ -20,8 +21,11 @@ export default {
     // run()
   },
   methods: {
-    load(){
+    load () {
       this.orgChart.drawCustom([1, 2, 13, 20, 23])
+    },
+    test () {
+      this.orgChart.test()
     }
   }
 }
