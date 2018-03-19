@@ -36,22 +36,39 @@ class OrgChart {
     })
   }
 
-  update (targetNode) {
-    let animatedStartX = 0
-    let animatedStartY = 0
-    if (targetNode) {
-      animatedStartX = targetNode.attr('x')
-      animatedStartY = targetNode.attr('y')
-    }
-
+  update (targetTreeNode) {
     this.treeData = this.treeGenerator(this.data)
     let nodes = this.treeData.descendants()
     let links = this.treeData.links()
     let self = this
 
+    let animatedStartX = 0
+    let animatedStartY = 0
+    if (targetTreeNode) {
+      animatedStartX = targetTreeNode.x
+      animatedStartY = targetTreeNode.y
+    }
+
+    this.updateOrgUnit(nodes, animatedStartX, animatedStartY)
+    this.updateLinks(links, animatedStartX, animatedStartY)
+
+    this.addColorKey()
+    this.bindNodeToTreeData()
+  }
+
+  updateOrgUnit (nodes, animatedStartX, animatedStartY) {
     let orgUnit = this.virtualContainerNode.selectAll('.orgUnit')
       .data(nodes, d => d['colorKey'])
-      .attr('class', 'orgUnit')
+
+    orgUnit.attr('class', 'orgUnit')
+      .attr('x', function (node) {
+        return node.x0
+      })
+      .attr('y', function (node) {
+        return node.y0
+      })
+      .transition()
+      .duration(this.duration)
       .attr('x', function (node) {
         return node.x
       })
@@ -82,13 +99,36 @@ class OrgChart {
       .attr('y', animatedStartY)
       .remove()
 
-    orgUnit = null
+    // record origin index for animation
+    orgUnit.each(treeNode => {
+      treeNode['x0'] = treeNode.x
+      treeNode['y0'] = treeNode.y
+    })
 
+    orgUnit = null
+  }
+
+  updateLinks (links, animatedStartX, animatedStartY) {
     let link = this.virtualContainerNode.selectAll('.link')
       .data(links, function (d) {
         return d.source['colorKey'] + ':' + d.target['colorKey']
       })
-      .attr('class', 'link')
+
+    link.attr('class', 'link')
+      .attr('sourceX', function (link) {
+        return link.source['x00']
+      })
+      .attr('sourceY', function (link) {
+        return link.source['y00']
+      })
+      .attr('targetX', function (link) {
+        return link.target['x00']
+      })
+      .attr('targetY', function (link) {
+        return link.target['y00']
+      })
+      .transition()
+      .duration(this.duration)
       .attr('sourceX', function (link) {
         return link.source.x
       })
@@ -132,10 +172,15 @@ class OrgChart {
       .attr('targetX', animatedStartX)
       .attr('targetY', animatedStartY)
       .remove()
-    link = null
 
-    this.addColorKey()
-    this.bindNodeToTreeData()
+    // record origin data for animation
+    link.each(treeNode => {
+      treeNode.source['x00'] = treeNode.source.x
+      treeNode.source['y00'] = treeNode.source.y
+      treeNode.target['x00'] = treeNode.target.x
+      treeNode.target['y00'] = treeNode.target.y
+    })
+    link = null
   }
 
   initCanvas () {
@@ -253,7 +298,7 @@ class OrgChart {
         // let treeNodeData = node.data()[0]
         // self.hideChildren(treeNodeData, true)
         self.toggleTreeNode(node.data()[0])
-        self.update(node)
+        self.update(node.data()[0])
       }
     })
   }
