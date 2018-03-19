@@ -1,4 +1,6 @@
 import * as d3 from 'd3'
+import generateOrgChartData from './dao.js'
+import Util from './util.js'
 
 class OrgChart {
   constructor () {
@@ -19,91 +21,7 @@ class OrgChart {
   }
 
   test () {
-    let data = {
-      'name': 'Lao Lao',
-      'title': 'general manager',
-      'children': [
-        {'name': 'Bo Miao', 'title': 'department manager'},
-        {
-          'name': 'Su Miao',
-          'title': 'department manager',
-          'children': [
-            {'name': 'Tie Hua', 'title': 'senior engineer'},
-            {
-              'name': 'Hei Hei',
-              'title': 'senior engineer',
-              'children': [
-                {'name': 'Pang Pang', 'title': 'engineer'},
-                {'name': 'Xiang Xiang', 'title': 'UE engineer'}
-              ]
-            }
-          ]
-        },
-        {'name': 'Hong Miao', 'title': 'department manager'},
-        {'name': 'Chun Miao', 'title': 'department manager'}
-      ]
-    }
-
-    // for (let i = 0; i < 40; i++) {
-    //   data['children'].push({
-    //     'name': 'Lao Lao',
-    //     'title': 'general manager',
-    //     'children': [
-    //       {'name': 'Bo Miao', 'title': 'department manager'},
-    //       {
-    //         'name': 'Su Miao',
-    //         'title': 'department manager',
-    //         'children': [
-    //           {'name': 'Tie Hua', 'title': 'senior engineer'},
-    //           {
-    //             'name': 'Hei Hei',
-    //             'title': 'senior engineer',
-    //             'children': [
-    //               {'name': 'Pang Pang', 'title': 'engineer'},
-    //               {'name': 'Xiang Xiang', 'title': 'UE engineer'}
-    //             ]
-    //           }
-    //         ]
-    //       },
-    //       {'name': 'Hong Miao', 'title': 'department manager'},
-    //       {'name': 'Chun Miao', 'title': 'department manager'}
-    //     ]
-    //   })
-    // }
-    //
-    let temp = data
-    for (let i = 0; i < 10; i++) {
-      if (!temp.children) {
-        temp.children = []
-      }
-      temp.children.push({
-        'name': 'Lao Lao',
-        'title': 'general manager',
-        'children': [
-          {'name': 'Bo Miao', 'title': 'department manager'},
-          {
-            'name': 'Su Miao',
-            'title': 'department manager',
-            'children': [
-              {'name': 'Tie Hua', 'title': 'senior engineer'},
-              {
-                'name': 'Hei Hei',
-                'title': 'senior engineer',
-                'children': [
-                  {'name': 'Pang Pang', 'title': 'engineer'},
-                  {'name': 'Xiang Xiang', 'title': 'UE engineer'}
-                ]
-              }
-            ]
-          },
-          {'name': 'Hong Miao', 'title': 'department manager'},
-          {'name': 'Chun Miao', 'title': 'department manager'},
-          {'name': 'Hong Miao', 'title': 'department manager'},
-          {'name': 'Chun Miao', 'title': 'department manager'}
-        ]
-      })
-      temp = temp.children[0]
-    }
+    let data = generateOrgChartData()
 
     data = this.d3.hierarchy(data)
     let tree = this.d3.tree()
@@ -178,43 +96,15 @@ class OrgChart {
     this.colorNodeMap = {}
   }
 
-  drawCustom (data) {
-    let scale = this.d3.scaleLinear()
-      .range([10, 390])
-      .domain([1, 23])
-    let dataBinding = this.virtualContainerNode.selectAll('.node')
-      .data(data, d => d)
-
-    dataBinding.enter()
-      .append('custom')
-      .attr('class', 'orgUnit')
-      .attr('x', scale)
-      .attr('y', 0)
-      .attr('size', 15)
-      .attr('fillStyle', 'pink')
-      .transition()
-      .duration(1000)
-      .attr('size', 8)
-      .attr('y', 100)
-      .attr('fillStyle', 'red')
-
-    this.addColorKey()
-
-    let self = this
-    this.d3.timer(function () {
-      self.drawCanvas()
-    })
-  }
-
   addColorKey () {
     // give each node a unique color
     let self = this
     this.virtualContainerNode.selectAll('.orgUnit')
       .each(function () {
         let node = self.d3.select(this)
-        let newColor = OrgChart.randomColor()
+        let newColor = Util.randomColor()
         while (self.colorNodeMap[newColor]) {
-          newColor = OrgChart.randomColor()
+          newColor = Util.randomColor()
         }
         node.attr('colorKey', newColor)
         self.colorNodeMap[newColor] = node
@@ -281,14 +171,14 @@ class OrgChart {
     let self = this
     this.canvasNode.node().addEventListener('click', function (e) {
       let pixelData = self.hiddenContext.getImageData(e.layerX, e.layerY, 1, 1).data
-      let colorStr = '#' + OrgChart.appendFront0(pixelData[0].toString(16)) +
-        OrgChart.appendFront0(pixelData[1].toString(16)) +
-        OrgChart.appendFront0(pixelData[2].toString(16))
+      let colorStr = '#' + Util.appendFront0(pixelData[0].toString(16)) +
+        Util.appendFront0(pixelData[1].toString(16)) +
+        Util.appendFront0(pixelData[2].toString(16))
       let node = self.colorNodeMap[colorStr]
       if (node) {
         node.transition()
           .duration(1000)
-          .attr('fillStyle', OrgChart.randomColor())
+          .attr('fillStyle', Util.randomColor())
       }
     })
   }
@@ -307,23 +197,6 @@ class OrgChart {
 
     this.hiddenContext.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
     this.hiddenContext.scale(0.5, 0.5)
-  }
-
-  static appendFront0 (numStr) {
-    if (numStr.length !== 2) {
-      return '0' + numStr
-    } else {
-      return numStr
-    }
-  }
-
-  static randomColor () {
-    let letters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    let color = '#'
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
-    }
-    return color
   }
 }
 
