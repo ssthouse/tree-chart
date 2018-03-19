@@ -166,7 +166,7 @@ class OrgChart {
       .append('canvas')
       .attr('width', this.width)
       .attr('height', this.height)
-      .style('visibility', 'hidden')
+      .style('visibility', 'visible')
     this.context = this.canvasNode.node().getContext('2d')
     // this.context.translate(this.width / 2, this.padding)
     this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
@@ -218,7 +218,6 @@ class OrgChart {
         }
         node.attr('colorKey', newColor)
         self.colorNodeMap[newColor] = node
-        console.log('color: ' + node.attr('colorKey'))
       })
   }
 
@@ -253,17 +252,18 @@ class OrgChart {
         self.context.closePath()
 
         self.context.beginPath()
-        self.context.fillStyle = 'white'
+        self.context.fillStyle = node.attr('fillStyle')
         self.context.arc(node.attr('x'), node.attr('y'), self.unitWidth - 2, 0, 2 * Math.PI)
         self.context.fill()
         self.context.closePath()
       })
   }
 
+  /**
+   * fill the node outline with colorKey color
+   */
   drawHiddenCanvas () {
-    this.hiddenContext.fillStyle = '#fff'
-    this.hiddenContext.rect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
-    this.hiddenContext.fill()
+    this.hiddenContext.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
 
     let self = this
     this.virtualContainerNode.selectAll('.orgUnit')
@@ -271,7 +271,7 @@ class OrgChart {
         let node = self.d3.select(this)
         self.hiddenContext.beginPath()
         self.hiddenContext.fillStyle = node.attr('colorKey')
-        self.hiddenContext.rect(node.attr('x'), node.attr('y'), node.attr('size'), node.attr('size'))
+        self.hiddenContext.arc(node.attr('x'), node.attr('y'), self.unitWidth, 0, 2 * Math.PI)
         self.hiddenContext.fill()
         self.hiddenContext.closePath()
       })
@@ -296,11 +296,17 @@ class OrgChart {
   bigger () {
     this.context.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
     this.context.scale(2, 2)
+
+    this.hiddenContext.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
+    this.hiddenContext.scale(2, 2)
   }
 
   smaller () {
     this.context.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
     this.context.scale(0.5, 0.5)
+
+    this.hiddenContext.clearRect(0, 0, this.canvasNode.attr('width'), this.canvasNode.attr('height'))
+    this.hiddenContext.scale(0.5, 0.5)
   }
 
   static appendFront0 (numStr) {
