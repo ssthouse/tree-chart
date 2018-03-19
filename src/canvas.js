@@ -23,23 +23,26 @@ class OrgChart {
   test () {
     let data = generateOrgChartData()
 
-    data = this.d3.hierarchy(data)
+    this.data = this.d3.hierarchy(data)
     this.treeGenerator = this.d3.tree()
-      // .size([this.width - this.padding, this.height - this.padding])
+    // .size([this.width - this.padding, this.height - this.padding])
       .nodeSize([25, 100])
-    this.update(data)
+    this.update()
+
+    var self = this
+    this.d3.timer(function () {
+      self.drawCanvas()
+    })
   }
 
-  update (source) {
-    this.treeData = this.treeGenerator(source)
+  update () {
+    this.treeData = this.treeGenerator(this.data)
     let nodes = this.treeData.descendants()
     let links = this.treeData.links()
     let self = this
 
-    this.virtualContainerNode.selectAll('.node')
-      .data(nodes, d => d)
-      .enter()
-      .append('orgUnit')
+    let orgUnit = this.virtualContainerNode.selectAll('.orgUnit')
+      .data(nodes, d => d['colorKey'])
       .attr('class', 'orgUnit')
       .attr('x', function (node) {
         return node.x + self.width / 2
@@ -49,10 +52,26 @@ class OrgChart {
       })
       .attr('fillStyle', '#ff0000')
 
-    this.virtualContainerNode.selectAll('.node')
-      .data(links, l => l)
-      .enter()
-      .append('link')
+    orgUnit.enter()
+      .append('orgUnit')
+      .attr('class', 'orgUnit')
+      .transition()
+      .duration(500)
+      .attr('x', function (node) {
+        return node.x + self.width / 2
+      })
+      .attr('y', function (node) {
+        return node.y + self.padding
+      })
+      .attr('fillStyle', '#ff0000')
+
+    orgUnit.exit().remove()
+    orgUnit = null
+
+    let link = this.virtualContainerNode.selectAll('.link')
+      .data(links, function (d) {
+        return d.source['colorKey'] + ':' + d.target['colorKey']
+      })
       .attr('class', 'link')
       .attr('sourceX', function (link) {
         return link.source.x + self.width / 2
@@ -67,12 +86,29 @@ class OrgChart {
         return link.target.y + self.padding
       })
 
+    link.enter()
+      .append('link')
+      .attr('class', 'link')
+      .transition()
+      .duration(500)
+      .attr('sourceX', function (link) {
+        return link.source.x + self.width / 2
+      })
+      .attr('sourceY', function (link) {
+        return link.source.y + self.padding
+      })
+      .attr('targetX', function (link) {
+        return link.target.x + self.width / 2
+      })
+      .attr('targetY', function (link) {
+        return link.target.y + self.padding
+      })
+
+    link.exit().remove()
+    link = null
+
     this.addColorKey()
     this.bindNodeToTreeData()
-
-    this.d3.timer(function () {
-      self.drawCanvas()
-    })
   }
 
   initCanvas () {
@@ -108,6 +144,7 @@ class OrgChart {
           newColor = Util.randomColor()
         }
         node.attr('colorKey', newColor)
+        node.data()[0]['colorKey'] = newColor
         self.colorNodeMap[newColor] = node
       })
   }
@@ -182,16 +219,25 @@ class OrgChart {
   setCanvasListener () {
     let self = this
     this.canvasNode.node().addEventListener('click', function (e) {
-      let pixelData = self.hiddenContext.getImageData(e.layerX, e.layerY, 1, 1).data
-      let colorStr = '#' + Util.appendFront0(pixelData[0].toString(16)) +
-        Util.appendFront0(pixelData[1].toString(16)) +
-        Util.appendFront0(pixelData[2].toString(16))
+      let colorStr = Util.getColorStrFromCanvas(self.hiddenContext, e.layerX, e.layerY)
       let node = self.colorNodeMap[colorStr]
       if (node) {
-        let treeNodeData = node.data()[0]
-        self.hideChildren(treeNodeData, true)
+        // let treeNodeData = node.data()[0]
+        // self.hideChildren(treeNodeData, true)
+        self.toggleTreeNode(node.data()[0])
+        self.update()
       }
     })
+  }
+
+  toggleTreeNode (treeNode) {
+    if (treeNode.children) {
+      treeNode._children = treeNode.children
+      treeNode.children = null
+    } else {
+      treeNode.children = treeNode._children
+      treeNode._children = null
+    }
   }
 
   hideChildren (parentNode, isRoot) {

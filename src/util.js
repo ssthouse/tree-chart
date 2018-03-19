@@ -15,6 +15,13 @@ class Util {
     }
     return color
   }
+
+  static getColorStrFromCanvas (context, xIndex, yIndex) {
+    let pixelData = context.getImageData(xIndex, yIndex, 1, 1).data
+    return '#' + Util.appendFront0(pixelData[0].toString(16)) +
+      Util.appendFront0(pixelData[1].toString(16)) +
+      Util.appendFront0(pixelData[2].toString(16))
+  }
 }
 
 export default Util
