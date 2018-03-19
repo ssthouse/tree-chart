@@ -14,6 +14,7 @@ class OrgChart {
     this.padding = 50
     this.unitWidth = 10
     this.unitHeight = 15
+    this.duration = 600
     this.scale = 1
     this.initCanvas()
     this.initVirtualNode()
@@ -35,7 +36,14 @@ class OrgChart {
     })
   }
 
-  update () {
+  update (targetNode) {
+    let animatedStartX = 0
+    let animatedStartY = 0
+    if (targetNode) {
+      animatedStartX = targetNode.attr('x')
+      animatedStartY = targetNode.attr('y')
+    }
+
     this.treeData = this.treeGenerator(this.data)
     let nodes = this.treeData.descendants()
     let links = this.treeData.links()
@@ -55,8 +63,10 @@ class OrgChart {
     orgUnit.enter()
       .append('orgUnit')
       .attr('class', 'orgUnit')
+      .attr('x', animatedStartX)
+      .attr('y', animatedStartY)
       .transition()
-      .duration(500)
+      .duration(this.duration)
       .attr('x', function (node) {
         return node.x + self.width / 2
       })
@@ -65,7 +75,13 @@ class OrgChart {
       })
       .attr('fillStyle', '#ff0000')
 
-    orgUnit.exit().remove()
+    orgUnit.exit()
+      .transition()
+      .duration(this.duration)
+      .attr('x', animatedStartX)
+      .attr('y', animatedStartY)
+      .remove()
+
     orgUnit = null
 
     let link = this.virtualContainerNode.selectAll('.link')
@@ -89,8 +105,12 @@ class OrgChart {
     link.enter()
       .append('link')
       .attr('class', 'link')
+      .attr('sourceX', animatedStartX)
+      .attr('sourceY', animatedStartY)
+      .attr('targetX', animatedStartX)
+      .attr('targetY', animatedStartY)
       .transition()
-      .duration(500)
+      .duration(this.duration)
       .attr('sourceX', function (link) {
         return link.source.x + self.width / 2
       })
@@ -104,7 +124,14 @@ class OrgChart {
         return link.target.y + self.padding
       })
 
-    link.exit().remove()
+    link.exit()
+      .transition()
+      .duration(this.duration)
+      .attr('sourceX', animatedStartX)
+      .attr('sourceY', animatedStartY)
+      .attr('targetX', animatedStartX)
+      .attr('targetY', animatedStartY)
+      .remove()
     link = null
 
     this.addColorKey()
@@ -225,7 +252,7 @@ class OrgChart {
         // let treeNodeData = node.data()[0]
         // self.hideChildren(treeNodeData, true)
         self.toggleTreeNode(node.data()[0])
-        self.update()
+        self.update(node)
       }
     })
   }
@@ -237,23 +264,6 @@ class OrgChart {
     } else {
       treeNode.children = treeNode._children
       treeNode._children = null
-    }
-  }
-
-  hideChildren (parentNode, isRoot) {
-    if (!parentNode) {
-      return
-    }
-    if (!isRoot) {
-      parentNode.node.transition()
-        .duration(200)
-        .attr('fillStyle', 'transparent')
-    }
-    if (!parentNode.children) {
-      return
-    }
-    for (let i = 0; i < parentNode.children.length; i++) {
-      this.hideChildren(parentNode.children[i], false)
     }
   }
 
