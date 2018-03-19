@@ -24,16 +24,16 @@ class OrgChart {
     let data = generateOrgChartData()
 
     data = this.d3.hierarchy(data)
-    let tree = this.d3.tree()
-      .size([this.width - this.padding, this.height - this.padding])
+    this.treeGenerator = this.d3.tree()
+      // .size([this.width - this.padding, this.height - this.padding])
       .nodeSize([25, 100])
-    this.update(tree, data)
+    this.update(data)
   }
 
-  update (tree, source) {
-    let treeData = tree(source)
-    let nodes = treeData.descendants()
-    let links = treeData.links()
+  update (source) {
+    this.treeData = this.treeGenerator(source)
+    let nodes = this.treeData.descendants()
+    let links = this.treeData.links()
     let self = this
 
     this.virtualContainerNode.selectAll('.node')
@@ -68,6 +68,7 @@ class OrgChart {
       })
 
     this.addColorKey()
+    this.bindNodeToTreeData()
 
     this.d3.timer(function () {
       self.drawCanvas()
@@ -111,6 +112,17 @@ class OrgChart {
       })
   }
 
+  bindNodeToTreeData () {
+    // give each node a unique color
+    let self = this
+    this.virtualContainerNode.selectAll('.orgUnit')
+      .each(function () {
+        let node = self.d3.select(this)
+        let data = node.data()[0]
+        data['node'] = node
+      })
+  }
+
   drawCanvas () {
     this.drawShowCanvas()
     this.drawHiddenCanvas()
@@ -136,7 +148,7 @@ class OrgChart {
       .each(function () {
         let node = self.d3.select(this)
         self.context.beginPath()
-        self.context.fillStyle = 'steelblue'
+        self.context.fillStyle = node.attr('fillStyle')
         self.context.arc(node.attr('x'), node.attr('y'), self.unitWidth, 0, 2 * Math.PI)
         self.context.fill()
         self.context.closePath()
@@ -176,11 +188,27 @@ class OrgChart {
         Util.appendFront0(pixelData[2].toString(16))
       let node = self.colorNodeMap[colorStr]
       if (node) {
-        node.transition()
-          .duration(1000)
-          .attr('fillStyle', Util.randomColor())
+        let treeNodeData = node.data()[0]
+        self.hideChildren(treeNodeData, true)
       }
     })
+  }
+
+  hideChildren (parentNode, isRoot) {
+    if (!parentNode) {
+      return
+    }
+    if (!isRoot) {
+      parentNode.node.transition()
+        .duration(200)
+        .attr('fillStyle', 'transparent')
+    }
+    if (!parentNode.children) {
+      return
+    }
+    for (let i = 0; i < parentNode.children.length; i++) {
+      this.hideChildren(parentNode.children[i], false)
+    }
   }
 
   bigger () {
