@@ -14,7 +14,7 @@ class OrgChart {
     this.padding = 20
     // tree node size
     this.nodeWidth = 180
-    this.nodeHeight = 160
+    this.nodeHeight = 230
     // org unit size
     this.unitPadding = 20
     this.unitWidth = 140
@@ -346,6 +346,12 @@ class OrgChart {
       self.dragStartPoint_.y = e.y
     }
 
+    this.canvasNode.node().onmouseout = function (e) {
+      if (self.onDrag_) {
+        self.onDrag_ = false
+      }
+    }
+
     this.canvasNode.node().onmouseup = function (e) {
       if (self.onDrag_) {
         self.onDrag_ = false
@@ -370,9 +376,9 @@ class OrgChart {
     this.context.clearRect(-1000000, -10000, 2000000, 2000000)
     this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
 
-    this.scale = this.scale * 2
-    this.context.scale(2, 2)
-    this.hiddenContext.scale(2, 2)
+    this.scale = this.scale * 5 / 4
+    this.context.scale(5 / 4, 5 / 4)
+    this.hiddenContext.scale(5 / 4, 5 / 4)
   }
 
   smaller () {
@@ -382,9 +388,9 @@ class OrgChart {
     this.context.clearRect(-1000000, -10000, 2000000, 2000000)
     this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
 
-    this.scale = this.scale / 2.0
-    this.context.scale(0.5, 0.5)
-    this.hiddenContext.scale(0.5, 0.5)
+    this.scale = this.scale * 4 / 5
+    this.context.scale(4 / 5, 4 / 5)
+    this.hiddenContext.scale(4 / 5, 4 / 5)
   }
 }
 
