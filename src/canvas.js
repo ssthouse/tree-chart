@@ -317,6 +317,7 @@ class OrgChart {
   setMouseWheelZoomListener () {
     let self = this
     this.canvasNode.node().addEventListener('mousewheel', function (event) {
+      event.preventDefault()
       if (event.deltaY < 0) {
         self.bigger()
       } else {
