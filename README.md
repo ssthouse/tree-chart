@@ -1,5 +1,10 @@
 # organization-chart
 
+
+## demo page
+
+https://ssthouse.github.io/organization-chart/#/
+
 > A Vue.js project
 
 ## Build Setup
