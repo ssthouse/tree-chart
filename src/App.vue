@@ -7,8 +7,7 @@
 </template>
 
 <script>
-import OrgChart from './canvas'
-// import run from './origin.js'
+import OrgChart from './org-chart'
 
 export default {
   name: 'App',
@@ -19,11 +18,10 @@ export default {
   },
   created () {
     this.orgChart = new OrgChart()
-    // run()
   },
   methods: {
     test () {
-      this.orgChart.test()
+      this.orgChart.draw()
     },
     bigger () {
       this.orgChart.bigger()

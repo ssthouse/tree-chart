@@ -12,8 +12,14 @@ class OrgChart {
     this.width = 1000
     this.height = 1000
     this.padding = 20
-    this.unitWidth = 10
-    this.unitHeight = 15
+    // tree node size
+    this.nodeWidth = 180
+    this.nodeHeight = 160
+    // org unit size
+    this.unitPadding = 20
+    this.unitWidth = 140
+    this.unitHeight = 100
+    // animation duration
     this.duration = 600
     this.scale = 1.0
     this.initCanvas()
@@ -21,13 +27,11 @@ class OrgChart {
     this.setCanvasListener()
   }
 
-  test () {
+  draw () {
     let data = generateOrgChartData()
-
     this.data = this.d3.hierarchy(data)
     this.treeGenerator = this.d3.tree()
-    // .size([this.width - this.padding, this.height - this.padding])
-      .nodeSize([25, 100])
+      .nodeSize([this.nodeWidth, this.nodeHeight])
     this.update()
 
     let self = this
@@ -247,11 +251,11 @@ class OrgChart {
     this.context.clearRect(-50000, -10000, 100000, 100000)
 
     let self = this
-
     // draw links
     this.virtualContainerNode.selectAll('.link')
       .each(function () {
         let node = self.d3.select(this)
+        self.context.strokeStyle = '#555555'
         self.context.beginPath()
         self.context.fillStyle = '#aaaaaa'
         self.context.moveTo(node.attr('sourceX'), node.attr('sourceY'))
@@ -262,17 +266,16 @@ class OrgChart {
     this.virtualContainerNode.selectAll('.orgUnit')
       .each(function () {
         let node = self.d3.select(this)
-        self.context.beginPath()
-        self.context.fillStyle = node.attr('fillStyle')
-        self.context.arc(node.attr('x'), node.attr('y'), self.unitWidth, 0, 2 * Math.PI)
-        self.context.fill()
-        self.context.closePath()
-
-        self.context.beginPath()
-        self.context.fillStyle = node.attr('fillStyle')
-        self.context.arc(node.attr('x'), node.attr('y'), self.unitWidth - 2, 0, 2 * Math.PI)
-        self.context.fill()
-        self.context.closePath()
+        let treeNode = node.data()[0]
+        let data = treeNode.data
+        self.context.fillStyle = '#aaaaaa'
+        let indexX = Number(node.attr('x')) - self.unitWidth / 2
+        let indexY = Number(node.attr('y')) - self.unitHeight / 2
+        Util.roundRect(self.context, indexX, indexY, self.unitWidth, self.unitHeight, 4, true, false)
+        Util.text(self.context, data.name, indexX + self.unitPadding, indexY + self.unitPadding, '20px', '#000000')
+        // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
+        let maxWidth = self.unitWidth - 2 * self.unitPadding
+        Util.wrapText(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 24, maxWidth, 20)
       })
   }
 
@@ -286,11 +289,8 @@ class OrgChart {
     this.virtualContainerNode.selectAll('.orgUnit')
       .each(function () {
         let node = self.d3.select(this)
-        self.hiddenContext.beginPath()
         self.hiddenContext.fillStyle = node.attr('colorKey')
-        self.hiddenContext.arc(node.attr('x'), node.attr('y'), self.unitWidth, 0, 2 * Math.PI)
-        self.hiddenContext.fill()
-        self.hiddenContext.closePath()
+        Util.roundRect(self.hiddenContext, Number(node.attr('x')) - self.unitWidth / 2, Number(node.attr('y')) - self.unitHeight / 2, self.unitWidth, self.unitHeight, 4, true, false)
       })
   }
 
@@ -364,7 +364,7 @@ class OrgChart {
   }
 
   bigger () {
-    if (this.scale > 20) {
+    if (this.scale > 7) {
       return
     }
     this.context.clearRect(-1000000, -10000, 2000000, 2000000)
