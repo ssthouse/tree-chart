@@ -44,19 +44,23 @@ class OrgChart {
 
     let animatedStartX = 0
     let animatedStartY = 0
+    let animatedEndX = 0
+    let animatedEndY = 0
     if (targetTreeNode) {
-      animatedStartX = targetTreeNode.x
-      animatedStartY = targetTreeNode.y
+      animatedStartX = targetTreeNode.x0
+      animatedStartY = targetTreeNode.y0
+      animatedEndX = targetTreeNode.x
+      animatedEndY = targetTreeNode.y
     }
 
-    this.updateOrgUnit(nodes, animatedStartX, animatedStartY)
-    this.updateLinks(links, animatedStartX, animatedStartY)
+    this.updateOrgUnit(nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
+    this.updateLinks(links, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
 
     this.addColorKey()
     this.bindNodeToTreeData()
   }
 
-  updateOrgUnit (nodes, animatedStartX, animatedStartY) {
+  updateOrgUnit (nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
     let orgUnit = this.virtualContainerNode.selectAll('.orgUnit')
       .data(nodes, d => d['colorKey'])
 
@@ -95,8 +99,8 @@ class OrgChart {
     orgUnit.exit()
       .transition()
       .duration(this.duration)
-      .attr('x', animatedStartX)
-      .attr('y', animatedStartY)
+      .attr('x', animatedEndX)
+      .attr('y', animatedEndY)
       .remove()
 
     // record origin index for animation
@@ -108,7 +112,7 @@ class OrgChart {
     orgUnit = null
   }
 
-  updateLinks (links, animatedStartX, animatedStartY) {
+  updateLinks (links, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
     let link = this.virtualContainerNode.selectAll('.link')
       .data(links, function (d) {
         return d.source['colorKey'] + ':' + d.target['colorKey']
@@ -167,10 +171,10 @@ class OrgChart {
     link.exit()
       .transition()
       .duration(this.duration)
-      .attr('sourceX', animatedStartX)
-      .attr('sourceY', animatedStartY)
-      .attr('targetX', animatedStartX)
-      .attr('targetY', animatedStartY)
+      .attr('sourceX', animatedEndX)
+      .attr('sourceY', animatedEndY)
+      .attr('targetX', animatedEndX)
+      .attr('targetY', animatedEndY)
       .remove()
 
     // record origin data for animation
