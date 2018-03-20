@@ -279,7 +279,7 @@ class OrgChart {
    * fill the node outline with colorKey color
    */
   drawHiddenCanvas () {
-    this.hiddenContext.clearRect(-this.width / 2, 0, this.width, this.height)
+    this.hiddenContext.clearRect(-5000, -1000, 10000, 10000)
 
     let self = this
     this.virtualContainerNode.selectAll('.orgUnit')
