@@ -104,7 +104,7 @@ class OrgChart {
       .remove()
 
     // record origin index for animation
-    orgUnit.each(treeNode => {
+    nodes.forEach(treeNode => {
       treeNode['x0'] = treeNode.x
       treeNode['y0'] = treeNode.y
     })
@@ -178,7 +178,7 @@ class OrgChart {
       .remove()
 
     // record origin data for animation
-    link.each(treeNode => {
+    links.forEach(treeNode => {
       treeNode.source['x00'] = treeNode.source.x
       treeNode.source['y00'] = treeNode.source.y
       treeNode.target['x00'] = treeNode.target.x
