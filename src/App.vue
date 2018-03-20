@@ -11,7 +11,6 @@
 <script>
 import OrgChart from './org-chart'
 import DataGenerator from './dao'
-
 export default {
   name: 'App',
   data: function () {

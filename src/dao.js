@@ -35,19 +35,9 @@ class DataGenerator {
             'name': 'Su Miao',
             'title': 'department manager',
             'children': [
-              {'name': 'Tie Hua', 'title': 'senior engineer'},
-              {
-                'name': 'Hei Hei',
-                'title': 'senior engineer',
-                'children': [
-                  {'name': 'Pang Pang', 'title': 'engineer'},
-                  {'name': 'Xiang Xiang', 'title': 'UE engineer'}
-                ]
-              }
+              {'name': 'Tie Hua', 'title': 'senior engineer'}
             ]
-          },
-          {'name': 'Hong Miao', 'title': 'department manager'},
-          {'name': 'Chun Miao', 'title': 'department manager'}
+          }
         ]
       })
     }
@@ -71,16 +61,11 @@ class DataGenerator {
                 'name': 'Hei Hei',
                 'title': 'senior engineer',
                 'children': [
-                  {'name': 'Pang Pang', 'title': 'engineer'},
                   {'name': 'Xiang Xiang', 'title': 'UE engineer'}
                 ]
               }
             ]
-          },
-          {'name': 'Hong Miao', 'title': 'department manager'},
-          {'name': 'Chun Miao', 'title': 'department manager'},
-          {'name': 'Hong Miao', 'title': 'department manager'},
-          {'name': 'Chun Miao', 'title': 'department manager'}
+          }
         ]
       })
       temp = temp.children[0]
@@ -89,6 +74,5 @@ class DataGenerator {
     return data
   }
 }
-
 
 export default DataGenerator

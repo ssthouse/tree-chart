@@ -1,5 +1,4 @@
 import * as d3 from 'd3'
-import generateOrgChartData from './dao.js'
 import Util from './util.js'
 
 class OrgChart {
