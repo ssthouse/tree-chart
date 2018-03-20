@@ -1,10 +1,9 @@
 <template>
-<div>
-<button @click='load()'>click to load</button>
-<button @click='test()'>text</button>
-<button @click='bigger()'>+</button>
-<button @click='smaller()'>-</button>
-</div>
+  <div style="display: flex; align-items: center; flex-direction: column; vertical-align: top;">
+    <button @click='test()'>text</button>
+    <button @click='bigger()'>+</button>
+    <button @click='smaller()'>-</button>
+  </div>
 </template>
 
 <script>
@@ -23,9 +22,6 @@ export default {
     // run()
   },
   methods: {
-    load () {
-      this.orgChart.drawCustom([1, 2, 13, 20, 23])
-    },
     test () {
       this.orgChart.test()
     },
@@ -40,12 +36,16 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
+
+  .orgChart {
+    border: 1px solid black;
+  }
 </style>

@@ -40,7 +40,6 @@ class OrgChart {
     this.treeData = this.treeGenerator(this.data)
     let nodes = this.treeData.descendants()
     let links = this.treeData.links()
-    let self = this
 
     let animatedStartX = 0
     let animatedStartY = 0
@@ -191,10 +190,12 @@ class OrgChart {
     this.container = this.d3.select('#container')
     this.canvasNode = this.container
       .append('canvas')
+      .attr('class', 'orgChart')
       .attr('width', this.width)
       .attr('height', this.height)
     this.hiddenCanvasNode = this.container
       .append('canvas')
+      .attr('class', 'orgChart')
       .attr('width', this.width)
       .attr('height', this.height)
       .style('visibility', 'visible')
@@ -243,7 +244,7 @@ class OrgChart {
   }
 
   drawShowCanvas () {
-    this.context.clearRect(-5000, -1000, 10000, 10000)
+    this.context.clearRect(-50000, -10000, 100000, 100000)
 
     let self = this
 
@@ -279,7 +280,7 @@ class OrgChart {
    * fill the node outline with colorKey color
    */
   drawHiddenCanvas () {
-    this.hiddenContext.clearRect(-5000, -1000, 10000, 10000)
+    this.hiddenContext.clearRect(-50000, -10000, 100000, 100000)
 
     let self = this
     this.virtualContainerNode.selectAll('.orgUnit')
@@ -294,6 +295,12 @@ class OrgChart {
   }
 
   setCanvasListener () {
+    this.setClickListener()
+    this.setDragListener()
+    this.setMouseWheelZoomListener()
+  }
+
+  setClickListener () {
     let self = this
     this.canvasNode.node().addEventListener('click', function (e) {
       let colorStr = Util.getColorStrFromCanvas(self.hiddenContext, e.layerX, e.layerY)
@@ -307,6 +314,44 @@ class OrgChart {
     })
   }
 
+  setMouseWheelZoomListener () {
+    let self = this
+    this.canvasNode.node().addEventListener('mousewheel', function (event) {
+      if (event.deltaY < 0) {
+        self.bigger()
+      } else {
+        self.smaller()
+      }
+    })
+  }
+
+  setDragListener () {
+    this.onDrag_ = false
+    this.dragStartPoint_ = {x: 0, y: 0}
+    let self = this
+    this.canvasNode.node().onmousedown = function (e) {
+      self.dragStartPoint_.x = e.x
+      self.dragStartPoint_.y = e.y
+      self.onDrag_ = true
+    }
+
+    this.canvasNode.node().onmousemove = function (e) {
+      if (!self.onDrag_) {
+        return
+      }
+      self.context.translate((e.x - self.dragStartPoint_.x) / self.scale, (e.y - self.dragStartPoint_.y) / self.scale)
+      self.hiddenContext.translate((e.x - self.dragStartPoint_.x) / self.scale, (e.y - self.dragStartPoint_.y) / self.scale)
+      self.dragStartPoint_.x = e.x
+      self.dragStartPoint_.y = e.y
+    }
+
+    this.canvasNode.node().onmouseup = function (e) {
+      if (self.onDrag_) {
+        self.onDrag_ = false
+      }
+    }
+  }
+
   toggleTreeNode (treeNode) {
     if (treeNode.children) {
       treeNode._children = treeNode.children
@@ -318,8 +363,11 @@ class OrgChart {
   }
 
   bigger () {
-    this.context.clearRect(-100000, -1000, 200000, 200000)
-    this.hiddenContext.clearRect(-100000, -1000, 200000, 200000)
+    if (this.scale > 20) {
+      return
+    }
+    this.context.clearRect(-1000000, -10000, 2000000, 2000000)
+    this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
 
     this.scale = this.scale * 2
     this.context.scale(2, 2)
@@ -330,8 +378,8 @@ class OrgChart {
     if (this.scale < 0.2) {
       return
     }
-    this.context.clearRect(-100000, -1000, 200000, 200000)
-    this.hiddenContext.clearRect(-100000, -1000, 200000, 200000)
+    this.context.clearRect(-1000000, -10000, 2000000, 2000000)
+    this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
 
     this.scale = this.scale / 2.0
     this.context.scale(0.5, 0.5)
