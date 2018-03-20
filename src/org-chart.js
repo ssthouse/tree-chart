@@ -9,6 +9,13 @@ class OrgChart {
   }
 
   init () {
+    this.initVariables()
+    this.initCanvas()
+    this.initVirtualNode()
+    this.setCanvasListener()
+  }
+
+  initVariables () {
     this.width = 1000
     this.height = 1000
     this.padding = 20
@@ -22,13 +29,9 @@ class OrgChart {
     // animation duration
     this.duration = 600
     this.scale = 1.0
-    this.initCanvas()
-    this.initVirtualNode()
-    this.setCanvasListener()
   }
 
-  draw () {
-    let data = generateOrgChartData()
+  draw (data) {
     this.data = this.d3.hierarchy(data)
     this.treeGenerator = this.d3.tree()
       .nodeSize([this.nodeWidth, this.nodeHeight])
@@ -56,14 +59,14 @@ class OrgChart {
       animatedEndY = targetTreeNode.y
     }
 
-    this.updateOrgUnit(nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
+    this.updateOrgUnits(nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
     this.updateLinks(links, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
 
     this.addColorKey()
     this.bindNodeToTreeData()
   }
 
-  updateOrgUnit (nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
+  updateOrgUnits (nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
     let orgUnit = this.virtualContainerNode.selectAll('.orgUnit')
       .data(nodes, d => d['colorKey'])
 

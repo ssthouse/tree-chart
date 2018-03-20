@@ -1,27 +1,33 @@
 <template>
   <div style="display: flex; align-items: center; flex-direction: column; vertical-align: top;">
-    <button @click='test()'>text</button>
-    <button @click='bigger()'>+</button>
-    <button @click='smaller()'>-</button>
+    <button @click="test(10)" style="margin: 20px;" :disabled="isDraw">Draw Small Company (10+ row)</button>
+    <button @click="test(100)" style="margin: 20px;" :disabled="isDraw">Draw Medium Company(100+ row)</button>
+    <button @click="test(1000)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row)</button>
+    <button @click="bigger()" style="margin: 20px;">+</button>
+    <button @click="smaller()" style="margin: 20px;">-</button>
   </div>
 </template>
 
 <script>
 import OrgChart from './org-chart'
+import DataGenerator from './dao'
 
 export default {
   name: 'App',
   data: function () {
     return {
-      orgChart: null
+      orgChart: null,
+      isDraw: false
     }
   },
   created () {
     this.orgChart = new OrgChart()
   },
   methods: {
-    test () {
-      this.orgChart.draw()
+    test (isBigCompany) {
+      let data = DataGenerator.generateOrgChartData(isBigCompany)
+      this.orgChart.draw(data)
+      this.isDraw = true
     },
     bigger () {
       this.orgChart.bigger()
