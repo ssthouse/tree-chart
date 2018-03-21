@@ -20,8 +20,7 @@ class DataGenerator {
             }
           ]
         },
-        {'name': 'Hong Miao', 'title': 'department manager'},
-        {'name': 'Chun Miao', 'title': 'department manager'}
+        {'name': 'Hong Miao', 'title': 'department manager'}
       ]
     }
 
@@ -70,7 +69,17 @@ class DataGenerator {
       })
       temp = temp.children[0]
     }
+    return data
+  }
 
+  static generateOrgChartDataFolded (depth, foldDepth) {
+    let data = this.generateOrgChartData(depth)
+    let tempNode = data
+    for (let i = 0; i < foldDepth && tempNode.children; i++) {
+      tempNode = tempNode.children[0]
+    }
+    tempNode._children = tempNode.children
+    tempNode.children = null
     return data
   }
 }

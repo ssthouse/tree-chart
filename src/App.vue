@@ -3,6 +3,7 @@
     <button @click="test(10)" style="margin: 20px;" :disabled="isDraw">Draw Small Company (10+ row)</button>
     <button @click="test(100)" style="margin: 20px;" :disabled="isDraw">Draw Medium Company(100+ row)</button>
     <button @click="test(1000)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row)</button>
+    <button @click="testFold(1000, 100)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row & 100 below folded)</button>
     <button @click="bigger()" style="margin: 20px;">+</button>
     <button @click="smaller()" style="margin: 20px;">-</button>
   </div>
@@ -23,8 +24,13 @@ export default {
     this.orgChart = new OrgChart()
   },
   methods: {
-    test (isBigCompany) {
-      let data = DataGenerator.generateOrgChartData(isBigCompany)
+    test (depth) {
+      let data = DataGenerator.generateOrgChartData(depth)
+      this.orgChart.draw(data)
+      this.isDraw = true
+    },
+    testFold(depth, foldDepth){
+      let data = DataGenerator.generateOrgChartDataFolded(depth, foldDepth)
       this.orgChart.draw(data)
       this.isDraw = true
     },
