@@ -20,7 +20,7 @@ class OrgChart {
     this.padding = 20
     // tree node size
     this.nodeWidth = 180
-    this.nodeHeight = 230
+    this.nodeHeight = 280
     // org unit size
     this.unitPadding = 20
     this.unitWidth = 140
@@ -257,12 +257,21 @@ class OrgChart {
     this.virtualContainerNode.selectAll('.link')
       .each(function () {
         let node = self.d3.select(this)
-        self.context.strokeStyle = '#555555'
-        self.context.beginPath()
-        self.context.fillStyle = '#aaaaaa'
-        self.context.moveTo(node.attr('sourceX'), node.attr('sourceY'))
-        self.context.lineTo(node.attr('targetX'), node.attr('targetY'))
-        self.context.stroke()
+        let linkPath = self.d3.linkVertical()
+          .x(function (d) {
+            return d.x
+          })
+          .y(function (d) {
+            return d.y
+          })
+          .source(function () {
+            return {x: node.attr('sourceX'), y: node.attr('sourceY')}
+          })
+          .target(function () {
+            return {x: node.attr('targetX'), y: node.attr('targetY')}
+          })
+        let path = new Path2D(linkPath())
+        self.context.stroke(path)
       })
 
     this.virtualContainerNode.selectAll('.orgUnit')
