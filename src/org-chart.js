@@ -66,42 +66,42 @@ class OrgChart {
   }
 
   updateOrgUnits (nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
-    let orgUnit = this.virtualContainerNode.selectAll('.orgUnit')
+    let orgUnitSelection = this.virtualContainerNode.selectAll('.orgUnit')
       .data(nodes, d => d['colorKey'])
 
-    orgUnit.attr('class', 'orgUnit')
-      .attr('x', function (node) {
-        return node.x0
+    orgUnitSelection.attr('class', 'orgUnit')
+      .attr('x', function (data) {
+        return data.x0
       })
-      .attr('y', function (node) {
-        return node.y0
+      .attr('y', function (data) {
+        return data.y0
       })
       .transition()
       .duration(this.duration)
-      .attr('x', function (node) {
-        return node.x
+      .attr('x', function (data) {
+        return data.x
       })
-      .attr('y', function (node) {
-        return node.y
+      .attr('y', function (data) {
+        return data.y
       })
       .attr('fillStyle', '#ff0000')
 
-    orgUnit.enter()
+    orgUnitSelection.enter()
       .append('orgUnit')
       .attr('class', 'orgUnit')
       .attr('x', animatedStartX)
       .attr('y', animatedStartY)
       .transition()
       .duration(this.duration)
-      .attr('x', function (node) {
-        return node.x
+      .attr('x', function (data) {
+        return data.x
       })
-      .attr('y', function (node) {
-        return node.y
+      .attr('y', function (data) {
+        return data.y
       })
       .attr('fillStyle', '#ff0000')
 
-    orgUnit.exit()
+    orgUnitSelection.exit()
       .transition()
       .duration(this.duration)
       .attr('x', animatedEndX)
@@ -114,44 +114,44 @@ class OrgChart {
       treeNode['y0'] = treeNode.y
     })
 
-    orgUnit = null
+    orgUnitSelection = null
   }
 
   updateLinks (links, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
-    let link = this.virtualContainerNode.selectAll('.link')
+    let linkSelection = this.virtualContainerNode.selectAll('.link')
       .data(links, function (d) {
         return d.source['colorKey'] + ':' + d.target['colorKey']
       })
 
-    link.attr('class', 'link')
-      .attr('sourceX', function (link) {
-        return link.source['x00']
+    linkSelection.attr('class', 'link')
+      .attr('sourceX', function (linkData) {
+        return linkData.source['x00']
       })
-      .attr('sourceY', function (link) {
-        return link.source['y00']
+      .attr('sourceY', function (linkData) {
+        return linkData.source['y00']
       })
-      .attr('targetX', function (link) {
-        return link.target['x00']
+      .attr('targetX', function (linkData) {
+        return linkData.target['x00']
       })
-      .attr('targetY', function (link) {
-        return link.target['y00']
+      .attr('targetY', function (linkData) {
+        return linkData.target['y00']
       })
       .transition()
       .duration(this.duration)
-      .attr('sourceX', function (link) {
-        return link.source.x
+      .attr('sourceX', function (linkData) {
+        return linkData.source.x
       })
-      .attr('sourceY', function (link) {
-        return link.source.y
+      .attr('sourceY', function (linkData) {
+        return linkData.source.y
       })
-      .attr('targetX', function (link) {
-        return link.target.x
+      .attr('targetX', function (linkData) {
+        return linkData.target.x
       })
-      .attr('targetY', function (link) {
-        return link.target.y
+      .attr('targetY', function (linkData) {
+        return linkData.target.y
       })
 
-    link.enter()
+    linkSelection.enter()
       .append('link')
       .attr('class', 'link')
       .attr('sourceX', animatedStartX)
@@ -173,7 +173,7 @@ class OrgChart {
         return link.target.y
       })
 
-    link.exit()
+    linkSelection.exit()
       .transition()
       .duration(this.duration)
       .attr('sourceX', animatedEndX)
@@ -189,7 +189,7 @@ class OrgChart {
       treeNode.target['x00'] = treeNode.target.x
       treeNode.target['y00'] = treeNode.target.y
     })
-    link = null
+    linkSelection = null
   }
 
   initCanvas () {

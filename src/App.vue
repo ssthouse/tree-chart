@@ -1,11 +1,19 @@
 <template>
-  <div style="display: flex; align-items: center; flex-direction: column; vertical-align: top;">
+  <div style="display: flex; align-items: center; flex-direction: column; vertical-align: top; min-width: 400px;">
     <button @click="test(10)" style="margin: 20px;" :disabled="isDraw">Draw Small Company (10+ row)</button>
     <button @click="test(100)" style="margin: 20px;" :disabled="isDraw">Draw Medium Company(100+ row)</button>
     <button @click="test(1000)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row)</button>
     <button @click="testFold(1000, 100)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row & 100 below folded)</button>
     <button @click="bigger()" style="margin: 20px;">+</button>
     <button @click="smaller()" style="margin: 20px;">-</button>
+
+    <h3>Support action</h3>
+    <ul>
+      <li>click node to toggle folder</li>
+      <li>drag canvas</li>
+      <li>use mouse wheel to zoom</li>
+      <li>button control to zoom</li>
+    </ul>
   </div>
 </template>
 
