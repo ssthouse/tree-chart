@@ -29,7 +29,7 @@ export default {
       this.orgChart.draw(data)
       this.isDraw = true
     },
-    testFold(depth, foldDepth){
+    testFold (depth, foldDepth) {
       let data = DataGenerator.generateOrgChartDataFolded(depth, foldDepth)
       this.orgChart.draw(data)
       this.isDraw = true
