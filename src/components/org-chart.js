@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import Util from './util.js'
+import Util from '../util.js'
 
 class OrgChart {
   constructor () {
