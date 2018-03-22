@@ -15,8 +15,8 @@ class OrgChart {
   }
 
   initVariables () {
-    this.width = 1000
-    this.height = 1000
+    this.width = window.innerWidth
+    this.height = window.innerHeight
     this.padding = 20
     // tree node size
     this.nodeWidth = 180
@@ -279,11 +279,11 @@ class OrgChart {
         let node = self.d3.select(this)
         let treeNode = node.data()[0]
         let data = treeNode.data
-        self.context.fillStyle = '#aaaaaa'
+        self.context.fillStyle = '#3ca0ff'
         let indexX = Number(node.attr('x')) - self.unitWidth / 2
         let indexY = Number(node.attr('y')) - self.unitHeight / 2
         Util.roundRect(self.context, indexX, indexY, self.unitWidth, self.unitHeight, 4, true, false)
-        Util.text(self.context, data.name, indexX + self.unitPadding, indexY + self.unitPadding, '20px', '#000000')
+        Util.text(self.context, data.name, indexX + self.unitPadding, indexY + self.unitPadding, '20px', '#ffffff')
         // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
         let maxWidth = self.unitWidth - 2 * self.unitPadding
         Util.wrapText(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 24, maxWidth, 20)

@@ -1,31 +1,38 @@
 <template>
-  <div style="display: flex; align-items: center; flex-direction: column; vertical-align: top; min-width: 400px;">
-    <button @click="test(10)" style="margin: 20px;" :disabled="isDraw">Draw Small Company (10+ row)</button>
-    <button @click="test(100)" style="margin: 20px;" :disabled="isDraw">Draw Medium Company(100+ row)</button>
-    <button @click="test(1000)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row)</button>
-    <button @click="testFold(1000, 100)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row & 100 below folded)</button>
-    <button @click="bigger()" style="margin: 20px;">+</button>
-    <button @click="smaller()" style="margin: 20px;">-</button>
+  <div class="menu-container">
+    <el-button @click="test(10)" style="margin: 20px;" :disabled="isDraw">Draw Small Company (10+ row)</el-button>
+    <el-button @click="test(100)" style="margin: 20px;" :disabled="isDraw">Draw Medium Company(100+ row)</el-button>
+    <el-button @click="test(1000)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row)</el-button>
+    <el-button @click="testFold(1000, 100)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row & 100 below
+      folded)
+    </el-button>
+    <el-row>
+      <el-button @click="bigger()" style="margin: 20px;">+</el-button>
+      <el-button @click="smaller()" style="margin: 20px;">-</el-button>
+    </el-row>
 
-    <h3>Support action</h3>
-    <ul>
-      <li>click node to toggle folder</li>
-      <li>drag canvas</li>
-      <li>use mouse wheel to zoom</li>
-      <li>button control to zoom</li>
-    </ul>
+    <el-card class="box-card">
+      <div slot="header" class="action-title">
+        <span>Support action</span>
+      </div>
+      <div v-for="action in supportActions" :key="action" class="action-item">
+        {{'*' + action}}
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script>
 import OrgChart from './org-chart'
 import DataGenerator from './dao'
+
 export default {
   name: 'App',
   data: function () {
     return {
       orgChart: null,
-      isDraw: false
+      isDraw: false,
+      supportActions: ['click node to toggle folder', 'drag canvas', 'use mouse wheel to zoom', 'button control to zoom']
     }
   },
   created () {
@@ -64,5 +71,21 @@ export default {
 
   .orgChart {
     border: 1px solid black;
+  }
+
+  .menu-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    vertical-align: top;
+    width: 400px;
+  }
+  .action-title{
+    font-size: 28px;
+  }
+
+  .action-item{
+    font-size: 24px;
   }
 </style>
