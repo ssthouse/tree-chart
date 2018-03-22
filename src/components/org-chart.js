@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import Util from '../util.js'
+import Util from '../base/util.js'
 
 class OrgChart {
   constructor () {
@@ -193,7 +193,7 @@ class OrgChart {
   }
 
   initCanvas () {
-    this.container = this.d3.select('#container')
+    this.container = this.d3.select('#org-chart-container')
     this.canvasNode = this.container
       .append('canvas')
       .attr('class', 'orgChart')
