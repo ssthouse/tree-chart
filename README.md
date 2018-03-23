@@ -5,7 +5,19 @@
 
 https://ssthouse.github.io/organization-chart/#/
 
-> A Vue.js project
+
+
+
+
+## 自定义 `数据` & `绘图`
+
+
+
+/src/base/data-generator  ===>  返回自定义数据
+
+/src/components/org-chart.js   (function: drawShowCanvas)  ===>   自定义绘图
+
+
 
 ## Build Setup
 

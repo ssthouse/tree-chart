@@ -282,7 +282,10 @@ class OrgChart {
         self.context.fillStyle = '#3ca0ff'
         let indexX = Number(node.attr('x')) - self.unitWidth / 2
         let indexY = Number(node.attr('y')) - self.unitHeight / 2
+
+        // draw unit outline rect (if you want to modify this line ===>   please modify the same line in `drawHiddenCanvas`)
         Util.roundRect(self.context, indexX, indexY, self.unitWidth, self.unitHeight, 4, true, false)
+
         Util.text(self.context, data.name, indexX + self.unitPadding, indexY + self.unitPadding, '20px', '#ffffff')
         // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
         let maxWidth = self.unitWidth - 2 * self.unitPadding
