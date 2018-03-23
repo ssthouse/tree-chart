@@ -4,9 +4,9 @@
       <el-button @click="test(10)" style="margin: 20px;" :disabled="isDraw">Draw Small Company (10+ row)</el-button>
       <el-button @click="test(100)" style="margin: 20px;" :disabled="isDraw">Draw Medium Company(100+ row)</el-button>
       <el-button @click="test(1000)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row)</el-button>
-      <el-button @click="testFold(1000, 100)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row & 100 below
-        folded)
-      </el-button>
+      <!--<el-button @click="testFold(1000, 100)" style="margin: 20px;" :disabled="isDraw">Draw Big Company(1000+ row & 100 below-->
+        <!--folded)-->
+      <!--</el-button>-->
       <el-row>
         <el-button @click="bigger()" style="margin: 20px;">+</el-button>
         <el-button @click="smaller()" style="margin: 20px;">-</el-button>
