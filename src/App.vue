@@ -1,5 +1,24 @@
 <template>
-  <v-app style="width: 100%: height:100%">
+  <v-app>
+    <v-toolbar>
+      <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-toolbar-title>Organization Chart</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat href="https://github.com/ssthouse">
+          <v-avatar size=42>
+            <img src="https://avatars3.githubusercontent.com/u/10973821?s=460&v=4">
+          </v-avatar>
+          <span style="margin-left:8px;">About me</span>
+        </v-btn>
+        <v-btn flat href="https://github.com/ssthouse/organization-chart">
+          <v-avatar size=42>
+            <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png">
+          </v-avatar>
+          Source Code</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+
     <router-view style="width: 100%; height: 100%;" />
   </v-app>
 </template>
@@ -14,35 +33,9 @@ export default {
     return {}
   },
   created() {},
-  methods: {
-    toSvgChart() {
-      this.$router.push('/svgChart')
-    }
-  }
+  methods: {}
 }
 </script>
 
 <style lang="less">
-.bottom-nav-bar {
-  position: fixed;
-  bottom: 0;
-  width: 90%;
-  height: 48px;
-  background-color: #58caff;
-}
-
-body,
-div {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-}
-
-.fix-btn {
-  position: fixed;
-  left: 300px;
-  top: 300px;
-}
 </style>
