@@ -1,7 +1,7 @@
 <template>
-  <div style="width: 100%: height:100%">
+  <v-app style="width: 100%: height:100%">
     <router-view style="width: 100%; height: 100%;" />
-  </div>
+  </v-app>
 </template>
 
 <script>
