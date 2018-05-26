@@ -27,16 +27,18 @@ export default {
     const data = DataGenerator.generateOrgChartData(10)
     this.svgChart = new SvgChart(data)
   },
-  mounted() {},
+  mounted() {
+    this.start()
+  },
   methods: {
     start() {
       this.svgChart.drawTree()
     },
     bigger() {
-      this.orgChart.bigger()
+      this.svgChart.bigger()
     },
     smaller() {
-      this.orgChart.smaller()
+      this.svgChart.smaller()
     }
   }
 }

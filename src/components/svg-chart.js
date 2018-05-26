@@ -42,7 +42,6 @@ class SvgTree {
       .append('path')
       .attr('class', 'link')
       .attr('d', function(d, i) {
-        let node = self.d3.select(this)
         let linkPath = self.d3
           .linkVertical()
           .x(function(d) {
