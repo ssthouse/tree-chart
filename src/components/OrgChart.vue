@@ -2,8 +2,6 @@
   <div id="org-chart-container">
     <div class="menu-container">
       <v-btn @click="test(10)">Draw Small Company (10+ row)</v-btn>
-      <v-btn @click="test(100)">Draw Medium Company(100+ row)</v-btn>
-      <v-btn @click="test(1000)">Draw Big Company(1000+ row)</v-btn>
       <v-layout row>
         <v-btn @click="bigger()">+</v-btn>
         <v-btn @click="smaller()">-</v-btn>
@@ -31,6 +29,7 @@ export default {
   name: 'org-chart',
   data: function() {
     return {
+      data: null,
       orgChart: null,
       supportActions: [
         'click node to toggle',
@@ -40,13 +39,16 @@ export default {
       ]
     }
   },
+  created() {
+    this.data = DataGenerator.generateOrgChartData(10)
+  },
   mounted() {
     this.orgChart = new OrgChart()
+    this.orgChart.draw(this.data)
   },
   methods: {
     test(depth) {
-      let data = DataGenerator.generateOrgChartData(depth)
-      this.orgChart.draw(data)
+      this.orgChart.draw(this.data)
     },
     bigger() {
       this.orgChart.bigger()
