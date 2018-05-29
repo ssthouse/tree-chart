@@ -1,7 +1,6 @@
 <template>
   <div id="org-chart-container">
     <div class="menu-container">
-      <v-btn @click="test(10)">Draw Small Company (10+ row)</v-btn>
       <v-layout row>
         <v-btn @click="bigger()">+</v-btn>
         <v-btn @click="smaller()">-</v-btn>
@@ -72,11 +71,15 @@ export default {
 
 .orgChart {
   border: 1px solid black;
+  height: 100%;
 }
 
 .menu-container {
   position: absolute;
-  top: 56px;
+  padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 156px;
   display: flex;
   align-items: center;
   flex-direction: column;
