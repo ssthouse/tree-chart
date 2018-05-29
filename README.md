@@ -6,18 +6,19 @@
 https://ssthouse.github.io/organization-chart/#/
 
 
+![demo gif](https://raw.githubusercontent.com/ssthouse/organization-chart/master/screenshots/org-chart.gif)
 
 
-
-## 自定义 `数据` & `绘图`
-
-
-
-/src/base/data-generator  ===>  返回自定义数据
-
-/src/components/org-chart.js   (function: drawShowCanvas)  ===>   自定义绘图
+## Tech
+- use D3.js with Canvas to draw organizationChart more efficiently.
+- Use `unique-color` manner to identify mouse click event in Canvas (you can refer to https://medium.com/@lverspohl/how-to-turn-d3-and-canvas-into-good-friends-b7a240a32915 to see detail)
 
 
+## To draw your own nested data
+
+please replace the data in `/src/base/data-generator` with your own nested data.
+
+please add your data drawing logic in `/src/components/org-chart.js #drawShowCanvas`
 
 ## Build Setup
 
@@ -25,14 +26,9 @@ https://ssthouse.github.io/organization-chart/#/
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost
 npm run dev
 
-# build for production with minification
+# build for production with minification (build to ./docs folder, which can be auto servered by github page 🤓)
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
