@@ -158,9 +158,11 @@ please replace the data in `/src/base/data-generator` with your own nested data.
 
 please add your data drawing logic in `/src/components/org-chart.js #drawShowCanvas`
 
-#### Want develop locally ?
+#### Want to develop locally ?
 
 #### source code
+if you like it , welcome to star and fork :tada:
+
 https://github.com/ssthouse/organization-chart
 
 ``` bash
