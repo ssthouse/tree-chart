@@ -204,7 +204,7 @@ class OrgChart {
       .attr('class', 'orgChart')
       .attr('width', this.width)
       .attr('height', this.height)
-      .style('display', 'none')
+      .style('display', '')
     this.context = this.canvasNode.node().getContext('2d')
     this.context.translate(this.width / 2, this.padding)
     this.hiddenContext = this.hiddenCanvasNode.node().getContext('2d')
