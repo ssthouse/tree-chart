@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/OrgChart'
+import OrgChart from '@/components/OrgChart'
 import SvgChart from '@/components/SvgChart'
 
 Vue.use(Router)
@@ -14,7 +14,7 @@ export default new Router({
     {
       path: '/orgChart',
       name: 'orgChart',
-      component: HelloWorld
+      component: OrgChart
     },
     {
       path: '/svgChart',

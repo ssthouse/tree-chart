@@ -1,11 +1,9 @@
 <template>
   <div id="svg-chart-container">
     <div class="menu-container">
-      <el-row>
-        <el-button @click="start()" style="margin: 20px;">Start</el-button>
-        <el-button @click="bigger()" style="margin: 20px;">+</el-button>
-        <el-button @click="smaller()" style="margin: 20px;">-</el-button>
-      </el-row>
+      <v-btn @click="start()" style="margin: 20px;">Start</v-btn>
+      <v-btn @click="bigger()" style="margin: 20px;">+</v-btn>
+      <v-btn @click="smaller()" style="margin: 20px;">-</v-btn>
     </div>
 
     <svg class="svg"></svg>
@@ -53,7 +51,8 @@ export default {
   }
 
   .link {
-    fill: transparent;
+    stroke-width: 2px;
+    stroke: blue;
   }
 
   .svg {

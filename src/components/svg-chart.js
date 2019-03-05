@@ -61,6 +61,14 @@ class SvgTree {
     links.attr('class', 'link')
     links.exit().remove()
   }
+
+  bigger(){
+    
+  }
+
+  smaller(){
+
+  }
 }
 
 export default SvgTree
