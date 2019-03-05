@@ -2,19 +2,19 @@ import * as d3 from 'd3'
 import Util from '../base/util.js'
 
 class OrgChart {
-  constructor () {
+  constructor() {
     this.d3 = d3
     this.init()
   }
 
-  init () {
+  init() {
     this.initVariables()
     this.initCanvas()
     this.initVirtualNode()
     this.setCanvasListener()
   }
 
-  initVariables () {
+  initVariables() {
     this.width = window.innerWidth
     this.height = window.innerHeight
     this.padding = 20
@@ -30,19 +30,20 @@ class OrgChart {
     this.scale = 1.0
   }
 
-  draw (data) {
+  draw(data) {
     this.data = this.d3.hierarchy(data)
-    this.treeGenerator = this.d3.tree()
+    this.treeGenerator = this.d3
+      .tree()
       .nodeSize([this.nodeWidth, this.nodeHeight])
     this.update()
 
     let self = this
-    this.d3.timer(function () {
+    this.d3.timer(function() {
       self.drawCanvas()
     })
   }
 
-  update (targetTreeNode) {
+  update(targetTreeNode) {
     this.treeData = this.treeGenerator(this.data)
     let nodes = this.treeData.descendants()
     let links = this.treeData.links()
@@ -58,50 +59,72 @@ class OrgChart {
       animatedEndY = targetTreeNode.y
     }
 
-    this.updateOrgUnits(nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
-    this.updateLinks(links, animatedStartX, animatedStartY, animatedEndX, animatedEndY)
+    this.updateOrgUnits(
+      nodes,
+      animatedStartX,
+      animatedStartY,
+      animatedEndX,
+      animatedEndY
+    )
+    this.updateLinks(
+      links,
+      animatedStartX,
+      animatedStartY,
+      animatedEndX,
+      animatedEndY
+    )
 
     this.addColorKey()
     this.bindNodeToTreeData()
   }
 
-  updateOrgUnits (nodes, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
-    let orgUnitSelection = this.virtualContainerNode.selectAll('.orgUnit')
+  updateOrgUnits(
+    nodes,
+    animatedStartX,
+    animatedStartY,
+    animatedEndX,
+    animatedEndY
+  ) {
+    let orgUnitSelection = this.virtualContainerNode
+      .selectAll('.orgUnit')
       .data(nodes, d => d['colorKey'])
 
-    orgUnitSelection.attr('class', 'orgUnit')
-      .attr('x', function (data) {
+    orgUnitSelection
+      .attr('class', 'orgUnit')
+      .attr('x', function(data) {
         return data.x0
       })
-      .attr('y', function (data) {
+      .attr('y', function(data) {
         return data.y0
       })
       .transition()
       .duration(this.duration)
-      .attr('x', function (data) {
+      .attr('x', function(data) {
         return data.x
       })
-      .attr('y', function (data) {
+      .attr('y', function(data) {
         return data.y
       })
       .attr('fillStyle', '#ff0000')
 
-    orgUnitSelection.enter()
+    orgUnitSelection
+      .enter()
       .append('orgUnit')
       .attr('class', 'orgUnit')
       .attr('x', animatedStartX)
       .attr('y', animatedStartY)
       .transition()
       .duration(this.duration)
-      .attr('x', function (data) {
+      .attr('x', function(data) {
         return data.x
       })
-      .attr('y', function (data) {
+      .attr('y', function(data) {
         return data.y
       })
       .attr('fillStyle', '#ff0000')
 
-    orgUnitSelection.exit()
+    orgUnitSelection
+      .exit()
       .transition()
       .duration(this.duration)
       .attr('x', animatedEndX)
@@ -117,41 +140,50 @@ class OrgChart {
     orgUnitSelection = null
   }
 
-  updateLinks (links, animatedStartX, animatedStartY, animatedEndX, animatedEndY) {
-    let linkSelection = this.virtualContainerNode.selectAll('.link')
-      .data(links, function (d) {
+  updateLinks(
+    links,
+    animatedStartX,
+    animatedStartY,
+    animatedEndX,
+    animatedEndY
+  ) {
+    let linkSelection = this.virtualContainerNode
+      .selectAll('.link')
+      .data(links, function(d) {
         return d.source['colorKey'] + ':' + d.target['colorKey']
       })
 
-    linkSelection.attr('class', 'link')
-      .attr('sourceX', function (linkData) {
+    linkSelection
+      .attr('class', 'link')
+      .attr('sourceX', function(linkData) {
         return linkData.source['x00']
       })
-      .attr('sourceY', function (linkData) {
+      .attr('sourceY', function(linkData) {
         return linkData.source['y00']
       })
-      .attr('targetX', function (linkData) {
+      .attr('targetX', function(linkData) {
         return linkData.target['x00']
       })
-      .attr('targetY', function (linkData) {
+      .attr('targetY', function(linkData) {
         return linkData.target['y00']
       })
       .transition()
       .duration(this.duration)
-      .attr('sourceX', function (linkData) {
+      .attr('sourceX', function(linkData) {
         return linkData.source.x
       })
-      .attr('sourceY', function (linkData) {
+      .attr('sourceY', function(linkData) {
         return linkData.source.y
       })
-      .attr('targetX', function (linkData) {
+      .attr('targetX', function(linkData) {
         return linkData.target.x
       })
-      .attr('targetY', function (linkData) {
+      .attr('targetY', function(linkData) {
         return linkData.target.y
       })
 
-    linkSelection.enter()
+    linkSelection
+      .enter()
       .append('link')
       .attr('class', 'link')
       .attr('sourceX', animatedStartX)
@@ -160,20 +192,21 @@ class OrgChart {
       .attr('targetY', animatedStartY)
       .transition()
       .duration(this.duration)
-      .attr('sourceX', function (link) {
+      .attr('sourceX', function(link) {
         return link.source.x
       })
-      .attr('sourceY', function (link) {
+      .attr('sourceY', function(link) {
         return link.source.y
       })
-      .attr('targetX', function (link) {
+      .attr('targetX', function(link) {
         return link.target.x
       })
-      .attr('targetY', function (link) {
+      .attr('targetY', function(link) {
         return link.target.y
       })
 
-    linkSelection.exit()
+    linkSelection
+      .exit()
       .transition()
       .duration(this.duration)
       .attr('sourceX', animatedEndX)
@@ -192,7 +225,7 @@ class OrgChart {
     linkSelection = null
   }
 
-  initCanvas () {
+  initCanvas() {
     this.container = this.d3.select('#org-chart-container')
     this.canvasNode = this.container
       .append('canvas')
@@ -211,113 +244,145 @@ class OrgChart {
     this.hiddenContext.translate(this.width / 2, this.padding)
   }
 
-  initVirtualNode () {
+  initVirtualNode() {
     let virtualContainer = document.createElement('root')
     this.virtualContainerNode = this.d3.select(virtualContainer)
     this.colorNodeMap = {}
   }
 
-  addColorKey () {
+  addColorKey() {
     // give each node a unique color
     let self = this
-    this.virtualContainerNode.selectAll('.orgUnit')
-      .each(function () {
-        let node = self.d3.select(this)
-        let newColor = Util.randomColor()
-        while (self.colorNodeMap[newColor]) {
-          newColor = Util.randomColor()
-        }
-        node.attr('colorKey', newColor)
-        node.data()[0]['colorKey'] = newColor
-        self.colorNodeMap[newColor] = node
-      })
+    this.virtualContainerNode.selectAll('.orgUnit').each(function() {
+      let node = self.d3.select(this)
+      let newColor = Util.randomColor()
+      while (self.colorNodeMap[newColor]) {
+        newColor = Util.randomColor()
+      }
+      node.attr('colorKey', newColor)
+      node.data()[0]['colorKey'] = newColor
+      self.colorNodeMap[newColor] = node
+    })
   }
 
-  bindNodeToTreeData () {
+  bindNodeToTreeData() {
     // give each node a unique color
     let self = this
-    this.virtualContainerNode.selectAll('.orgUnit')
-      .each(function () {
-        let node = self.d3.select(this)
-        let data = node.data()[0]
-        data['node'] = node
-      })
+    this.virtualContainerNode.selectAll('.orgUnit').each(function() {
+      let node = self.d3.select(this)
+      let data = node.data()[0]
+      data['node'] = node
+    })
   }
 
-  drawCanvas () {
+  drawCanvas() {
     this.drawShowCanvas()
     this.drawHiddenCanvas()
   }
 
-  drawShowCanvas () {
+  drawShowCanvas() {
     this.context.clearRect(-50000, -10000, 100000, 100000)
 
     let self = this
     // draw links
-    this.virtualContainerNode.selectAll('.link')
-      .each(function () {
-        let node = self.d3.select(this)
-        let linkPath = self.d3.linkVertical()
-          .x(function (d) {
-            return d.x
-          })
-          .y(function (d) {
-            return d.y
-          })
-          .source(function () {
-            return {x: node.attr('sourceX'), y: node.attr('sourceY')}
-          })
-          .target(function () {
-            return {x: node.attr('targetX'), y: node.attr('targetY')}
-          })
-        let path = new Path2D(linkPath())
-        self.context.stroke(path)
-      })
+    this.virtualContainerNode.selectAll('.link').each(function() {
+      let node = self.d3.select(this)
+      let linkPath = self.d3
+        .linkVertical()
+        .x(function(d) {
+          return d.x
+        })
+        .y(function(d) {
+          return d.y
+        })
+        .source(function() {
+          return { x: node.attr('sourceX'), y: node.attr('sourceY') }
+        })
+        .target(function() {
+          return { x: node.attr('targetX'), y: node.attr('targetY') }
+        })
+      let path = new Path2D(linkPath())
+      self.context.stroke(path)
+    })
 
-    this.virtualContainerNode.selectAll('.orgUnit')
-      .each(function () {
-        let node = self.d3.select(this)
-        let treeNode = node.data()[0]
-        let data = treeNode.data
-        self.context.fillStyle = '#3ca0ff'
-        let indexX = Number(node.attr('x')) - self.unitWidth / 2
-        let indexY = Number(node.attr('y')) - self.unitHeight / 2
+    this.virtualContainerNode.selectAll('.orgUnit').each(function() {
+      let node = self.d3.select(this)
+      let treeNode = node.data()[0]
+      let data = treeNode.data
+      self.context.fillStyle = '#3ca0ff'
+      let indexX = Number(node.attr('x')) - self.unitWidth / 2
+      let indexY = Number(node.attr('y')) - self.unitHeight / 2
 
-        // draw unit outline rect (if you want to modify this line ===>   please modify the same line in `drawHiddenCanvas`)
-        Util.roundRect(self.context, indexX, indexY, self.unitWidth, self.unitHeight, 4, true, false)
+      // draw unit outline rect (if you want to modify this line ===>   please modify the same line in `drawHiddenCanvas`)
+      Util.roundRect(
+        self.context,
+        indexX,
+        indexY,
+        self.unitWidth,
+        self.unitHeight,
+        4,
+        true,
+        false
+      )
 
-        Util.text(self.context, data.name, indexX + self.unitPadding, indexY + self.unitPadding, '20px', '#ffffff')
-        // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
-        let maxWidth = self.unitWidth - 2 * self.unitPadding
-        Util.wrapText(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 24, maxWidth, 20)
-      })
+      Util.text(
+        self.context,
+        data.name,
+        indexX + self.unitPadding,
+        indexY + self.unitPadding,
+        '20px',
+        '#ffffff'
+      )
+      // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
+      let maxWidth = self.unitWidth - 2 * self.unitPadding
+      Util.wrapText(
+        self.context,
+        data.title,
+        indexX + self.unitPadding,
+        indexY + self.unitPadding + 24,
+        maxWidth,
+        20
+      )
+    })
   }
 
   /**
    * fill the node outline with colorKey color
    */
-  drawHiddenCanvas () {
+  drawHiddenCanvas() {
     this.hiddenContext.clearRect(-50000, -10000, 100000, 100000)
 
     let self = this
-    this.virtualContainerNode.selectAll('.orgUnit')
-      .each(function () {
-        let node = self.d3.select(this)
-        self.hiddenContext.fillStyle = node.attr('colorKey')
-        Util.roundRect(self.hiddenContext, Number(node.attr('x')) - self.unitWidth / 2, Number(node.attr('y')) - self.unitHeight / 2, self.unitWidth, self.unitHeight, 4, true, false)
-      })
+    this.virtualContainerNode.selectAll('.orgUnit').each(function() {
+      let node = self.d3.select(this)
+      self.hiddenContext.fillStyle = node.attr('colorKey')
+      Util.roundRect(
+        self.hiddenContext,
+        Number(node.attr('x')) - self.unitWidth / 2,
+        Number(node.attr('y')) - self.unitHeight / 2,
+        self.unitWidth,
+        self.unitHeight,
+        4,
+        true,
+        false
+      )
+    })
   }
 
-  setCanvasListener () {
+  setCanvasListener() {
     this.setClickListener()
     this.setDragListener()
     this.setMouseWheelZoomListener()
   }
 
-  setClickListener () {
+  setClickListener() {
     let self = this
-    this.canvasNode.node().addEventListener('click', function (e) {
-      let colorStr = Util.getColorStrFromCanvas(self.hiddenContext, e.layerX, e.layerY)
+    this.canvasNode.node().addEventListener('click', function(e) {
+      let colorStr = Util.getColorStrFromCanvas(
+        self.hiddenContext,
+        e.layerX,
+        e.layerY
+      )
       let node = self.colorNodeMap[colorStr]
       if (node) {
         // let treeNodeData = node.data()[0]
@@ -328,9 +393,9 @@ class OrgChart {
     })
   }
 
-  setMouseWheelZoomListener () {
+  setMouseWheelZoomListener() {
     let self = this
-    this.canvasNode.node().addEventListener('mousewheel', function (event) {
+    this.canvasNode.node().addEventListener('mousewheel', function(event) {
       event.preventDefault()
       if (event.deltaY < 0) {
         self.bigger()
@@ -340,40 +405,46 @@ class OrgChart {
     })
   }
 
-  setDragListener () {
+  setDragListener() {
     this.onDrag_ = false
-    this.dragStartPoint_ = {x: 0, y: 0}
+    this.dragStartPoint_ = { x: 0, y: 0 }
     let self = this
-    this.canvasNode.node().onmousedown = function (e) {
+    this.canvasNode.node().onmousedown = function(e) {
       self.dragStartPoint_.x = e.x
       self.dragStartPoint_.y = e.y
       self.onDrag_ = true
     }
 
-    this.canvasNode.node().onmousemove = function (e) {
+    this.canvasNode.node().onmousemove = function(e) {
       if (!self.onDrag_) {
         return
       }
-      self.context.translate((e.x - self.dragStartPoint_.x) / self.scale, (e.y - self.dragStartPoint_.y) / self.scale)
-      self.hiddenContext.translate((e.x - self.dragStartPoint_.x) / self.scale, (e.y - self.dragStartPoint_.y) / self.scale)
+      self.context.translate(
+        (e.x - self.dragStartPoint_.x) / self.scale,
+        (e.y - self.dragStartPoint_.y) / self.scale
+      )
+      self.hiddenContext.translate(
+        (e.x - self.dragStartPoint_.x) / self.scale,
+        (e.y - self.dragStartPoint_.y) / self.scale
+      )
       self.dragStartPoint_.x = e.x
       self.dragStartPoint_.y = e.y
     }
 
-    this.canvasNode.node().onmouseout = function (e) {
+    this.canvasNode.node().onmouseout = function(e) {
       if (self.onDrag_) {
         self.onDrag_ = false
       }
     }
 
-    this.canvasNode.node().onmouseup = function (e) {
+    this.canvasNode.node().onmouseup = function(e) {
       if (self.onDrag_) {
         self.onDrag_ = false
       }
     }
   }
 
-  toggleTreeNode (treeNode) {
+  toggleTreeNode(treeNode) {
     if (treeNode.children) {
       treeNode._children = treeNode.children
       treeNode.children = null
@@ -383,26 +454,26 @@ class OrgChart {
     }
   }
 
-  bigger () {
+  bigger() {
     if (this.scale > 7) {
       return
     }
     this.context.clearRect(-1000000, -10000, 2000000, 2000000)
     this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
 
-    this.scale = this.scale * 5 / 4
+    this.scale = (this.scale * 5) / 4
     this.context.scale(5 / 4, 5 / 4)
     this.hiddenContext.scale(5 / 4, 5 / 4)
   }
 
-  smaller () {
+  smaller() {
     if (this.scale < 0.2) {
       return
     }
     this.context.clearRect(-1000000, -10000, 2000000, 2000000)
     this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
 
-    this.scale = this.scale * 4 / 5
+    this.scale = (this.scale * 4) / 5
     this.context.scale(4 / 5, 4 / 5)
     this.hiddenContext.scale(4 / 5, 4 / 5)
   }
