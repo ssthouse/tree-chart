@@ -377,7 +377,7 @@ class OrgChart {
 
   setClickListener() {
     let self = this
-    this.canvasNode.node().addEventListener('click', function(e) {
+    this.canvasNode.node().addEventListener('click', e => {
       let colorStr = Util.getColorStrFromCanvas(
         self.hiddenContext,
         e.layerX,
@@ -395,7 +395,7 @@ class OrgChart {
 
   setMouseWheelZoomListener() {
     let self = this
-    this.canvasNode.node().addEventListener('mousewheel', function(event) {
+    this.canvasNode.node().addEventListener('mousewheel', event => {
       event.preventDefault()
       if (event.deltaY < 0) {
         self.bigger()
@@ -455,27 +455,25 @@ class OrgChart {
   }
 
   bigger() {
-    if (this.scale > 7) {
-      return
-    }
-    this.context.clearRect(-1000000, -10000, 2000000, 2000000)
-    this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
-
+    if (this.scale > 7) return
+    this.clearCanvas_()
     this.scale = (this.scale * 5) / 4
     this.context.scale(5 / 4, 5 / 4)
     this.hiddenContext.scale(5 / 4, 5 / 4)
   }
 
   smaller() {
-    if (this.scale < 0.2) {
-      return
-    }
-    this.context.clearRect(-1000000, -10000, 2000000, 2000000)
-    this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
+    if (this.scale < 0.2) return
+    this.clearCanvas_()
 
     this.scale = (this.scale * 4) / 5
     this.context.scale(4 / 5, 4 / 5)
     this.hiddenContext.scale(4 / 5, 4 / 5)
+  }
+
+  clearCanvas_() {
+    this.context.clearRect(-1000000, -10000, 2000000, 2000000)
+    this.hiddenContext.clearRect(-1000000, -10000, 2000000, 2000000)
   }
 }
 
