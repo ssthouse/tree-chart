@@ -62,12 +62,12 @@ class SvgTree {
     links.exit().remove()
   }
 
-  bigger(){
-    
+  bigger() {
+    //TODO
   }
 
-  smaller(){
-
+  smaller() {
+    // TODO
   }
 }
 
