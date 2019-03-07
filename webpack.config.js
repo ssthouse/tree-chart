@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
   entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname, './docs'),
+    path: path.resolve(__dirname, './'),
     publicPath: './',
     filename: 'bundle.js'
   },
@@ -33,7 +33,7 @@ module.exports = {
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
+      template: './template/index.html',
       inject: true
     })
   ],
