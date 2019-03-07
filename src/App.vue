@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import OrgChart from './components/OrgChart'
+import OrgChart from './components/OrgChart.vue'
 
 export default {
   name: 'App',

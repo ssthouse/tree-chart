@@ -63,7 +63,7 @@ class SvgTree {
   }
 
   bigger() {
-    //TODO
+    // TODO
   }
 
   smaller() {

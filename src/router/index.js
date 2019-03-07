@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import OrgChart from '@/components/OrgChart'
-import SvgChart from '@/components/SvgChart'
+import OrgChart from '../components/OrgChart.vue'
+import SvgChart from '../components/SvgChart.vue'
 
 Vue.use(Router)
 
