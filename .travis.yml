@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "node"
   - "7"
-script: npm run new-build
+script: npm run build
 deploy:
   provider: pages
   skip-cleanup: true
