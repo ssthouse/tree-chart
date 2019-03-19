@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import './google-icon.css'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -13,6 +14,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: {App},
+  components: { App },
   template: '<App/>'
 })

@@ -28,6 +28,11 @@ module.exports = {
       {
         test: /\.vue$/,
         use: ['vue-loader']
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/
       }
     ]
   },
