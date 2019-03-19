@@ -1,5 +1,6 @@
+import { randomColor } from './color-util.ts'
 class Util {
-  static appendFront0 (numStr) {
+  static appendFront0(numStr) {
     if (numStr.length !== 2) {
       return '0' + numStr
     } else {
@@ -7,29 +8,23 @@ class Util {
     }
   }
 
-  static randomColor () {
-    let letters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    let color = '#'
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
-    }
-    return color
-  }
-
-  static getColorStrFromCanvas (context, xIndex, yIndex) {
+  static getColorStrFromCanvas(context, xIndex, yIndex) {
     let pixelData = context.getImageData(xIndex, yIndex, 1, 1).data
-    return '#' + Util.appendFront0(pixelData[0].toString(16)) +
+    return (
+      '#' +
+      Util.appendFront0(pixelData[0].toString(16)) +
       Util.appendFront0(pixelData[1].toString(16)) +
       Util.appendFront0(pixelData[2].toString(16))
+    )
   }
 
-  static text (ctx, text, x, y, fontSize, fontColor) {
+  static text(ctx, text, x, y, fontSize, fontColor) {
     ctx.font = '14px Arial'
     ctx.fillStyle = fontColor
     ctx.fillText(text, x, y)
   }
 
-  static wrapText (context, text, x, y, maxWidth, lineHeight, fontColor) {
+  static wrapText(context, text, x, y, maxWidth, lineHeight, fontColor) {
     context.fillStyle = fontColor
     let words = text.split(' ')
     let line = ''
@@ -48,7 +43,7 @@ class Util {
     context.fillText(line, x, y)
   }
 
-  static roundRect (context, x, y, width, height, radius, fill, stroke) {
+  static roundRect(context, x, y, width, height, radius, fill, stroke) {
     if (typeof stroke === 'undefined') {
       stroke = true
     }
@@ -56,9 +51,9 @@ class Util {
       radius = 5
     }
     if (typeof radius === 'number') {
-      radius = {tl: radius, tr: radius, br: radius, bl: radius}
+      radius = { tl: radius, tr: radius, br: radius, bl: radius }
     } else {
-      let defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0}
+      let defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 }
       for (let side in defaultRadius) {
         radius[side] = radius[side] || defaultRadius[side]
       }
@@ -68,7 +63,12 @@ class Util {
     context.lineTo(x + width - radius.tr, y)
     context.quadraticCurveTo(x + width, y, x + width, y + radius.tr)
     context.lineTo(x + width, y + height - radius.br)
-    context.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height)
+    context.quadraticCurveTo(
+      x + width,
+      y + height,
+      x + width - radius.br,
+      y + height
+    )
     context.lineTo(x + radius.bl, y + height)
     context.quadraticCurveTo(x, y + height, x, y + height - radius.bl)
     context.lineTo(x, y + radius.tl)
@@ -82,5 +82,5 @@ class Util {
     }
   }
 }
-
+Util.randomColor = randomColor
 export default Util
