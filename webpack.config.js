@@ -2,11 +2,13 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const isDevMode = process.env.NODE_ENV !== 'production'
+
 module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './'),
-    publicPath: './',
+    publicPath: isDevMode ? '/' : './',
     filename: 'bundle.js'
   },
   module: {
