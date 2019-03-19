@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import SvgChart from './svg-chart'
 import DataGenerator from '../base/data-generator'
 
