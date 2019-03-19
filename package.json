@@ -9,8 +9,8 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "new-dev": "webpack-dev-server --inline --progress --config ./webpack.config.js",
-    "new-build": "webpack --mode=production --config ./webpack.config.js"
+    "new-dev": "webpack-dev-server --inline --progress --config ./webpack.config.dev.js",
+    "new-build": "webpack --config ./webpack.config.prod.js"
   },
   "dependencies": {
     "d3": "^4.13.0",
