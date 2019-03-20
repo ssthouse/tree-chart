@@ -12,7 +12,7 @@
 
 <script>
 import SvgChart from './svg-chart'
-import DataGenerator from '../base/data-generator'
+import * as DataGenerator from '../base/data-generator.ts'
 
 export default {
   name: 'svg-chart',
