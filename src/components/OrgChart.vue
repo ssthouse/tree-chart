@@ -22,7 +22,7 @@
 
 <script>
 import OrgChart from './org-chart'
-import DataGenerator from '../base/data-generator'
+import * as DataGenerator from '../base/data-generator.ts'
 
 export default {
   name: 'org-chart',
