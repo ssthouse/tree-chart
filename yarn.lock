@@ -6436,6 +6436,10 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-class-component@^7.0.1:
+  version "7.0.1"
+  resolved "http://registry.npm.taobao.org/vue-class-component/download/vue-class-component-7.0.1.tgz#7af2225c600667c7042b60712eefdf41dfc6de63"
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
@@ -6460,6 +6464,12 @@ vue-loader@^15.7.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-property-decorator@^8.0.0:
+  version "8.0.0"
+  resolved "http://registry.npm.taobao.org/vue-property-decorator/download/vue-property-decorator-8.0.0.tgz#a2e9bb2419b638cbf1614e17b99aa675d6d4e9e4"
+  dependencies:
+    vue-class-component "^7.0.1"
 
 vue-router@^3.0.1:
   version "3.0.1"

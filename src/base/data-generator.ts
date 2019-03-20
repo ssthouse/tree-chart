@@ -1,4 +1,4 @@
-interface Data {
+export interface Data {
   name: string
   title: string
   children: any

@@ -20,13 +20,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import OrgChart from './org-chart'
-import * as DataGenerator from '../base/data-generator.ts'
+import Vue from 'vue'
+import { generateOrgChartData, Data } from '../base/data-generator'
 
-export default {
+export default Vue.extend({
   name: 'org-chart',
-  data: function() {
+  data: function(): {
+    data: null | Data,
+    orgChart: any,
+    supportActions: Array<string>
+  } {
     return {
       data: null,
       orgChart: null,
@@ -39,14 +44,14 @@ export default {
     }
   },
   created() {
-    this.data = DataGenerator.generateOrgChartData(10)
+    this.data = generateOrgChartData(10)
   },
   mounted() {
     this.orgChart = new OrgChart()
     this.orgChart.draw(this.data)
   },
   methods: {
-    test(depth) {
+    test() {
       this.orgChart.draw(this.data)
     },
     bigger() {
@@ -56,7 +61,7 @@ export default {
       this.orgChart.smaller()
     }
   }
-}
+})
 </script>
 
 <style scoped>
