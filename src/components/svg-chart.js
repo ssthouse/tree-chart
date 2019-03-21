@@ -1,10 +1,13 @@
 import * as d3 from 'd3'
 
+const NODE_WITDH = 10
+const NODE_HEIGHT = 10
+
 class SvgTree {
   constructor(treeData) {
     this.treeData = treeData
     this.d3 = d3
-    this.nodeWidth = 500
+    this.nodeWidth = 800
     this.nodeHeight = 500
   }
 
@@ -16,24 +19,6 @@ class SvgTree {
 
   update(nodeDataList, linkDataList) {
     this.svg = this.d3.select('.svg')
-    const nodes = this.svg.selectAll('node').data(nodeDataList)
-    nodes
-      .enter()
-      .append('rect')
-      .attr('class', 'node')
-      .attr('x', d => d.x)
-      .attr('y', d => d.y)
-      .attr('width', '10')
-      .attr('height', '10')
-
-    nodes
-      .attr('class', 'node')
-      .attr('x', d => d.x)
-      .attr('y', d => d.y)
-      .attr('width', '10')
-      .attr('height', '10')
-
-    nodes.exit().remove()
 
     const self = this
     const links = this.svg.selectAll('link').data(linkDataList)
@@ -45,7 +30,7 @@ class SvgTree {
         let linkPath = self.d3
           .linkVertical()
           .x(function(d) {
-            return d.x
+            return d.x + NODE_WITDH / 2
           })
           .y(function(d) {
             return d.y
@@ -60,6 +45,25 @@ class SvgTree {
       })
     links.attr('class', 'link')
     links.exit().remove()
+
+    const nodes = this.svg.selectAll('node').data(nodeDataList)
+    nodes
+      .enter()
+      .append('rect')
+      .attr('class', 'node')
+      .attr('x', d => d.x)
+      .attr('y', d => d.y)
+      .attr('width', NODE_WITDH)
+      .attr('height', NODE_HEIGHT)
+
+    nodes
+      .attr('class', 'node')
+      .attr('x', d => d.x)
+      .attr('y', d => d.y)
+      .attr('width', NODE_WITDH)
+      .attr('height', NODE_HEIGHT)
+
+    nodes.exit().remove()
   }
 
   bigger() {
