@@ -25,7 +25,7 @@ export default {
     this.svgChart = new SvgChart(this.treeData)
   },
   mounted() {
-    // this.start()
+    this.start()
   },
   methods: {
     start() {
@@ -45,18 +45,19 @@ export default {
 #svg-chart-container {
   width: 100%;
 
-  .node {
-    fill: grey;
-  }
-
-  .link {
-    stroke-width: 2px;
-    stroke: blue;
-  }
-
   .svg {
     width: 100%;
     height: 700px;
   }
+}
+
+.node {
+  fill: grey;
+}
+
+.link {
+  stroke-width: 2px;
+  fill: transparent;
+  stroke: blue;
 }
 </style>
