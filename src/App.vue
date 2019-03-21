@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-toolbar>
-      <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click="backtoMenu"></v-toolbar-side-icon>
       <v-toolbar-title>Organization Chart</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
@@ -33,7 +33,11 @@ export default {
     return {}
   },
   created() {},
-  methods: {}
+  methods: {
+    backtoMenu() {
+      this.$router.push('main')
+    }
+  }
 }
 </script>
 
