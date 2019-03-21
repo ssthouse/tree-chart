@@ -6,7 +6,7 @@
       <v-btn @click="smaller()" style="margin: 20px;">-</v-btn>
     </div>
 
-    <svg class="svg"></svg>
+    <svg class="svg" id="svg"></svg>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ export default {
   },
   mounted() {
     this.start()
+    this.enableDrag()
   },
   methods: {
     start() {
@@ -36,6 +37,28 @@ export default {
     },
     smaller() {
       this.svgChart.smaller()
+    },
+    enableDrag() {
+      const svgElement = document.getElementById('svg')
+      let startX = 0
+      let startY = 0
+      let isDrag = false
+      svgElement.onmousedown = event => {
+        console.log(event)
+        startX = event.clientX
+        startY = event.clientY
+        isDrag = true
+      }
+
+      svgElement.onmousemove = event => {
+        if (!isDrag) return
+        svgElement.style.transform = `translate(${event.clientX -
+          startX}px, ${event.clientY - startY}px)`
+      }
+
+      svgElement.onmouseup = event => {
+        isDrag = false
+      }
     }
   }
 }
