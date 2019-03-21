@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import OrgChart from '../components/OrgChart.vue'
-import SvgChart from '../components/SvgChart.vue'
+import SvgOrgChart from '../components/SvgOrgChart.vue'
 import MainPage from '../components/MainPage.vue'
+import * as Cons from './constant'
 
 Vue.use(Router)
 
@@ -18,14 +19,14 @@ export default new Router({
       component: MainPage
     },
     {
-      path: '/orgChart',
-      name: 'orgChart',
+      path: '/' + Cons.CANVAS_ORG_CHART,
+      name: Cons.CANVAS_ORG_CHART,
       component: OrgChart
     },
     {
-      path: '/svgChart',
-      name: 'svgChart',
-      component: SvgChart
+      path: '/' + Cons.SVG_ORG_CHART,
+      name: Cons.SVG_ORG_CHART,
+      component: SvgOrgChart
     }
   ]
 })
