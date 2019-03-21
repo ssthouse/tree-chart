@@ -12,9 +12,9 @@
 
 <script>
 import SvgChart from './svg-chart'
-import * as DataGenerator from '../base/data-generator.ts'
 
 export default {
+  props: ['treeData'],
   name: 'svg-chart',
   data: function() {
     return {
@@ -22,11 +22,10 @@ export default {
     }
   },
   created() {
-    const data = DataGenerator.generateOrgChartData(10)
-    this.svgChart = new SvgChart(data)
+    this.svgChart = new SvgChart(this.treeData)
   },
   mounted() {
-    this.start()
+    // this.start()
   },
   methods: {
     start() {
