@@ -13,7 +13,7 @@
         </v-btn>
         <v-btn flat href="https://github.com/ssthouse/organization-chart">
           <v-avatar size=42>
-            <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
           </v-avatar>
           Source Code</v-btn>
       </v-toolbar-items>
