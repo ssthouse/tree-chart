@@ -59,22 +59,22 @@ export default {
   },
   watch: {
     $route() {
-      console.log(this.$route.path)
-      if (this.$route.path === `/${Cons.CANVAS_ORG_CHART}`) {
-        console.log('canvas')
-        this.selectedMenu = 'canvas'
-      } else {
-        this.selectedMenu = 'svg'
-        console.log('svg')
-      }
+      this.updateSelectedMenu()
     }
   },
   created() {
-    console.log(this.$route.path)
+    this.updateSelectedMenu()
   },
   methods: {
     backtoMenu() {
       this.$router.push('main')
+    },
+    updateSelectedMenu() {
+      if (this.$route.path === `/${Cons.CANVAS_ORG_CHART}`) {
+        this.selectedMenu = 'canvas'
+      } else {
+        this.selectedMenu = 'svg'
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h3>基本使用</h3>
 
     <vue-tree
@@ -54,7 +54,7 @@ import VueTree from '../vue-tree/VueTree.vue'
 
 export default {
   name: 'treemap',
-  components: {'vue-tree': VueTree},
+  components: { 'vue-tree': VueTree },
   data() {
     return {
       sampleData: {
@@ -125,6 +125,12 @@ export default {
 </script>
 
 <style scoped lang="less">
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .tree-node {
   display: inline-block;
   width: 28px;
