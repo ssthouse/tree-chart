@@ -5,7 +5,7 @@ module.exports = merge(require('./webpack.config.base'), {
   mode: 'production',
   devtool: '#source-map',
   output: {
-    publicPath: './dist'
+    publicPath: './'
   },
   optimization: {
     minimize: true
