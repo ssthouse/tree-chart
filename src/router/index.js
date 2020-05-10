@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import OrgChart from '../components/OrgChart.vue'
-import SvgOrgChart from '../components/SvgOrgChart.vue'
-import MainPage from '../components/MainPage.vue'
 import VueTree from '../components/VueTreeDemo.vue'
 import * as Cons from './constant'
 
@@ -12,12 +10,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main'
-    },
-    {
-      path: '/main',
-      name: 'main',
-      component: MainPage
+      redirect: Cons.CANVAS_ORG_CHART
     },
     {
       path: '/' + Cons.CANVAS_ORG_CHART,
@@ -27,11 +20,6 @@ export default new Router({
     {
       path: '/' + Cons.SVG_ORG_CHART,
       name: Cons.SVG_ORG_CHART,
-      component: SvgOrgChart
-    },
-    {
-      path: '/vue-tree',
-      name: 'VueTree',
       component: VueTree
     }
   ]
