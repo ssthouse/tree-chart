@@ -1,13 +1,15 @@
 {
-  "name": "organization-chart",
-  "version": "1.0.0",
+  "name": "vue-tree-chart",
+  "version": "0.0.9",
   "description": "A Vue.js project",
   "author": "ssthouse",
   "private": true,
+  "main": "library/vue-tree-chart.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "dev": "webpack-dev-server --inline --progress --config ./webpack.config.dev.js",
-    "build": "webpack --config ./webpack.config.prod.js"
+    "build": "webpack --config ./webpack.config.prod.js",
+    "build:component": "webpack --config ./webpack.config.library.js"
   },
   "dependencies": {
     "d3": "^4.13.0",
