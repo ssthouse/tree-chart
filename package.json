@@ -1,9 +1,8 @@
 {
-  "name": "vue-tree-chart",
+  "name": "@ssthouse/vue-tree-chart",
   "version": "0.0.9",
   "description": "A Vue.js project",
   "author": "ssthouse",
-  "private": true,
   "main": "library/vue-tree-chart.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
