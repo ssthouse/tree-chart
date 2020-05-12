@@ -273,16 +273,16 @@ export default {
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprx8a8zgj30sh0hdglq.jpg)
 
-#### 4 API
+#### 4. API
 
 
 
 **4.1 props 参数** 
 
-|         | type                                                         | default                                                      | description                                                  |
-| ------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| dataset | Object                                                       | null                                                         | nested tree data                                             |
-| config  | Object<br />{<br />nodeWidth: Number,<br />nodeHeight: Number,<br />levelHeight: Number<br />} | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth 和 nodeHeight用于配置树状图节点大小. levelHeight 用于配置树状图一层的高度 |
+|         | type   | default                                                      | description                                                  |
+| ------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| dataset | Object | null                                                         | nested tree data                                             |
+| config  | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth 和 nodeHeight用于配置树状图节点大小. levelHeight 用于配置树状图一层的高度 |
 
 **4.2 slot 参数**
 
