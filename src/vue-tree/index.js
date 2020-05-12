@@ -1,5 +1,3 @@
 import VueTree from './VueTree'
 
-export default {
-  VueTree
-}
+export default VueTree

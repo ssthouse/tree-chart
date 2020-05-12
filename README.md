@@ -36,10 +36,15 @@ if you want to use this project's canvas version, please download the source cod
 
 ### Svg version
 
-- install npm module: `npm install @ssthouse/vue-tree-chart`
-- register Vue component
+1. install npm module
+
+```shell
+npm install @ssthouse/vue-tree-chart
+```
+2. register `vue-tree` component
 
 ```javascript
+
 ```
 
 - use like this:
