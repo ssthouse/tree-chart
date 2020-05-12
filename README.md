@@ -8,14 +8,12 @@ https://ssthouse.github.io/vue-tree-chart/#/canvasOrgChart
 
 ![demo gif](https://raw.githubusercontent.com/ssthouse/organization-chart/master/screenshots/org-chart.gif)
 
-
 ## Using Tech
 
 ### Canvas version
 
 - use D3.js with Canvas to draw organizationChart more efficiently.
 - Use `unique-color` manner to identify mouse click event in Canvas (you can refer to https://medium.com/@lverspohl/how-to-turn-d3-and-canvas-into-good-friends-b7a240a32915 to see detail)
-
 
 ### Svg version
 
@@ -36,26 +34,40 @@ if you want to use this project's canvas version, please download the source cod
 
 ### Svg version
 
-1. install npm module
+#### 1. install npm module
 
 ```shell
 npm install @ssthouse/vue-tree-chart
 ```
-2. register `vue-tree` component
+
+#### 2. register `vue-tree` component
 
 ```javascript
-
+import VueTree from "@ssthouse/vue-tree-chart";
+import Vue from "vue";
+Vue.component("vue-tree", VueTree);
 ```
 
-- use like this:
+#### 3. use component
+
+**3.1 basic usage**
 
 ```javascript
 ```
 
+**3.2 show collapsed node in different style**
+
+```javascript
+```
+
+**3.3 render rich media data**
+
+```javascript
+```
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
