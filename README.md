@@ -311,7 +311,7 @@ there are two slot params provided to render slot content:
 
 
 
-### Canavs version
+### Canvas version
 
 the canvas version is not published with npm module.
 
