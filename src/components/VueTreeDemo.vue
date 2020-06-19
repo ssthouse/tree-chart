@@ -31,6 +31,28 @@
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="richMediaData"
       :config="treeConfig"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <img
+            :src="node.avatar"
+            style="width: 48px; height: 48px; border-raduis: 4px;"
+          />
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值{{ node.value }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
+
+    <h3>直线连接</h3>
+    <vue-tree
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="richMediaData"
+      :config="treeConfig"
       linkStyle="straight"
     >
       <template v-slot:node="{ node, collapsed }">

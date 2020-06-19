@@ -21,7 +21,7 @@ https://ssthouse.github.io/vue-tree-chart/#/canvasOrgChart
 - use Vue to handle dom element entring and leaving
 - use Vue slot to let user easily use with their own data
 
-## How to custom with my own data?
+## How to use?
 
 ### Svg version
 
@@ -80,14 +80,9 @@ export default {
   align-items: center;
 }
 </style>
-
 ```
 
-
-
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprw1syiaj30na0hk0sl.jpg)
-
-
 
 **3.2 show collapsed node in different style**
 
@@ -146,8 +141,6 @@ export default {
 }
 </style>
 ```
-
-
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprwtbw6sj30oc0hrq2t.jpg)
 
@@ -265,20 +258,17 @@ export default {
 </style>
 ```
 
-
-
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprx8a8zgj30sh0hdglq.jpg)
 
 #### 4. API
 
-
-
 **4.1 props**
 
-|         | type   | default                                                      | description                                                  |
-| ------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| dataset | Object | null                                                         | nested tree data                                             |
-| config  | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth and nodeHeight config the tree node size. levelHeight is tree row height |
+|           | type   | default                                                                   | description                                                                        |
+| --------- | ------ | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| dataset   | Object | null                                                                      | nested tree data                                                                   |
+| config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth and nodeHeight config the tree node size. levelHeight is tree row height |
+| linkStyle | String | 'curve'                                                                   | control link style, options: 'curve' or 'straight'                                 |
 
 **4.2 slot**
 
@@ -287,29 +277,21 @@ this component only support **default slot**.
 a sample usage like this:
 
 ```vue
-      <template v-slot:node="{ node, collapsed }">
-        <span
-          class="tree-node"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
-          >{{ node.value }}</span
-        >
-      </template>
+<template v-slot:node="{ node, collapsed }">
+  <span
+    class="tree-node"
+    :style="{ border: collapsed ? '2px solid grey' : '' }"
+    >{{ node.value }}</span
+  >
+</template>
 ```
 
-
-
 there are two slot params provided to render slot content:
-
-
 
 | slot param | type    | description                      |
 | ---------- | ------- | -------------------------------- |
 | node       | Object  | current node data to be rendered |
 | collapsed  | Boolean | current node collapse status     |
-
-
-
-
 
 ### Canvas version
 
@@ -319,8 +301,6 @@ if you want to use this project's canvas version, please download the source cod
 
 - replace the data in `/src/base/data-generator.js` with your own nested data.
 - add your data drawing logic in `/src/components/org-chart.js #drawShowCanvas`
-
-
 
 ## Build Setup
 

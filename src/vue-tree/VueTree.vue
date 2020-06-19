@@ -131,6 +131,9 @@ export default {
       this.initTransformX = Math.floor(containerWidth / 2)
       this.initTransformY = Math.floor(this.config.nodeHeight)
     },
+    /**
+     * 根据link数据,生成svg path data
+     */
     generateLinkPath(d) {
       if (this.linkStyle === LinkStyle.CURVE) {
         const linkPath = d3
@@ -150,8 +153,8 @@ export default {
         return linkPath(d)
       }
       if (this.linkStyle === LinkStyle.STRAIGHT) {
+        // the link path is: source -> secondPoint -> thirdPoint -> target
         const linkPath = d3.path()
-        // const xOffset = d.target.x - d.source.x;
         const yOffset = d.target.y - d.source.y
         const sourcePoint = { x: d.source.x, y: d.source.y }
         const targetPoint = { x: d.target.x, y: d.target.y }
@@ -187,24 +190,9 @@ export default {
       links
         .transition()
         .duration(ANIMATION_DURATION)
-        .attr('d', function(d, i) {
-          let linkPath = self.d3
-            .linkVertical()
-            .x(function(d) {
-              return d.x
-            })
-            .y(function(d) {
-              return d.y
-            })
-            .source(function(d) {
-              return { x: d.source.x, y: d.source.y }
-            })
-            .target(function() {
-              return { x: d.target.x, y: d.target.y }
-            })
-          return linkPath(d)
+        .attr('d', function(d) {
+          return self.generateLinkPath(d)
         })
-
       links
         .exit()
         .transition()

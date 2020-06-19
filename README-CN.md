@@ -6,32 +6,28 @@ https://ssthouse.github.io/vue-tree-chart/#/canvasOrgChart
 
 ![demo gif](https://raw.githubusercontent.com/ssthouse/organization-chart/master/screenshots/org-chart.gif)
 
-
 ## 使用到的技术点
 
 ### Svg 版本
 
-- 使用D3.js计算**节点**和**链接线**的坐标
-- 使用Vue控制DOM节点的变更
+- 使用 D3.js 计算**节点**和**链接线**的坐标
+- 使用 Vue 控制 DOM 节点的变更
 - 使用 Vue slot 抽象节点渲染流程, 让使用者可以高度定制化节点绘制
-
-
 
 ### Canvas 版本
 
-- 将D3.js和Canvas一起使用,提升绘制效率(其中D3.js使用虚拟DOM就行渲染,Canvas取虚拟DOM节点坐标进行绘制)
-- 使用 `唯一颜色值`的方案,实现Canvas上点击事件的监听 (你也可以参考这篇文档了解其详细实现: https://medium.com/@lverspohl/how-to-turn-d3-and-canvas-into-good-friends-b7a240a32915)
-
-
+- 将 D3.js 和 Canvas 一起使用,提升绘制效率(其中 D3.js 使用虚拟 DOM 就行渲染,Canvas 取虚拟 DOM 节点坐标进行绘制)
+- 使用 `唯一颜色值`的方案,实现 Canvas 上点击事件的监听 (你也可以参考这篇文档了解其详细实现: https://medium.com/@lverspohl/how-to-turn-d3-and-canvas-into-good-friends-b7a240a32915)
 
 ## 如何将图中数据替换为我的数据?
 
 ### Svg version
 
-Svg版本通过Vue进行了良好的封装,使用起来非常方便且灵活.
+Svg 版本通过 Vue 进行了良好的封装,使用起来非常方便且灵活.
+
 #### 1.安装
 
-执行下面的命令安装Svg版本的tree-chart
+执行下面的命令安装 Svg 版本的 tree-chart
 
 `npm install @ssthouse/vue-tree-chart`
 
@@ -84,16 +80,11 @@ export default {
   align-items: center;
 }
 </style>
-
 ```
-
-
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprw1syiaj30na0hk0sl.jpg)
 
-
-
-**3.2 使用vue-slot异化展示折叠节点**
+**3.2 使用 vue-slot 异化展示折叠节点**
 
 ```vue
 <template>
@@ -150,8 +141,6 @@ export default {
 }
 </style>
 ```
-
-
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprwtbw6sj30oc0hrq2t.jpg)
 
@@ -269,20 +258,17 @@ export default {
 </style>
 ```
 
-
-
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprx8a8zgj30sh0hdglq.jpg)
 
 #### 4. API
 
+**4.1 props 参数**
 
-
-**4.1 props 参数** 
-
-|         | type   | default                                                      | description                                                  |
-| ------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| dataset | Object | null                                                         | nested tree data                                             |
-| config  | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth 和 nodeHeight用于配置树状图节点大小. levelHeight 用于配置树状图一层的高度 |
+|           | type   | default                                                                   | description                                                                          |
+| --------- | ------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| dataset   | Object | null                                                                      | nested tree data                                                                     |
+| config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth 和 nodeHeight 用于配置树状图节点大小. levelHeight 用于配置树状图一层的高度 |
+| linkStyle | String | 'curve'                                                                   | 控制连接线样式, 可选项: 'curve' 或 'straight'                                        |
 
 **4.2 slot 参数**
 
@@ -291,45 +277,34 @@ export default {
 基本用法如下所示：
 
 ```vue
-      <template v-slot:node="{ node, collapsed }">
-        <span
-          class="tree-node"
-          :style="{ border: collapsed ? '2px solid grey' : '' }"
-          >{{ node.value }}</span
-        >
-      </template>
+<template v-slot:node="{ node, collapsed }">
+  <span
+    class="tree-node"
+    :style="{ border: collapsed ? '2px solid grey' : '' }"
+    >{{ node.value }}</span
+  >
+</template>
 ```
 
-
-
-slot提供两个参数用于渲染树状图节点内容。
-
-
+slot 提供两个参数用于渲染树状图节点内容。
 
 | slot param | type    | description                      |
 | ---------- | ------- | -------------------------------- |
 | node       | Object  | current node data to be rendered |
 | collapsed  | Boolean | current node collapse status     |
 
-
-
-
-
 ### Canavs 版本
 
-canvas的版本, 因为其绘制过程较难抽象, 且仅仅在数据量较大的情况下才有意义,所以没有发布为npm module.
+canvas 的版本, 因为其绘制过程较难抽象, 且仅仅在数据量较大的情况下才有意义,所以没有发布为 npm module.
 
-如果你希望使用canvas版本的tree-chart,可以将源代码下载下来,并进行一下步骤替换为自己的数据集:
+如果你希望使用 canvas 版本的 tree-chart,可以将源代码下载下来,并进行一下步骤替换为自己的数据集:
 
 - 将 `/src/base/data-generator.js`文件中的数据替换为你自己的数据.
 - 在 `/src/components/org-chart.js`文件中,修改`drawShowCanvas`函数的绘制逻辑.
 
-
-
-
 ## 开始开发
 
-``` bash
+```bash
 # install dependencies
 npm install
 
