@@ -6,6 +6,7 @@
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="sampleData"
       :config="treeConfig"
+      linkStyle="straight"
     >
     </vue-tree>
 
@@ -30,6 +31,7 @@
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="richMediaData"
       :config="treeConfig"
+      linkStyle="straight"
     >
       <template v-slot:node="{ node, collapsed }">
         <div

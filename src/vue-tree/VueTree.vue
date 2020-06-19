@@ -47,6 +47,11 @@
 <script>
 import * as d3 from 'd3'
 
+const LinkStyle = {
+  CURVE: 'curve',
+  STRAIGHT: 'straight'
+}
+
 const DEFAULT_NODE_WIDTH = 100
 const DEFAULT_NODE_HEIGHT = 100
 const DEFAULT_LEVEL_HEIGHT = 200
@@ -77,6 +82,10 @@ export default {
           levelHeight: DEFAULT_LEVEL_HEIGHT
         }
       }
+    },
+    linkStyle: {
+      type: String,
+      default: LinkStyle.CURVE
     },
     // 展示的层级数据, 样例数据如: hierachical.json
     dataset: {
@@ -122,6 +131,39 @@ export default {
       this.initTransformX = Math.floor(containerWidth / 2)
       this.initTransformY = Math.floor(this.config.nodeHeight)
     },
+    generateLinkPath(d) {
+      if (this.linkStyle === LinkStyle.CURVE) {
+        const linkPath = d3
+          .linkVertical()
+          .x(function(d) {
+            return d.x
+          })
+          .y(function(d) {
+            return d.y
+          })
+          .source(function(d) {
+            return { x: d.source.x, y: d.source.y }
+          })
+          .target(function() {
+            return { x: d.target.x, y: d.target.y }
+          })
+        return linkPath(d)
+      }
+      if (this.linkStyle === LinkStyle.STRAIGHT) {
+        const linkPath = d3.path()
+        // const xOffset = d.target.x - d.source.x;
+        const yOffset = d.target.y - d.source.y
+        const sourcePoint = { x: d.source.x, y: d.source.y }
+        const targetPoint = { x: d.target.x, y: d.target.y }
+        const secondPoint = { x: d.source.x, y: d.source.y + yOffset / 2 }
+        const thirdPoint = { x: d.target.x, y: d.source.y + yOffset / 2 }
+        linkPath.moveTo(sourcePoint.x, sourcePoint.y)
+        linkPath.lineTo(secondPoint.x, secondPoint.y)
+        linkPath.lineTo(thirdPoint.x, thirdPoint.y)
+        linkPath.lineTo(targetPoint.x, targetPoint.y)
+        return linkPath.toString()
+      }
+    },
     // 使用扇形数据开始绘图
     draw() {
       const [nodeDataList, linkDataList] = this.buildTree(this.dataset)
@@ -140,21 +182,7 @@ export default {
         .style('opacity', 1)
         .attr('class', 'link')
         .attr('d', function(d, i) {
-          let linkPath = self.d3
-            .linkVertical()
-            .x(function(d) {
-              return d.x
-            })
-            .y(function(d) {
-              return d.y
-            })
-            .source(function(d) {
-              return { x: d.source.x, y: d.source.y }
-            })
-            .target(function() {
-              return { x: d.target.x, y: d.target.y }
-            })
-          return linkPath(d)
+          return self.generateLinkPath(d)
         })
       links
         .transition()
