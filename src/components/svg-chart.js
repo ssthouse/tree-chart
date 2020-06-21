@@ -26,19 +26,19 @@ class SvgTree {
       .enter()
       .append('path')
       .attr('class', 'link')
-      .attr('d', function(d, i) {
+      .attr('d', function (d, i) {
         let linkPath = self.d3
           .linkVertical()
-          .x(function(d) {
+          .x(function (d) {
             return d.x + NODE_WITDH / 2
           })
-          .y(function(d) {
+          .y(function (d) {
             return d.y
           })
-          .source(function(d) {
+          .source(function (d) {
             return { x: d.source.x, y: d.source.y }
           })
-          .target(function() {
+          .target(function () {
             return { x: d.target.x, y: d.target.y }
           })
         return linkPath(d)
@@ -51,15 +51,15 @@ class SvgTree {
       .enter()
       .append('rect')
       .attr('class', 'node')
-      .attr('x', d => d.x)
-      .attr('y', d => d.y)
+      .attr('x', (d) => d.x)
+      .attr('y', (d) => d.y)
       .attr('width', NODE_WITDH)
       .attr('height', NODE_HEIGHT)
 
     nodes
       .attr('class', 'node')
-      .attr('x', d => d.x)
-      .attr('y', d => d.y)
+      .attr('x', (d) => d.x)
+      .attr('y', (d) => d.y)
       .attr('width', NODE_WITDH)
       .attr('height', NODE_HEIGHT)
 

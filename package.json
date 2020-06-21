@@ -107,10 +107,10 @@
           "#": "prettier config in here :)",
           "singleQuote": true,
           "semi": false,
+          "trailingComma": "none",
           "space-before-function-paren": "off"
         }
-      ],
-      "space-before-function-paren": "off"
+      ]
     }
   },
   "prettier": {

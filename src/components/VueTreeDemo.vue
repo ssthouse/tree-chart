@@ -199,7 +199,7 @@ export default {
   border-radius: 4px;
 }
 
-h3{
+h3 {
   margin-top: 32px;
   margin-bottom: 16px;
 }

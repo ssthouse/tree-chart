@@ -16,7 +16,7 @@ import SvgChart from './svg-chart'
 export default {
   props: ['treeData'],
   name: 'svg-chart',
-  data: function() {
+  data() {
     return {
       svgChart: null
     }
@@ -43,20 +43,21 @@ export default {
       let startX = 0
       let startY = 0
       let isDrag = false
-      svgElement.onmousedown = event => {
+      svgElement.onmousedown = (event) => {
         console.log(event)
         startX = event.clientX
         startY = event.clientY
         isDrag = true
       }
 
-      svgElement.onmousemove = event => {
+      svgElement.onmousemove = (event) => {
         if (!isDrag) return
-        svgElement.style.transform = `translate(${event.clientX -
-          startX}px, ${event.clientY - startY}px)`
+        svgElement.style.transform = `translate(${event.clientX - startX}px, ${
+          event.clientY - startY
+        }px)`
       }
 
-      svgElement.onmouseup = event => {
+      svgElement.onmouseup = (event) => {
         isDrag = false
       }
     }

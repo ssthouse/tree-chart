@@ -1,10 +1,6 @@
 <template>
   <div class="tree-container" ref="container">
-    <svg
-      class="svg vue-tree"
-      ref="svg"
-      :style="initialTransformStyle"
-    ></svg>
+    <svg class="svg vue-tree" ref="svg" :style="initialTransformStyle"></svg>
 
     <div
       class="dom-container"
@@ -18,8 +14,12 @@
           @click="onClickNode(index)"
           :key="node.data._key"
           :style="{
-            left: formatDimension(direction === DIRECTION.VERTICAL ? node.x : node.y),
-            top: formatDimension(direction === DIRECTION.VERTICAL ? node.y : node.x),
+            left: formatDimension(
+              direction === DIRECTION.VERTICAL ? node.x : node.y
+            ),
+            top: formatDimension(
+              direction === DIRECTION.VERTICAL ? node.y : node.x
+            ),
             width: formatDimension(config.nodeWidth),
             height: formatDimension(config.nodeHeight)
           }"
@@ -69,7 +69,7 @@ function uuid() {
   return s.join('')
 }
 
-function rotatePoint({x, y}) {
+function rotatePoint({ x, y }) {
   return {
     x: y,
     y: x
@@ -164,27 +164,33 @@ export default {
     generateLinkPath(d) {
       const self = this
       if (this.linkStyle === LinkStyle.CURVE) {
-        const linkPath = this.isVertial() ? d3.linkVertical() : d3.linkHorizontal()
+        const linkPath = this.isVertial()
+          ? d3.linkVertical()
+          : d3.linkHorizontal()
         linkPath
-          .x(function(d) {
+          .x(function (d) {
             return d.x
           })
-          .y(function(d) {
+          .y(function (d) {
             return d.y
           })
-          .source(function(d) {
+          .source(function (d) {
             const sourcePoint = {
               x: d.source.x,
               y: d.source.y
             }
-            return self.direction === self.DIRECTION.VERTICAL ? sourcePoint : rotatePoint(sourcePoint)
+            return self.direction === self.DIRECTION.VERTICAL
+              ? sourcePoint
+              : rotatePoint(sourcePoint)
           })
-          .target(function(d) {
+          .target(function (d) {
             const targetPoint = {
               x: d.target.x,
               y: d.target.y
             }
-            return self.direction === self.DIRECTION.VERTICAL ? targetPoint : rotatePoint(targetPoint)
+            return self.direction === self.DIRECTION.VERTICAL
+              ? targetPoint
+              : rotatePoint(targetPoint)
           })
         return linkPath(d)
       }
@@ -199,9 +205,11 @@ export default {
         }
         const xOffset = targetPoint.x - sourcePoint.x
         const yOffset = targetPoint.y - sourcePoint.y
-        const secondPoint = this.isVertial() ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
+        const secondPoint = this.isVertial()
+          ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
           : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y }
-        const thirdPoint = this.isVertial() ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
+        const thirdPoint = this.isVertial()
+          ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
           : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y }
         linkPath.moveTo(sourcePoint.x, sourcePoint.y)
         linkPath.lineTo(secondPoint.x, secondPoint.y)
@@ -227,13 +235,13 @@ export default {
         .duration(ANIMATION_DURATION)
         .style('opacity', 1)
         .attr('class', 'link')
-        .attr('d', function(d, i) {
+        .attr('d', function (d, i) {
           return self.generateLinkPath(d)
         })
       links
         .transition()
         .duration(ANIMATION_DURATION)
-        .attr('d', function(d) {
+        .attr('d', function (d) {
           return self.generateLinkPath(d)
         })
       links
@@ -260,14 +268,14 @@ export default {
       let isDrag = false
       // 保存鼠标点下时的位移
       let mouseDownTransform = ''
-      container.onmousedown = event => {
+      container.onmousedown = (event) => {
         console.log(event)
         mouseDownTransform = svgElement.style.transform
         startX = event.clientX
         startY = event.clientY
         isDrag = true
       }
-      container.onmousemove = event => {
+      container.onmousemove = (event) => {
         if (!isDrag) return
         const originTransform = mouseDownTransform
         let originOffsetX = 0
@@ -282,15 +290,15 @@ export default {
             originOffsetY = offsetY
           }
         }
-        const transformStr = `translate(${event.clientX -
-          startX +
-          originOffsetX}px, ${event.clientY - startY + originOffsetY}px)`
+        const transformStr = `translate(${
+          event.clientX - startX + originOffsetX
+        }px, ${event.clientY - startY + originOffsetY}px)`
         // console.log('transformStr: '  + transformStr)
         svgElement.style.transform = transformStr
         this.$refs.domContainer.style.transform = transformStr
       }
 
-      container.onmouseup = event => {
+      container.onmouseup = (event) => {
         startX = 0
         startY = 0
         isDrag = false
