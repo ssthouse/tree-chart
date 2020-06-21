@@ -27,7 +27,7 @@
               src="https://avatars3.githubusercontent.com/u/10973821?s=460&v=4"
             />
           </v-avatar>
-          <span style="margin-left:8px;">About me</span>
+          <span style="margin-left: 8px;">About me</span>
         </v-btn>
         <v-btn flat href="https://github.com/ssthouse/organization-chart">
           <v-avatar size="42">
@@ -46,12 +46,10 @@
 
 <script>
 import * as Cons from './router/constant'
-import OrgChart from './components/OrgChart.vue'
 
 export default {
   name: 'App',
-  components: { 'org-chart': OrgChart },
-  data: function() {
+  data() {
     return {
       Cons,
       selectedMenu: 'canvas'

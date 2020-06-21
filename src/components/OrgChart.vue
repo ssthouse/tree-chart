@@ -11,8 +11,12 @@
           <div slot="header" class="action-title">
             <span>Support actions</span>
           </div>
-          <div v-for="action in supportActions" :key="action" class="action-item">
-            {{'* ' + action}}
+          <div
+            v-for="action in supportActions"
+            :key="action"
+            class="action-item"
+          >
+            {{ '* ' + action }}
           </div>
         </v-card-title>
       </v-card>
@@ -20,18 +24,20 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import OrgChart from './org-chart'
 import Vue from 'vue'
 import { generateOrgChartData, Data } from '../base/data-generator'
 
+// interface DataInterface {
+//   data: Data
+//   orgChart: any
+//   supportActions: Array<string>
+// }
+
 export default Vue.extend({
   name: 'org-chart',
-  data: function(): {
-    data: null | Data,
-    orgChart: any,
-    supportActions: Array<string>
-  } {
+  data() {
     return {
       data: null,
       orgChart: null,
