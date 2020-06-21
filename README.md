@@ -1,4 +1,4 @@
-# [中文文档](./README-CN.md)
+## [English](./README.md) |  [中文](./README-CN.md)
 
 ## Demo page
 
@@ -269,6 +269,7 @@ export default {
 | dataset   | Object | null                                                                      | nested tree data                                                                   |
 | config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth and nodeHeight config the tree node size. levelHeight is tree row height |
 | linkStyle | String | 'curve'                                                                   | control link style, options: 'curve' or 'straight'                                 |
+| direction | string | 'vertical'                                                                | control tree chart direction, options: 'vertical' or 'horizontal'                  |
 
 **4.2 slot**
 

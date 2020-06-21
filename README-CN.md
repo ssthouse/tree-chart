@@ -1,3 +1,5 @@
+## [English](./README.md) | [中文](./README-CN.md)
+
 ## Demo 页面
 
 https://ssthouse.github.io/vue-tree-chart/#/canvasOrgChart
@@ -269,6 +271,7 @@ export default {
 | dataset   | Object | null                                                                      | nested tree data                                                                     |
 | config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth 和 nodeHeight 用于配置树状图节点大小. levelHeight 用于配置树状图一层的高度 |
 | linkStyle | String | 'curve'                                                                   | 控制连接线样式, 可选项: 'curve' 或 'straight'                                        |
+| direction | string | 'vertical'                                                                | 控制树状图方向, 可选项: 'vertical' 或 'horizontal'                                   |
 
 **4.2 slot 参数**
 
