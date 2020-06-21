@@ -69,6 +69,29 @@
         </div>
       </template>
     </vue-tree>
+
+    <h3>横向树状图</h3>
+    <vue-tree
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="richMediaData"
+      :config="treeConfig"
+      direction="horizontal"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <img
+            :src="node.avatar"
+            style="width: 48px; height: 48px; border-raduis: 4px;"
+          />
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值{{ node.value }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
   </div>
 </template>
 
@@ -174,5 +197,10 @@ export default {
   color: white;
   background-color: #f7c616;
   border-radius: 4px;
+}
+
+h3{
+  margin-top: 32px;
+  margin-bottom: 16px;
 }
 </style>

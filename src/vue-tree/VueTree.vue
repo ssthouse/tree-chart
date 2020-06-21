@@ -3,19 +3,13 @@
     <svg
       class="svg vue-tree"
       ref="svg"
-      :style="{
-        transform: `translate(${initTransformX -
-          config.nodeWidth / 2}px, ${initTransformY}px)`
-      }"
+      :style="initialTransformStyle"
     ></svg>
 
     <div
       class="dom-container"
       ref="domContainer"
-      :style="{
-        transform: `translate(${initTransformX -
-          config.nodeWidth / 2}px, ${initTransformY}px)`
-      }"
+      :style="initialTransformStyle"
     >
       <transition-group name="tree-node-item" tag="div">
         <div
@@ -24,8 +18,8 @@
           @click="onClickNode(index)"
           :key="node.data._key"
           :style="{
-            left: formatDimension(node.x),
-            top: formatDimension(node.y),
+            left: formatDimension(direction === DIRECTION.VERTICAL ? node.x : node.y),
+            top: formatDimension(direction === DIRECTION.VERTICAL ? node.y : node.x),
             width: formatDimension(config.nodeWidth),
             height: formatDimension(config.nodeHeight)
           }"
@@ -52,6 +46,11 @@ const LinkStyle = {
   STRAIGHT: 'straight'
 }
 
+const DIRECTION = {
+  VERTICAL: 'vertical',
+  HORIZONTAL: 'horizontal'
+}
+
 const DEFAULT_NODE_WIDTH = 100
 const DEFAULT_NODE_HEIGHT = 100
 const DEFAULT_LEVEL_HEIGHT = 200
@@ -68,6 +67,13 @@ function uuid() {
   s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
   s[8] = s[13] = s[18] = s[23] = '-'
   return s.join('')
+}
+
+function rotatePoint({x, y}) {
+  return {
+    x: y,
+    y: x
+  }
 }
 
 export default {
@@ -87,6 +93,10 @@ export default {
       type: String,
       default: LinkStyle.CURVE
     },
+    direction: {
+      type: String,
+      default: DIRECTION.VERTICAL
+    },
     // 展示的层级数据, 样例数据如: hierachical.json
     dataset: {
       type: Object,
@@ -100,7 +110,15 @@ export default {
       nodeDataList: [],
       linkDataList: [],
       initTransformX: 0,
-      initTransformY: 0
+      initTransformY: 0,
+      DIRECTION
+    }
+  },
+  computed: {
+    initialTransformStyle() {
+      return {
+        transform: `translate(${this.initTransformX}px, ${this.initTransformY}px)`
+      }
     }
   },
   created() {
@@ -110,6 +128,14 @@ export default {
     this.init()
   },
   methods: {
+    init() {
+      this.draw()
+      this.enableDrag()
+      this.initTransform()
+    },
+    isVertial() {
+      return this.direction === DIRECTION.VERTICAL
+    },
     addUniqueKey(rootNode) {
       const queue = [rootNode]
       while (queue.length !== 0) {
@@ -121,23 +147,25 @@ export default {
       }
       return rootNode
     },
-    init() {
-      this.draw()
-      this.enableDrag()
-      this.initTransform()
-    },
     initTransform() {
       const containerWidth = this.$refs.container.offsetWidth
-      this.initTransformX = Math.floor(containerWidth / 2)
-      this.initTransformY = Math.floor(this.config.nodeHeight)
+      const containerHeight = this.$refs.container.offsetHeight
+      if (this.isVertial()) {
+        this.initTransformX = Math.floor(containerWidth / 2)
+        this.initTransformY = Math.floor(this.config.nodeHeight)
+      } else {
+        this.initTransformX = Math.floor(this.config.nodeWidth)
+        this.initTransformY = Math.floor(containerHeight / 2)
+      }
     },
     /**
      * 根据link数据,生成svg path data
      */
     generateLinkPath(d) {
+      const self = this
       if (this.linkStyle === LinkStyle.CURVE) {
-        const linkPath = d3
-          .linkVertical()
+        const linkPath = this.isVertial() ? d3.linkVertical() : d3.linkHorizontal()
+        linkPath
           .x(function(d) {
             return d.x
           })
@@ -145,21 +173,36 @@ export default {
             return d.y
           })
           .source(function(d) {
-            return { x: d.source.x, y: d.source.y }
+            const sourcePoint = {
+              x: d.source.x,
+              y: d.source.y
+            }
+            return self.direction === self.DIRECTION.VERTICAL ? sourcePoint : rotatePoint(sourcePoint)
           })
-          .target(function() {
-            return { x: d.target.x, y: d.target.y }
+          .target(function(d) {
+            const targetPoint = {
+              x: d.target.x,
+              y: d.target.y
+            }
+            return self.direction === self.DIRECTION.VERTICAL ? targetPoint : rotatePoint(targetPoint)
           })
         return linkPath(d)
       }
       if (this.linkStyle === LinkStyle.STRAIGHT) {
         // the link path is: source -> secondPoint -> thirdPoint -> target
         const linkPath = d3.path()
-        const yOffset = d.target.y - d.source.y
-        const sourcePoint = { x: d.source.x, y: d.source.y }
-        const targetPoint = { x: d.target.x, y: d.target.y }
-        const secondPoint = { x: d.source.x, y: d.source.y + yOffset / 2 }
-        const thirdPoint = { x: d.target.x, y: d.source.y + yOffset / 2 }
+        let sourcePoint = { x: d.source.x, y: d.source.y }
+        let targetPoint = { x: d.target.x, y: d.target.y }
+        if (!this.isVertial()) {
+          sourcePoint = rotatePoint(sourcePoint)
+          targetPoint = rotatePoint(targetPoint)
+        }
+        const xOffset = targetPoint.x - sourcePoint.x
+        const yOffset = targetPoint.y - sourcePoint.y
+        const secondPoint = this.isVertial() ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
+          : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y }
+        const thirdPoint = this.isVertial() ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
+          : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y }
         linkPath.moveTo(sourcePoint.x, sourcePoint.y)
         linkPath.lineTo(secondPoint.x, secondPoint.y)
         linkPath.lineTo(thirdPoint.x, thirdPoint.y)
@@ -334,7 +377,6 @@ export default {
     left: 0;
     top: 0;
     overflow: visible;
-    transform: translate(50%, 0);
   }
 
   .dom-container {
