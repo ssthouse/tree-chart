@@ -6,9 +6,9 @@
   "main": "library/vue-tree-chart.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
-    "dev": "webpack-dev-server --inline --progress --config ./webpack.config.dev.js",
-    "build": "webpack --config ./webpack.config.prod.js",
-    "build:component": "webpack --config ./webpack.config.library.js"
+    "dev": "webpack-dev-server --inline --progress --config ./build/webpack.config.dev.js",
+    "build": "webpack --config ./build/webpack.config.prod.js",
+    "build:component": "webpack --config ./build/webpack.config.library.js"
   },
   "dependencies": {
     "d3": "^4.13.0",
