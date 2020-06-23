@@ -41,6 +41,8 @@
 <script>
 import * as d3 from 'd3'
 
+const MATCH_TRANSLATE_REGEX = /translate\((.*)\)/i
+
 const LinkStyle = {
   CURVE: 'curve',
   STRAIGHT: 'straight'
@@ -286,7 +288,7 @@ export default {
         let originOffsetX = 0
         let originOffsetY = 0
         if (originTransform) {
-          const result = originTransform.match(/\((.*)\)/i)
+          const result = originTransform.match(MATCH_TRANSLATE_REGEX)
           if (result !== null && result.length !== 0) {
             const [offsetX, offsetY] = result[1]
               .split(',')
@@ -295,9 +297,15 @@ export default {
             originOffsetY = offsetY
           }
         }
-        const transformStr = `translate(${
+        let transformStr = `translate(${
           event.clientX - startX + originOffsetX
         }px, ${event.clientY - startY + originOffsetY}px)`
+        if (originTransform) {
+          transformStr = originTransform.replace(
+            MATCH_TRANSLATE_REGEX,
+            transformStr
+          )
+        }
         // console.log('transformStr: '  + transformStr)
         svgElement.style.transform = transformStr
         this.$refs.domContainer.style.transform = transformStr
