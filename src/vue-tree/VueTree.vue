@@ -225,7 +225,9 @@ export default {
       this.svg = this.d3.select(this.$refs.svg)
 
       const self = this
-      const links = this.svg.selectAll('.link').data(linkDataList)
+      const links = this.svg.selectAll('.link').data(linkDataList, (d) => {
+        return `${d.source._key}-${d.target._key}`
+      })
 
       links
         .enter()
@@ -233,6 +235,7 @@ export default {
         .style('opacity', 0)
         .transition()
         .duration(ANIMATION_DURATION)
+        .ease(d3.easeCubicInOut)
         .style('opacity', 1)
         .attr('class', 'link')
         .attr('d', function (d, i) {
@@ -241,13 +244,15 @@ export default {
       links
         .transition()
         .duration(ANIMATION_DURATION)
+        .ease(d3.easeCubicInOut)
         .attr('d', function (d) {
           return self.generateLinkPath(d)
         })
       links
         .exit()
         .transition()
-        .duration(ANIMATION_DURATION)
+        .duration(ANIMATION_DURATION / 2)
+        .ease(d3.easeCubicInOut)
         .style('opacity', 0)
         .remove()
 
