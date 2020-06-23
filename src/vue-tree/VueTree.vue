@@ -41,7 +41,8 @@
 <script>
 import * as d3 from 'd3'
 
-const MATCH_TRANSLATE_REGEX = /translate\((.*)\)/i
+const MATCH_TRANSLATE_REGEX = /translate\(([\s0-9px]*)\)/i
+const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
 
 const LinkStyle = {
   CURVE: 'curve',
@@ -135,6 +136,28 @@ export default {
       this.enableDrag()
       this.initTransform()
     },
+    zoomIn() {
+      const originTransformStr = this.$refs.domContainer.style.transform
+      // 如果已有scale属性, 在原基础上修改
+      let targetScale = 1 * 1.2
+      const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX)
+      if (scaleMatchResult && scaleMatchResult.length > 0) {
+        const originScale = parseFloat(scaleMatchResult[1])
+        targetScale *= originScale
+      }
+      let targetTransform
+      if (originTransformStr.match(MATCH_SCALE_REGEX)) {
+        targetTransform = originTransformStr.replace(
+          MATCH_SCALE_REGEX,
+          `scale(${targetScale})`
+        )
+      } else {
+        targetTransform = originTransformStr + ` scale(${targetScale})`
+      }
+      this.$refs.svg.style.transform = targetTransform
+      this.$refs.domContainer.style.transform = targetTransform
+    },
+    zoomOut() {},
     isVertial() {
       return this.direction === DIRECTION.VERTICAL
     },
