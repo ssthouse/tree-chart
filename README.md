@@ -1,4 +1,4 @@
-## [English](./README.md) |  [中文](./README-CN.md)
+## [English](./README.md) | [中文](./README-CN.md)
 
 ## Demo page
 
@@ -34,14 +34,17 @@ npm install @ssthouse/vue-tree-chart
 #### 2. register `vue-tree` component
 
 ```javascript
-import VueTree from "@ssthouse/vue-tree-chart";
-import Vue from "vue";
-Vue.component("vue-tree", VueTree);
+import VueTree from '@ssthouse/vue-tree-chart'
+import Vue from 'vue'
+Vue.component('vue-tree', VueTree)
 ```
 
 #### 3. use component
 
 **3.1 basic usage**
+
+<details>
+  <summary>See Code</summary>
 
 ```vue
 <template>
@@ -57,20 +60,20 @@ Vue.component("vue-tree", VueTree);
 
 <script>
 export default {
-  name: "treemap",
+  name: 'treemap',
   data() {
     return {
       sampleData: {
-        value: "1",
+        value: '1',
         children: [
-          { value: "2", children: [{ value: "4" }, { value: "5" }] },
-          { value: "3" }
+          { value: '2', children: [{ value: '4' }, { value: '5' }] },
+          { value: '3' }
         ]
       },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped lang="less">
@@ -82,9 +85,14 @@ export default {
 </style>
 ```
 
+</details>
+
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprw1syiaj30na0hk0sl.jpg)
 
 **3.2 show collapsed node in different style**
+
+<details>
+  <summary>See Code</summary>
 
 ```vue
 <template>
@@ -107,20 +115,20 @@ export default {
 
 <script>
 export default {
-  name: "treemap",
+  name: 'treemap',
   data() {
     return {
       sampleData: {
-        value: "1",
+        value: '1',
         children: [
-          { value: "2", children: [{ value: "4" }, { value: "5" }] },
-          { value: "3" }
+          { value: '2', children: [{ value: '4' }, { value: '5' }] },
+          { value: '3' }
         ]
       },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped lang="less">
@@ -142,9 +150,15 @@ export default {
 </style>
 ```
 
+</details>
+
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprwtbw6sj30oc0hrq2t.jpg)
 
 **3.3 render rich media data**
+
+<details>
+  <summary>See Code</summary>
+
 
 ```vue
 <template>
@@ -174,67 +188,67 @@ export default {
 
 <script>
 export default {
-  name: "treemap",
+  name: 'treemap',
   data() {
     return {
       richMediaData: {
-        name: "James",
+        name: 'James',
         value: 800,
         avatar:
-          "https://gravatar.com/avatar/db51fdaf64d942180b5200ca37d155a4?s=400&d=robohash&r=x",
+          'https://gravatar.com/avatar/db51fdaf64d942180b5200ca37d155a4?s=400&d=robohash&r=x',
         children: [
           {
-            name: "Bob",
+            name: 'Bob',
             value: 400,
             avatar:
-              "https://gravatar.com/avatar/16b3b886b837257757c5961513396a06?s=400&d=robohash&r=x",
+              'https://gravatar.com/avatar/16b3b886b837257757c5961513396a06?s=400&d=robohash&r=x',
             children: [
               {
-                name: "C1",
+                name: 'C1',
                 value: 100,
                 avatar:
-                  "https://gravatar.com/avatar/4ee8775f23f12755db978cccdc1356d9?s=400&d=robohash&r=x"
+                  'https://gravatar.com/avatar/4ee8775f23f12755db978cccdc1356d9?s=400&d=robohash&r=x'
               },
               {
-                name: "C2",
+                name: 'C2',
                 value: 300,
                 avatar:
-                  "https://gravatar.com/avatar/d3efa8fa639bdada96a7d0b4372e0a96?s=400&d=robohash&r=x"
+                  'https://gravatar.com/avatar/d3efa8fa639bdada96a7d0b4372e0a96?s=400&d=robohash&r=x'
               },
               {
-                name: "C3",
+                name: 'C3',
                 value: 200,
                 avatar:
-                  "https://gravatar.com/avatar/4905bc3e5dc51a61e3b490ccf1891107?s=400&d=robohash&r=x"
+                  'https://gravatar.com/avatar/4905bc3e5dc51a61e3b490ccf1891107?s=400&d=robohash&r=x'
               }
             ]
           },
           {
-            name: "Smith",
+            name: 'Smith',
             value: 200,
             avatar:
-              "https://gravatar.com/avatar/d05d081dbbb513180025300b715d5656?s=400&d=robohash&r=x",
+              'https://gravatar.com/avatar/d05d081dbbb513180025300b715d5656?s=400&d=robohash&r=x',
             children: [
               {
-                name: "S1",
+                name: 'S1',
                 value: 230,
                 avatar:
-                  "https://gravatar.com/avatar/60c1e69e690d943c5dc06568148debc4?s=400&d=robohash&r=x"
+                  'https://gravatar.com/avatar/60c1e69e690d943c5dc06568148debc4?s=400&d=robohash&r=x'
               }
             ]
           },
           {
-            name: "Jackson",
+            name: 'Jackson',
             value: 300,
             avatar:
-              "https://gravatar.com/avatar/581f7a711c815d9671c35ebd815ec1e4?s=400&d=robohash&r=x"
+              'https://gravatar.com/avatar/581f7a711c815d9671c35ebd815ec1e4?s=400&d=robohash&r=x'
           }
         ]
       },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped lang="less">
@@ -257,6 +271,8 @@ export default {
 }
 </style>
 ```
+</details>
+
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprx8a8zgj30sh0hdglq.jpg)
 
