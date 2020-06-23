@@ -5,7 +5,7 @@
       <v-toolbar-title>Tree Chart</v-toolbar-title>
       <v-btn
         class="menu-item"
-        :to="Cons.CANVAS_ORG_CHART"
+        :to="Cons.CANVAS_TREE"
         text
         style="margin-left: 32px;"
         :color="selectedMenu === 'canvas' ? 'info' : ''"
@@ -14,7 +14,7 @@
       <v-btn
         class="menu-item"
         :color="selectedMenu === 'svg' ? 'info' : ''"
-        :to="Cons.SVG_ORG_CHART"
+        :to="Cons.SVG_TREE"
         text
         normal
         >Svg Chart</v-btn
@@ -68,7 +68,7 @@ export default {
       this.$router.push('main')
     },
     updateSelectedMenu() {
-      if (this.$route.path === `/${Cons.CANVAS_ORG_CHART}`) {
+      if (this.$route.path === `/${Cons.CANVAS_TREE}`) {
         this.selectedMenu = 'canvas'
       } else {
         this.selectedMenu = 'svg'
