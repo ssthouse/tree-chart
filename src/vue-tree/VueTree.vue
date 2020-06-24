@@ -41,7 +41,7 @@
 <script>
 import * as d3 from 'd3'
 
-const MATCH_TRANSLATE_REGEX = /translate\(([\s0-9px]*)\)/i
+const MATCH_TRANSLATE_REGEX = /translate\(([^)]*)\)/i
 const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
 
 const LinkStyle = {
@@ -145,19 +145,37 @@ export default {
         const originScale = parseFloat(scaleMatchResult[1])
         targetScale *= originScale
       }
+      this.setScale(targetScale)
+    },
+    zoomOut() {
+      const originTransformStr = this.$refs.domContainer.style.transform
+      // 如果已有scale属性, 在原基础上修改
+      let targetScale = 1 / 1.2
+      const scaleMatchResult = originTransformStr.match(MATCH_SCALE_REGEX)
+      if (scaleMatchResult && scaleMatchResult.length > 0) {
+        const originScale = parseFloat(scaleMatchResult[1])
+        targetScale = originScale / 1.2
+      }
+      this.setScale(targetScale)
+    },
+    restoreScale() {
+      this.setScale(1)
+    },
+    setScale(scaleNum) {
+      if (typeof scaleNum !== 'number') return
+      const originTransformStr = this.$refs.domContainer.style.transform
       let targetTransform
       if (originTransformStr.match(MATCH_SCALE_REGEX)) {
         targetTransform = originTransformStr.replace(
           MATCH_SCALE_REGEX,
-          `scale(${targetScale})`
+          `scale(${scaleNum})`
         )
       } else {
-        targetTransform = originTransformStr + ` scale(${targetScale})`
+        targetTransform = originTransformStr + ` scale(${scaleNum})`
       }
       this.$refs.svg.style.transform = targetTransform
       this.$refs.domContainer.style.transform = targetTransform
     },
-    zoomOut() {},
     isVertial() {
       return this.direction === DIRECTION.VERTICAL
     },
