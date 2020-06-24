@@ -2,7 +2,7 @@
 
 ## Demo 页面
 
-https://ssthouse.github.io/vue-tree-chart/#/canvasOrgChart
+https://ssthouse.github.io/vue-tree-chart/#/svgTree
 
 ## Demo 动图
 
