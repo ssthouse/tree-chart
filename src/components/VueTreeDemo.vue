@@ -92,6 +92,34 @@
         </div>
       </template>
     </vue-tree>
+
+    <h3>缩放</h3>
+    <div style="display: flex;">
+      <v-btn @click="controlScale('bigger')">+</v-btn>
+      <v-btn @click="controlScale('smaller')">-</v-btn>
+      <v-btn @click="controlScale('restore')">1:1</v-btn>
+    </div>
+    <vue-tree
+      ref="scaleTree"
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="richMediaData"
+      :config="treeConfig"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <img
+            :src="node.avatar"
+            style="width: 48px; height: 48px; border-raduis: 4px;"
+          />
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值{{ node.value }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
   </div>
 </template>
 
@@ -165,6 +193,21 @@ export default {
         ]
       },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
+    }
+  },
+  methods: {
+    controlScale(command) {
+      switch (command) {
+        case 'bigger':
+          this.$refs.scaleTree.zoomIn()
+          break
+        case 'smaller':
+          this.$refs.scaleTree.zoomOut()
+          break
+        case 'restore':
+          this.$refs.scaleTree.restoreScale()
+          break
+      }
     }
   }
 }

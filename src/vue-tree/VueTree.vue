@@ -439,6 +439,7 @@ export default {
     left: 0;
     top: 0;
     overflow: visible;
+    transform-origin: 0 50%;
   }
 
   .dom-container {
