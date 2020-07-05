@@ -8,16 +8,25 @@
         :to="Cons.CANVAS_TREE"
         text
         style="margin-left: 32px;"
-        :color="selectedMenu === 'canvas' ? 'info' : ''"
+        :color="this.$router.path === Cons.CANVAS_TREE ? 'info' : ''"
         >Canvas Chart</v-btn
       >
       <v-btn
         class="menu-item"
-        :color="selectedMenu === 'svg' ? 'info' : ''"
-        :to="Cons.SVG_TREE"
+        :color="this.$router.path === Cons.VUE_TREE ? 'info' : ''"
+        :to="Cons.VUE_TREE"
         text
         normal
-        >Svg Chart</v-btn
+        >Svg Chart (Vue)</v-btn
+      >
+
+      <v-btn
+        class="menu-item"
+        :color="this.$router.path === Cons.REACT_TREE ? 'info' : ''"
+        :to="Cons.REACT_TREE"
+        text
+        normal
+        >Svg Chart (React)</v-btn
       >
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">

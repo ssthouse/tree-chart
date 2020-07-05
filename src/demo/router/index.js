@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import CanvasTree from '../../components/CanvasTree.vue'
-import VueTree from '../../components/VueTreeDemo.vue'
+import VueTreeDemo from '../VueTreeDemo.vue'
+import ReactTreeDemo from '../ReactTreeDemo.vue'
 import * as Cons from './constant'
 
 Vue.use(Router)
@@ -10,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: Cons.CANVAS_TREE
+      redirect: Cons.VUE_TREE
     },
     {
       path: '/' + Cons.CANVAS_TREE,
@@ -18,9 +19,14 @@ export default new Router({
       component: CanvasTree
     },
     {
-      path: '/' + Cons.SVG_TREE,
+      path: '/' + Cons.VUE_TREE,
       name: Cons.SVG_TREE,
-      component: VueTree
+      component: VueTreeDemo
+    },
+    {
+      path: '/' + Cons.REACT_TREE,
+      name: Cons.REACT_TREE,
+      component: ReactTreeDemo
     }
   ]
 })
