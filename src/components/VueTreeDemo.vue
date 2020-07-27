@@ -120,6 +120,32 @@
         </div>
       </template>
     </vue-tree>
+
+    <h3>DOM & SVG 拆分</h3>
+    <div style="display: flex;">
+      <v-btn @click="onClickSeperate">分离</v-btn>
+    </div>
+    <vue-tree
+      ref="seperateTree"
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="richMediaData"
+      :config="treeConfig"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <img
+            :src="node.avatar"
+            style="width: 48px; height: 48px; border-raduis: 4px;"
+          />
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值{{ node.value }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
   </div>
 </template>
 
@@ -208,6 +234,9 @@ export default {
           this.$refs.scaleTree.restoreScale()
           break
       }
+    },
+    onClickSeperate() {
+      this.$refs.seperateTree.seperateDomAndSvg()
     }
   }
 }

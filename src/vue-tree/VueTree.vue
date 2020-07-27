@@ -385,6 +385,19 @@ export default {
         return dimension
       }
       return parseInt(dimension.replace('px', ''))
+    },
+    seperateDomAndSvg() {
+      console.log('seperate now')
+      setInterval(() => {
+        for (let i = 0; i < 100; i++) {
+          setTimeout(() => {
+            console.log('change now')
+            this.$refs.svg.style.left = -i + 'px'
+            this.$refs.domContainer.style.left = i + 'px'
+            console.log(this.$refs.domContainer.style.left)
+          }, i * 8)
+        }
+      }, 1500)
     }
   },
   watch: {
