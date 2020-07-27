@@ -377,18 +377,39 @@ class OrgChart {
 
   setClickListener() {
     let self = this
+    // 通过颜色判断
+    // this.canvasNode.node().addEventListener('click', (e) => {
+    //   let colorStr = Util.getColorStrFromCanvas(
+    //     self.hiddenContext,
+    //     e.layerX,
+    //     e.layerY
+    //   )
+    //   let node = self.colorNodeMap[colorStr]
+    //   if (node) {
+    //     // let treeNodeData = node.data()[0]
+    //     // self.hideChildren(treeNodeData, true)
+    //     self.toggleTreeNode(node.data()[0])
+    //     self.update(node.data()[0])
+    //   }
+    // })
+
+    // 通过遍历节点判断
     this.canvasNode.node().addEventListener('click', (e) => {
-      let colorStr = Util.getColorStrFromCanvas(
-        self.hiddenContext,
-        e.layerX,
-        e.layerY
-      )
-      let node = self.colorNodeMap[colorStr]
-      if (node) {
-        // let treeNodeData = node.data()[0]
-        // self.hideChildren(treeNodeData, true)
-        self.toggleTreeNode(node.data()[0])
-        self.update(node.data()[0])
+      const nodes = this.treeData.descendants()
+      // console.log('所有节点', nodes)
+      // console.log('当前点击位置', e)
+      // 通过offset来比对坐标
+      for (let node of nodes) {
+        const nodeX = node.x + this.width / 2
+        const nodeY = node.y + this.padding - this.unitHeight / 2
+        if (
+          nodeX < e.offsetX &&
+          e.offsetX < nodeX + this.unitWidth &&
+          nodeY < e.offsetY &&
+          e.offsetY < nodeY + this.unitHeight
+        ) {
+          console.log('find clicked node: ', node)
+        }
       }
     })
   }

@@ -1,9 +1,12 @@
 <template>
   <div id="org-chart-container">
     <div class="menu-container">
-      <v-layout row>
-        <v-btn @click="bigger()">+</v-btn>
-        <v-btn @click="smaller()">-</v-btn>
+      <v-layout column>
+        <v-btn @click="bigger">+</v-btn>
+        <v-btn @click="smaller">-</v-btn>
+        <v-btn @click="findClickNodeWithCoordinate"
+          >Find click node with coordinate</v-btn
+        >
       </v-layout>
 
       <v-card>
@@ -28,12 +31,6 @@
 import OrgChart from './org-chart'
 import Vue from 'vue'
 import { generateOrgChartData, Data } from '../base/data-generator'
-
-// interface DataInterface {
-//   data: Data
-//   orgChart: any
-//   supportActions: Array<string>
-// }
 
 export default Vue.extend({
   name: 'org-chart',
@@ -65,6 +62,9 @@ export default Vue.extend({
     },
     smaller() {
       this.orgChart.smaller()
+    },
+    findClickNodeWithCoordinate() {
+      console.log('find click node with coordinate')
     }
   }
 })
