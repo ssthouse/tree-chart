@@ -47,7 +47,7 @@ export default Vue.extend({
     }
   },
   created() {
-    this.data = generateOrgChartData(10)
+    this.data = generateOrgChartData(500)
   },
   mounted() {
     this.orgChart = new OrgChart()

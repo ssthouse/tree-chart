@@ -399,8 +399,9 @@ class OrgChart {
       // console.log('所有节点', nodes)
       // console.log('当前点击位置', e)
       // 通过offset来比对坐标
+      const t0 = performance.now()
       for (let node of nodes) {
-        const nodeX = node.x + this.width / 2
+        const nodeX = node.x + this.width / 2 // 注意: 只有初始时刻, offset是 this.width/2, 其他时刻
         const nodeY = node.y + this.padding - this.unitHeight / 2
         if (
           nodeX < e.offsetX &&
@@ -408,9 +409,12 @@ class OrgChart {
           nodeY < e.offsetY &&
           e.offsetY < nodeY + this.unitHeight
         ) {
-          console.log('find clicked node: ', node)
+          // console.log('find clicked node: ', node)
         }
       }
+      const t1 = performance.now()
+      console.log(t1, t0)
+      console.log(`Call to doSomething took ${t1 - t0} milliseconds.`)
     })
   }
 
