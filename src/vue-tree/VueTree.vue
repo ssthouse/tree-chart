@@ -268,8 +268,9 @@ export default {
       this.svg = this.d3.select(this.$refs.svg)
 
       const self = this
+      console.log(linkDataList)
       const links = this.svg.selectAll('.link').data(linkDataList, (d) => {
-        return `${d.source._key}-${d.target._key}`
+        return `${d.source.data._key}-${d.target.data._key}`
       })
 
       links

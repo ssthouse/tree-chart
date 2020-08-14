@@ -142,31 +142,31 @@ export default {
         name: 'James',
         value: 800,
         avatar:
-          'https://gravatar.com/avatar/db51fdaf64d942180b5200ca37d155a4?s=400&d=robohash&r=x',
+          'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female3.svg',
         children: [
           {
             name: 'Bob',
             value: 400,
             avatar:
-              'https://gravatar.com/avatar/16b3b886b837257757c5961513396a06?s=400&d=robohash&r=x',
+              'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male4.svg',
             children: [
               {
                 name: 'C1',
                 value: 100,
                 avatar:
-                  'https://gravatar.com/avatar/4ee8775f23f12755db978cccdc1356d9?s=400&d=robohash&r=x'
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female4.svg'
               },
               {
                 name: 'C2',
                 value: 300,
                 avatar:
-                  'https://gravatar.com/avatar/d3efa8fa639bdada96a7d0b4372e0a96?s=400&d=robohash&r=x'
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male2.svg'
               },
               {
                 name: 'C3',
                 value: 200,
                 avatar:
-                  'https://gravatar.com/avatar/4905bc3e5dc51a61e3b490ccf1891107?s=400&d=robohash&r=x'
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male3.svg'
               }
             ]
           },
@@ -174,13 +174,13 @@ export default {
             name: 'Smith',
             value: 200,
             avatar:
-              'https://gravatar.com/avatar/d05d081dbbb513180025300b715d5656?s=400&d=robohash&r=x',
+              'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_male3.svg',
             children: [
               {
                 name: 'S1',
                 value: 230,
                 avatar:
-                  'https://gravatar.com/avatar/60c1e69e690d943c5dc06568148debc4?s=400&d=robohash&r=x'
+                  'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female1.svg'
               }
             ]
           },
@@ -188,7 +188,7 @@ export default {
             name: 'Jackson',
             value: 300,
             avatar:
-              'https://gravatar.com/avatar/581f7a711c815d9671c35ebd815ec1e4?s=400&d=robohash&r=x'
+              'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female3.svg'
           }
         ]
       },
