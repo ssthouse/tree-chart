@@ -268,7 +268,6 @@ export default {
       this.svg = this.d3.select(this.$refs.svg)
 
       const self = this
-      console.log(linkDataList)
       const links = this.svg.selectAll('.link').data(linkDataList, (d) => {
         return `${d.source.data._key}-${d.target.data._key}`
       })
@@ -318,7 +317,6 @@ export default {
       // 保存鼠标点下时的位移
       let mouseDownTransform = ''
       container.onmousedown = (event) => {
-        console.log(event)
         mouseDownTransform = svgElement.style.transform
         startX = event.clientX
         startY = event.clientY
@@ -348,7 +346,6 @@ export default {
             transformStr
           )
         }
-        // console.log('transformStr: '  + transformStr)
         svgElement.style.transform = transformStr
         this.$refs.domContainer.style.transform = transformStr
       }
@@ -360,7 +357,6 @@ export default {
       }
     },
     onClickNode(index) {
-      console.log(this.nodeDataList[index])
       const curNode = this.nodeDataList[index]
       if (curNode.data.children) {
         curNode.data._children = curNode.data.children
