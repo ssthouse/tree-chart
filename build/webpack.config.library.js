@@ -4,7 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 module.exports = {
   entry: './src/vue-tree/index.js',
   output: {
-    path: path.resolve(__dirname, 'library'),
+    path: path.resolve(__dirname, '..', 'library'),
     filename: 'vue-tree-chart.js',
     library: 'vue-tree-chart',
     libraryTarget: 'umd'
