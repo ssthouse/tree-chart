@@ -135,5 +135,8 @@
       "eslint",
       "prettier --write"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
