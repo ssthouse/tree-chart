@@ -315,6 +315,18 @@ slot 提供两个参数用于渲染树状图节点内容。
 | node       | Object  | current node data to be rendered |
 | collapsed  | Boolean | current node collapse status     |
 
+**4.3 API > 缩放**
+
+通过Vue ref,可以调用组件的缩放接口
+
+支持的接口有:
+
+缩小: `this.$refs.tree.zoomIn()`
+
+放大: `this.$refs.tree.zoomOut()`
+
+恢复原始大小: `this.$refs.tree.restoreScale()`
+
 ### Canavs 版本
 
 canvas 的版本, 因为其绘制过程较难抽象, 且仅仅在数据量较大的情况下才有意义,所以没有发布为 npm module.

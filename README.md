@@ -312,6 +312,20 @@ there are two slot params provided to render slot content:
 | node       | Object  | current node data to be rendered |
 | collapsed  | Boolean | current node collapse status     |
 
+
+**4.3 API > zoom**
+
+use vue ref to call zoom api.
+
+support methods:
+
+zoom in: `this.$refs.tree.zoomIn()`
+
+zoom out: `this.$refs.tree.zoomOut()`
+
+restore initial scale: `this.$refs.tree.restoreScale()`
+
+
 ### Canvas version
 
 the canvas version is not published with npm module.
