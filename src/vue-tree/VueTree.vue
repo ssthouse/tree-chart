@@ -41,7 +41,7 @@
 <script>
 import * as d3 from 'd3'
 
-const MATCH_TRANSLATE_REGEX = /translate\(([^)]*)\)/i
+const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i
 const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
 
 const LinkStyle = {
@@ -173,7 +173,7 @@ export default {
       this.currentScale = scaleNum
     },
     getTranslate() {
-      let string = this.$refs.domContainer.style.transform
+      let string = this.$refs.svg.style.transform
       let match = string.match(MATCH_TRANSLATE_REGEX)
       if (match === null) {
         return [null, null]
@@ -336,11 +336,9 @@ export default {
         if (originTransform) {
           const result = originTransform.match(MATCH_TRANSLATE_REGEX)
           if (result !== null && result.length !== 0) {
-            const [offsetX, offsetY] = result[1]
-              .split(',')
-              .map(this.parseDimensionNumber)
-            originOffsetX = offsetX
-            originOffsetY = offsetY
+            const [offsetX, offsetY] = result.slice(1)
+            originOffsetX = parseInt(offsetX)
+            originOffsetY = parseInt(offsetY)
           }
         }
         let newX =
