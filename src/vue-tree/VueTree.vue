@@ -168,14 +168,15 @@ export default {
       let pos = this.getTranslate()
       let translateString = `translate(${pos[0]}px, ${pos[1]}px)`
       this.$refs.svg.style.transform = `scale(${scaleNum}) ` + translateString
-      this.$refs.domContainer.style.transform = `scale(${scaleNum}) ` + translateString
+      this.$refs.domContainer.style.transform =
+        `scale(${scaleNum}) ` + translateString
       this.currentScale = scaleNum
     },
     getTranslate() {
       let string = this.$refs.domContainer.style.transform
       let match = string.match(MATCH_TRANSLATE_REGEX)
       if (match === null) {
-          return [null, null]
+        return [null, null]
       }
       let x = parseInt(match[1])
       let y = parseInt(match[2])
@@ -342,11 +343,11 @@ export default {
             originOffsetY = offsetY
           }
         }
-        let newX = Math.floor((event.clientX - startX + originOffsetX) / this.currentScale)
-        let newY = Math.floor((event.clientY - startY + originOffsetY) / this.currentScale)
-        let transformStr = `translate(${
-          newX
-        }px, ${newY}px)`
+        let newX =
+          event.clientX - startX + Math.floor(originOffsetX / this.currentScale)
+        let newY =
+          event.clientY - startY + Math.floor(originOffsetY / this.currentScale)
+        let transformStr = `translate(${newX}px, ${newY}px)`
         if (originTransform) {
           transformStr = originTransform.replace(
             MATCH_TRANSLATE_REGEX,
