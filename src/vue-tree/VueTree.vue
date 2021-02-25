@@ -41,7 +41,7 @@
 <script>
 import * as d3 from 'd3'
 
-const MATCH_TRANSLATE_REGEX = /translate\(([^)]*)\)/i
+const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i
 const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
 
 const LinkStyle = {
@@ -114,13 +114,15 @@ export default {
       linkDataList: [],
       initTransformX: 0,
       initTransformY: 0,
-      DIRECTION
+      DIRECTION,
+      currentScale: 1
     }
   },
   computed: {
     initialTransformStyle() {
       return {
-        transform: `translate(${this.initTransformX}px, ${this.initTransformY}px)`
+        transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
+        transformOrigin: 'center'
       }
     }
   },
@@ -163,20 +165,24 @@ export default {
     },
     setScale(scaleNum) {
       if (typeof scaleNum !== 'number') return
-      const originTransformStr = this.$refs.domContainer.style.transform
-      let targetTransform
-      if (originTransformStr.match(MATCH_SCALE_REGEX)) {
-        targetTransform = originTransformStr.replace(
-          MATCH_SCALE_REGEX,
-          `scale(${scaleNum})`
-        )
-      } else {
-        targetTransform = originTransformStr + ` scale(${scaleNum})`
-      }
-      this.$refs.svg.style.transform = targetTransform
-      this.$refs.domContainer.style.transform = targetTransform
+      let pos = this.getTranslate()
+      let translateString = `translate(${pos[0]}px, ${pos[1]}px)`
+      this.$refs.svg.style.transform = `scale(${scaleNum}) ` + translateString
+      this.$refs.domContainer.style.transform =
+        `scale(${scaleNum}) ` + translateString
+      this.currentScale = scaleNum
     },
-    isVertial() {
+    getTranslate() {
+      let string = this.$refs.svg.style.transform
+      let match = string.match(MATCH_TRANSLATE_REGEX)
+      if (match === null) {
+        return [null, null]
+      }
+      let x = parseInt(match[1])
+      let y = parseInt(match[2])
+      return [x, y]
+    },
+    isVertical() {
       return this.direction === DIRECTION.VERTICAL
     },
     addUniqueKey(rootNode) {
@@ -193,7 +199,7 @@ export default {
     initTransform() {
       const containerWidth = this.$refs.container.offsetWidth
       const containerHeight = this.$refs.container.offsetHeight
-      if (this.isVertial()) {
+      if (this.isVertical()) {
         this.initTransformX = Math.floor(containerWidth / 2)
         this.initTransformY = Math.floor(this.config.nodeHeight)
       } else {
@@ -207,7 +213,7 @@ export default {
     generateLinkPath(d) {
       const self = this
       if (this.linkStyle === LinkStyle.CURVE) {
-        const linkPath = this.isVertial()
+        const linkPath = this.isVertical()
           ? d3.linkVertical()
           : d3.linkHorizontal()
         linkPath
@@ -242,16 +248,16 @@ export default {
         const linkPath = d3.path()
         let sourcePoint = { x: d.source.x, y: d.source.y }
         let targetPoint = { x: d.target.x, y: d.target.y }
-        if (!this.isVertial()) {
+        if (!this.isVertical()) {
           sourcePoint = rotatePoint(sourcePoint)
           targetPoint = rotatePoint(targetPoint)
         }
         const xOffset = targetPoint.x - sourcePoint.x
         const yOffset = targetPoint.y - sourcePoint.y
-        const secondPoint = this.isVertial()
+        const secondPoint = this.isVertical()
           ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
           : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y }
-        const thirdPoint = this.isVertial()
+        const thirdPoint = this.isVertical()
           ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
           : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y }
         linkPath.moveTo(sourcePoint.x, sourcePoint.y)
@@ -330,16 +336,18 @@ export default {
         if (originTransform) {
           const result = originTransform.match(MATCH_TRANSLATE_REGEX)
           if (result !== null && result.length !== 0) {
-            const [offsetX, offsetY] = result[1]
-              .split(',')
-              .map(this.parseDimensionNumber)
-            originOffsetX = offsetX
-            originOffsetY = offsetY
+            const [offsetX, offsetY] = result.slice(1)
+            originOffsetX = parseInt(offsetX)
+            originOffsetY = parseInt(offsetY)
           }
         }
-        let transformStr = `translate(${
-          event.clientX - startX + originOffsetX
-        }px, ${event.clientY - startY + originOffsetY}px)`
+        let newX =
+          Math.floor((event.clientX - startX) / this.currentScale) +
+          originOffsetX
+        let newY =
+          Math.floor((event.clientY - startY) / this.currentScale) +
+          originOffsetY
+        let transformStr = `translate(${newX}px, ${newY}px)`
         if (originTransform) {
           transformStr = originTransform.replace(
             MATCH_TRANSLATE_REGEX,
