@@ -343,10 +343,8 @@ export default {
             originOffsetY = offsetY
           }
         }
-        let newX =
-          event.clientX - startX + Math.floor(originOffsetX / this.currentScale)
-        let newY =
-          event.clientY - startY + Math.floor(originOffsetY / this.currentScale)
+        let newX = event.clientX - startX + originOffsetX
+        let newY = event.clientY - startY + originOffsetY
         let transformStr = `translate(${newX}px, ${newY}px)`
         if (originTransform) {
           transformStr = originTransform.replace(
