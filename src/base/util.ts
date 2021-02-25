@@ -1,11 +1,12 @@
-import * as colorUtil from './color-util.ts'
+import * as colorUtil from './color-util'
 function text(ctx, text, x, y, fontSize, fontColor) {
   ctx.font = '14px Arial'
   ctx.fillStyle = fontColor
   ctx.fillText(text, x, y)
 }
 
-function wrapText(context, text, x, y, maxWidth, lineHeight, fontColor) {
+function wrapText(context, text: string, x: number, y: number,
+  maxWidth: number, lineHeight: number, fontColor: string) {
   context.fillStyle = fontColor
   const words = text.split(' ')
   let line = ''

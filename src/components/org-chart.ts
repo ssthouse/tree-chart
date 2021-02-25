@@ -1,7 +1,31 @@
 import * as d3 from 'd3'
-import Util from '../base/util.js'
+import Util from '../base/util'
 
 class OrgChart {
+  d3: any
+  width: number
+  height: number
+  padding: number
+  nodeWidth: number
+  nodeHeight: number
+  unitPadding: number
+  unitWidth: number
+  unitHeight: number
+  duration: number
+  scale: number
+  data: any
+  treeGenerator: any
+  treeData: any
+  virtualContainerNode: any
+  container: any
+  canvasNode: any
+  hiddenCanvasNode: any
+  context: any
+  hiddenContext: any
+  colorNodeMap: {}
+  onDrag_: boolean
+  dragStartPoint_: { x: number; y: number }
+
   constructor() {
     this.d3 = d3
     this.init()
@@ -35,7 +59,7 @@ class OrgChart {
     this.treeGenerator = this.d3
       .tree()
       .nodeSize([this.nodeWidth, this.nodeHeight])
-    this.update()
+    this.update(null)
 
     const self = this
     this.d3.timer(function () {
@@ -255,7 +279,7 @@ class OrgChart {
     const self = this
     this.virtualContainerNode.selectAll('.orgUnit').each(function () {
       const node = self.d3.select(this)
-      const newColor = Util.randomColor()
+      let newColor = Util.randomColor()
       while (self.colorNodeMap[newColor]) {
         newColor = Util.randomColor()
       }
@@ -341,7 +365,8 @@ class OrgChart {
         indexX + self.unitPadding,
         indexY + self.unitPadding + 24,
         maxWidth,
-        20
+        20,
+        '#000000',
       )
     })
   }

@@ -44,7 +44,7 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
 import * as Cons from './router/constant'
 
 export default {

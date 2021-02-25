@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import OrgChart from './org-chart'
 import Vue from 'vue'
 import { generateOrgChartData, Data } from '../base/data-generator'
