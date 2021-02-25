@@ -185,16 +185,14 @@ export default {
     isVertical() {
       return this.direction === DIRECTION.VERTICAL
     },
-    addUniqueKey(rootNode) {
-      const queue = [rootNode]
-      while (queue.length !== 0) {
-        const node = queue.pop()
+    addUniqueKey(node) {
+      if (!('_key' in node)) {
         node._key = uuid()
-        if (node.children) {
-          queue.push(...node.children)
-        }
       }
-      return rootNode
+      for (var i = node.children.length - 1; i >= 0; i--) {
+        this.addUniqueKey(node.children[i])
+      }
+      return node
     },
     initTransform() {
       const containerWidth = this.$refs.container.offsetWidth
@@ -394,6 +392,7 @@ export default {
   },
   watch: {
     dataset() {
+      this.addUniqueKey(this.dataset)
       this.draw()
     }
   }
