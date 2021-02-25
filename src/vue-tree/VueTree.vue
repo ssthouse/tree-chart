@@ -182,7 +182,7 @@ export default {
       let y = parseInt(match[2])
       return [x, y]
     },
-    isVertial() {
+    isVertical() {
       return this.direction === DIRECTION.VERTICAL
     },
     addUniqueKey(rootNode) {
@@ -199,7 +199,7 @@ export default {
     initTransform() {
       const containerWidth = this.$refs.container.offsetWidth
       const containerHeight = this.$refs.container.offsetHeight
-      if (this.isVertial()) {
+      if (this.isVertical()) {
         this.initTransformX = Math.floor(containerWidth / 2)
         this.initTransformY = Math.floor(this.config.nodeHeight)
       } else {
@@ -213,7 +213,7 @@ export default {
     generateLinkPath(d) {
       const self = this
       if (this.linkStyle === LinkStyle.CURVE) {
-        const linkPath = this.isVertial()
+        const linkPath = this.isVertical()
           ? d3.linkVertical()
           : d3.linkHorizontal()
         linkPath
@@ -248,16 +248,16 @@ export default {
         const linkPath = d3.path()
         let sourcePoint = { x: d.source.x, y: d.source.y }
         let targetPoint = { x: d.target.x, y: d.target.y }
-        if (!this.isVertial()) {
+        if (!this.isVertical()) {
           sourcePoint = rotatePoint(sourcePoint)
           targetPoint = rotatePoint(targetPoint)
         }
         const xOffset = targetPoint.x - sourcePoint.x
         const yOffset = targetPoint.y - sourcePoint.y
-        const secondPoint = this.isVertial()
+        const secondPoint = this.isVertical()
           ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
           : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y }
-        const thirdPoint = this.isVertial()
+        const thirdPoint = this.isVertical()
           ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
           : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y }
         linkPath.moveTo(sourcePoint.x, sourcePoint.y)
