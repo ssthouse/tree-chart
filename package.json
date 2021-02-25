@@ -1,6 +1,6 @@
 {
   "name": "@ssthouse/vue-tree-chart",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A Vue.js project",
   "author": "ssthouse",
   "main": "library/vue-tree-chart.js",
