@@ -102,7 +102,7 @@ export default {
     },
     // 展示的层级数据, 样例数据如: hierachical.json
     dataset: {
-      type: Object,
+      type: [Object, Array],
       required: true
     }
   },
@@ -124,10 +124,33 @@ export default {
         transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
         transformOrigin: 'center'
       }
+    },
+    _dataset() {
+      if (this.dataset.constructor === Array) {
+        return { name: 'invisible root', children: this.dataset }
+      } else {
+        return this.dataset
+      }
+    },
+    multiRootNodes() {
+      if (this.dataset.constructor === Array) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  watch: {
+    _dataset: {
+      deep: true,
+      handler: function () {
+        this.addUniqueKey(this._dataset)
+        this.draw()
+      }
     }
   },
   created() {
-    this.addUniqueKey(this.dataset)
+    this.addUniqueKey(this._dataset)
   },
   mounted() {
     this.init()
@@ -189,8 +212,15 @@ export default {
       if (!('_key' in node)) {
         node._key = uuid()
       }
-      for (var i = node.children.length - 1; i >= 0; i--) {
-        this.addUniqueKey(node.children[i])
+      // If this node is collapsed its children will be temporarily stored in _children.
+      if (node.children !== null) {
+        for (var i = node.children.length - 1; i >= 0; i--) {
+          this.addUniqueKey(node.children[i])
+        }
+      } else {
+        for (var i = node._children.length - 1; i >= 0; i--) {
+          this.addUniqueKey(node._children[i])
+        }
       }
       return node
     },
@@ -267,7 +297,12 @@ export default {
     },
     // 使用扇形数据开始绘图
     draw() {
-      const [nodeDataList, linkDataList] = this.buildTree(this.dataset)
+      var [nodeDataList, linkDataList] = this.buildTree(this._dataset)
+      if (this.multiRootNodes) {
+        // Do not render the invisible root node.
+        nodeDataList.splice(0, 1)
+        linkDataList.splice(0, this.dataset.length)
+      }
       this.linkDataList = linkDataList
       this.svg = this.d3.select(this.$refs.svg)
 
@@ -388,12 +423,6 @@ export default {
         return dimension
       }
       return parseInt(dimension.replace('px', ''))
-    }
-  },
-  watch: {
-    dataset() {
-      this.addUniqueKey(this.dataset)
-      this.draw()
     }
   }
 }
