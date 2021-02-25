@@ -4,9 +4,8 @@ export interface Data {
   children: any
 }
 
-export function generateOrgChartData(depth) {
-  let data: Data
-  data = {
+export function generateOrgChartData(depth: number) {
+  const data: Data = {
     name: 'Lao Lao',
     title: 'general manager',
     children: [
@@ -74,8 +73,8 @@ export function generateOrgChartData(depth) {
   return data
 }
 
-export function generateOrgChartDataFolded(depth, foldDepth) {
-  let data = this.generateOrgChartData(depth)
+export function generateOrgChartDataFolded(depth: any, foldDepth: number) {
+  const data = this.generateOrgChartData(depth)
   let tempNode = data
   for (let i = 0; i < foldDepth && tempNode.children; i++) {
     tempNode = tempNode.children[0]

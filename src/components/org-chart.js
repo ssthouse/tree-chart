@@ -37,7 +37,7 @@ class OrgChart {
       .nodeSize([this.nodeWidth, this.nodeHeight])
     this.update()
 
-    let self = this
+    const self = this
     this.d3.timer(function () {
       self.drawCanvas()
     })
@@ -45,8 +45,8 @@ class OrgChart {
 
   update(targetTreeNode) {
     this.treeData = this.treeGenerator(this.data)
-    let nodes = this.treeData.descendants()
-    let links = this.treeData.links()
+    const nodes = this.treeData.descendants()
+    const links = this.treeData.links()
 
     let animatedStartX = 0
     let animatedStartY = 0
@@ -252,10 +252,10 @@ class OrgChart {
 
   addColorKey() {
     // give each node a unique color
-    let self = this
+    const self = this
     this.virtualContainerNode.selectAll('.orgUnit').each(function () {
-      let node = self.d3.select(this)
-      let newColor = Util.randomColor()
+      const node = self.d3.select(this)
+      const newColor = Util.randomColor()
       while (self.colorNodeMap[newColor]) {
         newColor = Util.randomColor()
       }
@@ -267,11 +267,11 @@ class OrgChart {
 
   bindNodeToTreeData() {
     // give each node a unique color
-    let self = this
+    const self = this
     this.virtualContainerNode.selectAll('.orgUnit').each(function () {
-      let node = self.d3.select(this)
-      let data = node.data()[0]
-      data['node'] = node
+      const node = self.d3.select(this)
+      const data = node.data()[0]
+      data.node = node
     })
   }
 
@@ -283,11 +283,11 @@ class OrgChart {
   drawShowCanvas() {
     this.context.clearRect(-50000, -10000, 100000, 100000)
 
-    let self = this
+    const self = this
     // draw links
     this.virtualContainerNode.selectAll('.link').each(function () {
-      let node = self.d3.select(this)
-      let linkPath = self.d3
+      const node = self.d3.select(this)
+      const linkPath = self.d3
         .linkVertical()
         .x(function (d) {
           return d.x
@@ -301,17 +301,17 @@ class OrgChart {
         .target(function () {
           return { x: node.attr('targetX'), y: node.attr('targetY') }
         })
-      let path = new Path2D(linkPath())
+      const path = new Path2D(linkPath())
       self.context.stroke(path)
     })
 
     this.virtualContainerNode.selectAll('.orgUnit').each(function () {
-      let node = self.d3.select(this)
-      let treeNode = node.data()[0]
-      let data = treeNode.data
+      const node = self.d3.select(this)
+      const treeNode = node.data()[0]
+      const data = treeNode.data
       self.context.fillStyle = '#3ca0ff'
-      let indexX = Number(node.attr('x')) - self.unitWidth / 2
-      let indexY = Number(node.attr('y')) - self.unitHeight / 2
+      const indexX = Number(node.attr('x')) - self.unitWidth / 2
+      const indexY = Number(node.attr('y')) - self.unitHeight / 2
 
       // draw unit outline rect (if you want to modify this line ===>   please modify the same line in `drawHiddenCanvas`)
       Util.roundRect(
@@ -334,7 +334,7 @@ class OrgChart {
         '#ffffff'
       )
       // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
-      let maxWidth = self.unitWidth - 2 * self.unitPadding
+      const maxWidth = self.unitWidth - 2 * self.unitPadding
       Util.wrapText(
         self.context,
         data.title,
@@ -352,9 +352,9 @@ class OrgChart {
   drawHiddenCanvas() {
     this.hiddenContext.clearRect(-50000, -10000, 100000, 100000)
 
-    let self = this
+    const self = this
     this.virtualContainerNode.selectAll('.orgUnit').each(function () {
-      let node = self.d3.select(this)
+      const node = self.d3.select(this)
       self.hiddenContext.fillStyle = node.attr('colorKey')
       Util.roundRect(
         self.hiddenContext,
@@ -376,17 +376,15 @@ class OrgChart {
   }
 
   setClickListener() {
-    let self = this
+    const self = this
     this.canvasNode.node().addEventListener('click', (e) => {
-      let colorStr = Util.getColorStrFromCanvas(
+      const colorStr = Util.getColorStrFromCanvas(
         self.hiddenContext,
         e.layerX,
         e.layerY
       )
-      let node = self.colorNodeMap[colorStr]
+      const node = self.colorNodeMap[colorStr]
       if (node) {
-        // let treeNodeData = node.data()[0]
-        // self.hideChildren(treeNodeData, true)
         self.toggleTreeNode(node.data()[0])
         self.update(node.data()[0])
       }
@@ -394,7 +392,7 @@ class OrgChart {
   }
 
   setMouseWheelZoomListener() {
-    let self = this
+    const self = this
     this.canvasNode.node().addEventListener('mousewheel', (event) => {
       event.preventDefault()
       if (event.deltaY < 0) {
@@ -408,7 +406,7 @@ class OrgChart {
   setDragListener() {
     this.onDrag_ = false
     this.dragStartPoint_ = { x: 0, y: 0 }
-    let self = this
+    const self = this
     this.canvasNode.node().onmousedown = function (e) {
       self.dragStartPoint_.x = e.x
       self.dragStartPoint_.y = e.y

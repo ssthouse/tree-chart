@@ -29,12 +29,6 @@ import OrgChart from './org-chart'
 import Vue from 'vue'
 import { generateOrgChartData, Data } from '../base/data-generator'
 
-// interface DataInterface {
-//   data: Data
-//   orgChart: any
-//   supportActions: Array<string>
-// }
-
 export default Vue.extend({
   name: 'org-chart',
   data() {

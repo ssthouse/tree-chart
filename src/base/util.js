@@ -7,15 +7,15 @@ function text(ctx, text, x, y, fontSize, fontColor) {
 
 function wrapText(context, text, x, y, maxWidth, lineHeight, fontColor) {
   context.fillStyle = fontColor
-  let words = text.split(' ')
+  const words = text.split(' ')
   let line = ''
   for (let n = 0; n < words.length; n++) {
-    let testLine = line + words[n] + ' '
+    let testLine = `${line + words[n]} `
     let metrics = context.measureText(testLine)
     let testWidth = metrics.width
     if (testWidth > maxWidth && n > 0) {
       context.fillText(line, x, y)
-      line = words[n] + ' '
+      line = `${words[n]} `
       y += lineHeight
     } else {
       line = testLine

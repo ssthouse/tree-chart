@@ -1,5 +1,5 @@
 export function randomColor() {
-  let letters = [
+  const letters = [
     '0',
     '1',
     '2',
@@ -25,11 +25,7 @@ export function randomColor() {
 }
 
 function appendFront0(numStr: string): string {
-  if (numStr.length !== 2) {
-    return '0' + numStr
-  } else {
-    return numStr
-  }
+  return numStr.padStart(2, '0')
 }
 
 export function getColorStrFromCanvas(
@@ -37,7 +33,7 @@ export function getColorStrFromCanvas(
   xIndex: number,
   yIndex: number
 ): string {
-  let pixelData = context.getImageData(xIndex, yIndex, 1, 1).data
+  const pixelData = context.getImageData(xIndex, yIndex, 1, 1).data
   return (
     '#' +
     appendFront0(pixelData[0].toString(16)) +
