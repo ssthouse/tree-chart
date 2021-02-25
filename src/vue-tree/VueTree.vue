@@ -121,7 +121,7 @@ export default {
   computed: {
     initialTransformStyle() {
       return {
-        transform: `scale(${this.currentScale}) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
+        transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
         transformOrigin: 'center'
       }
     }
