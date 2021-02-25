@@ -114,13 +114,15 @@ export default {
       linkDataList: [],
       initTransformX: 0,
       initTransformY: 0,
-      DIRECTION
+      DIRECTION,
+      currentScale: 1
     }
   },
   computed: {
     initialTransformStyle() {
       return {
-        transform: `translate(${this.initTransformX}px, ${this.initTransformY}px)`
+        transform: `scale(${this.currentScale}) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
+        transformOrigin: 'center'
       }
     }
   },
@@ -163,18 +165,21 @@ export default {
     },
     setScale(scaleNum) {
       if (typeof scaleNum !== 'number') return
-      const originTransformStr = this.$refs.domContainer.style.transform
-      let targetTransform
-      if (originTransformStr.match(MATCH_SCALE_REGEX)) {
-        targetTransform = originTransformStr.replace(
-          MATCH_SCALE_REGEX,
-          `scale(${scaleNum})`
-        )
-      } else {
-        targetTransform = originTransformStr + ` scale(${scaleNum})`
+      let pos = this.getTranslate()
+      let translateString = `translate(${pos[0]}px, ${pos[1]}px)`
+      this.$refs.svg.style.transform = `scale(${scaleNum}) ` + translateString
+      this.$refs.domContainer.style.transform = `scale(${scaleNum}) ` + translateString
+      this.currentScale = scaleNum
+    },
+    getTranslate() {
+      let string = this.$refs.domContainer.style.transform
+      let match = string.match(MATCH_TRANSLATE_REGEX)
+      if (match === null) {
+          return [null, null]
       }
-      this.$refs.svg.style.transform = targetTransform
-      this.$refs.domContainer.style.transform = targetTransform
+      let x = parseInt(match[1])
+      let y = parseInt(match[2])
+      return [x, y]
     },
     isVertial() {
       return this.direction === DIRECTION.VERTICAL
@@ -337,9 +342,11 @@ export default {
             originOffsetY = offsetY
           }
         }
+        let newX = Math.floor((event.clientX - startX + originOffsetX) / this.currentScale)
+        let newY = Math.floor((event.clientY - startY + originOffsetY) / this.currentScale)
         let transformStr = `translate(${
-          event.clientX - startX + originOffsetX
-        }px, ${event.clientY - startY + originOffsetY}px)`
+          newX
+        }px, ${newY}px)`
         if (originTransform) {
           transformStr = originTransform.replace(
             MATCH_TRANSLATE_REGEX,
