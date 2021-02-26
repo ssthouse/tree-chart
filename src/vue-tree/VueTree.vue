@@ -11,7 +11,7 @@
         <div
           class="node-slot"
           v-for="(node, index) of nodeDataList"
-          @click="onClickNode(index)"
+          @click="onClickNode(index, $event)"
           :key="node.data._key"
           :style="{
             left: formatDimension(
@@ -58,7 +58,7 @@ const DEFAULT_NODE_WIDTH = 100
 const DEFAULT_NODE_HEIGHT = 100
 const DEFAULT_LEVEL_HEIGHT = 200
 
-const ANIMATION_DURATION = 800
+const ANIMATION_DURATION = 400
 
 function uuid() {
   const s = []
@@ -104,6 +104,10 @@ export default {
     dataset: {
       type: [Object, Array],
       required: true
+    },
+    collapseClass: {
+      type: String,
+      default: 'node-slot'
     }
   },
   data() {
@@ -295,6 +299,13 @@ export default {
         return linkPath.toString()
       }
     },
+    extractLineClass(d) {
+      if ('linkClass' in d.target.data) {
+        return 'link ' + d.target.data.linkClass
+      } else {
+        return 'link'
+      }
+    },
     // 使用扇形数据开始绘图
     draw() {
       var [nodeDataList, linkDataList] = this.buildTree(this._dataset)
@@ -319,7 +330,9 @@ export default {
         .duration(ANIMATION_DURATION)
         .ease(d3.easeCubicInOut)
         .style('opacity', 1)
-        .attr('class', 'link')
+        .attr('class', function (d, i) {
+          return self.extractLineClass(d)
+        })
         .attr('d', function (d, i) {
           return self.generateLinkPath(d)
         })
@@ -397,7 +410,8 @@ export default {
         isDrag = false
       }
     },
-    onClickNode(index) {
+    onClickNode(index, event) {
+      if (event.target.closest('.' + this.collapseClass) === null) return
       const curNode = this.nodeDataList[index]
       if (curNode.data.children) {
         curNode.data._children = curNode.data.children
@@ -446,14 +460,14 @@ export default {
 .tree-node-item-enter,
 .tree-node-item-leave-to {
   transition-timing-function: ease-in-out;
-  transition: transform 0.8s;
+  transition: transform 0.4s;
   opacity: 0;
 }
 
 .tree-node-item-enter-active,
 .tree-node-item-leave-active {
   transition-timing-function: ease-in-out;
-  transition: all 0.8s;
+  transition: all 0.4s;
 }
 
 .tree-container {
@@ -491,7 +505,7 @@ export default {
   align-items: center;
   justify-content: center;
   box-sizing: content-box;
-  transition: all 0.8s;
+  transition: all 0.4s;
   transition-timing-function: ease-in-out;
 }
 </style>
