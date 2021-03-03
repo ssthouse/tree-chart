@@ -108,6 +108,10 @@ export default {
     collapseClass: {
       type: String,
       default: 'node-slot'
+    },
+    initialCollapseLevel: {
+      type: Number,
+      default: 99
     }
   },
   data() {
@@ -149,7 +153,7 @@ export default {
     }
   },
   created() {
-    //
+    this.truncate(this.initialCollapseLevel)
   },
   mounted() {
     this.init()
