@@ -130,14 +130,10 @@ export default {
       }
     },
     _dataset() {
-      if (this.dataset.constructor === Array) {
-        return { name: 'invisible root', children: this.dataset }
-      } else {
-        return this.dataset
-      }
+      return this.updatedInternalData(this.dataset)
     },
     multiRootNodes() {
-      if (this.dataset.constructor === Array) {
+      if (Array.isArray(this.dataset)) {
         return true
       } else {
         return false
@@ -148,13 +144,12 @@ export default {
     _dataset: {
       deep: true,
       handler: function () {
-        this.addUniqueKey(this._dataset)
         this.draw()
       }
     }
   },
   created() {
-    this.addUniqueKey(this._dataset)
+    //
   },
   mounted() {
     this.init()
@@ -212,21 +207,60 @@ export default {
     isVertical() {
       return this.direction === DIRECTION.VERTICAL
     },
-    addUniqueKey(node) {
-      if (!('_key' in node)) {
-        node._key = uuid()
-      }
-      // If this node is collapsed its children will be temporarily stored in _children.
-      if (node.children !== null) {
-        for (var i = node.children.length - 1; i >= 0; i--) {
-          this.addUniqueKey(node.children[i])
+    truncate(level = null) {
+      var node = this._dataset
+      var currentLevel = -1
+      this.expandNode(currentLevel, level, node)
+      this.draw()
+    },
+    expandNode(previousLevel, stopLevel, node) {
+      var currentLevel = previousLevel + 1
+      if (stopLevel !== null && currentLevel > stopLevel) {
+        if (node.children) {
+          node._children = node.children
+          node.children = null
+          node._collapsed = true
+        }
+        for (var i = node._children.length - 1; i >= 0; i--) {
+          this.expandNode(currentLevel, stopLevel, node._children[i])
         }
       } else {
-        for (var i = node._children.length - 1; i >= 0; i--) {
-          this.addUniqueKey(node._children[i])
+        if (node._children) {
+          node.children = node._children
+          node._children = null
+          node._collapsed = false
+        }
+        for (var i = node.children.length - 1; i >= 0; i--) {
+          this.expandNode(currentLevel, stopLevel, node.children[i])
         }
       }
-      return node
+    },
+    updatedInternalData(externalData) {
+      var data = { name: '__invisible_root', children: [] }
+      if (!externalData) return data
+      if (Array.isArray(externalData)) {
+        for (var i = externalData.length - 1; i >= 0; i--) {
+          data.children.push(this.deepCopy(externalData[i]))
+        }
+      } else {
+        data.children.push(this.deepCopy(externalData))
+      }
+      return data
+    },
+    deepCopy(node) {
+      let obj = { _key: uuid() }
+      for (var key in node) {
+        if (node[key] === null) {
+          obj[key] = null
+        } else if (Array.isArray(node[key])) {
+          obj[key] = node[key].map((x) => this.deepCopy(x))
+        } else if (typeof node[key] === 'object') {
+          obj[key] = this.deepCopy(node[key])
+        } else {
+          obj[key] = node[key]
+        }
+      }
+      return obj
     },
     initTransform() {
       const containerWidth = this.$refs.container.offsetWidth
@@ -309,11 +343,14 @@ export default {
     // 使用扇形数据开始绘图
     draw() {
       var [nodeDataList, linkDataList] = this.buildTree(this._dataset)
-      if (this.multiRootNodes) {
-        // Do not render the invisible root node.
-        nodeDataList.splice(0, 1)
-        linkDataList.splice(0, this.dataset.length)
-      }
+      console.log(linkDataList)
+
+      // Do not render the invisible root node.
+      nodeDataList.splice(0, 1)
+      linkDataList = linkDataList.filter(
+        (x) => x.source.data.name !== '__invisible_root'
+      )
+
       this.linkDataList = linkDataList
       this.svg = this.d3.select(this.$refs.svg)
 
