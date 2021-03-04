@@ -490,9 +490,9 @@ export default {
   }
 
   .link {
-    stroke-width: 2px !important;
+    stroke-width: 3px;
     fill: transparent !important;
-    stroke: #cecece !important;
+    stroke: #cecece;
   }
 }
 </style>
