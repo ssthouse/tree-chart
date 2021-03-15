@@ -8,7 +8,8 @@
     "lint": "eslint --ext .js,.vue src",
     "dev": "webpack-dev-server --inline --progress --config ./build/webpack.config.dev.js",
     "build": "webpack --config ./build/webpack.config.prod.js",
-    "build:component": "webpack --config ./build/webpack.config.library.js"
+    "build:component": "webpack --config ./build/webpack.config.library.js",
+    "publish": "npm run build:component && npm release"
   },
   "dependencies": {
     "d3": "^4.13.0",
@@ -19,7 +20,6 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
@@ -94,24 +94,8 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/typescript",
-      "@vue/prettier"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "warn",
-        {
-          "#": "prettier config in here :)",
-          "singleQuote": true,
-          "semi": false,
-          "trailingComma": "none",
-          "space-before-function-paren": "off"
-        }
-      ]
-    }
+      "@vue/typescript"
+    ]
   },
   "prettier": {
     "#": "prettier config in here :)",
