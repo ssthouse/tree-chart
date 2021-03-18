@@ -5,8 +5,15 @@ function text(ctx, text, x, y, fontSize, fontColor) {
   ctx.fillText(text, x, y)
 }
 
-function wrapText(context, text: string, x: number, y: number,
-  maxWidth: number, lineHeight: number, fontColor: string) {
+function wrapText(
+  context,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number,
+  fontColor: string
+) {
   context.fillStyle = fontColor
   const words = text.split(' ')
   let line = ''

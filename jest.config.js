@@ -1,3 +1,6 @@
 module.exports = {
-  preset: '@vue/cli-plugin-unit-jest/presets/no-babel'
+  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
+  testMatch: [
+    '**/*.spec.(js|jsx|ts|tsx)'
+  ],
 }

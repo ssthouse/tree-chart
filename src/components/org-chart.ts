@@ -366,7 +366,7 @@ class OrgChart {
         indexY + self.unitPadding + 24,
         maxWidth,
         20,
-        '#000000',
+        '#000000'
       )
     })
   }

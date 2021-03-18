@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import * as d3 from 'd3'
 import { DefaultOptions, GraphDirection, LinkStyle } from './VueTreeTypes'
+import { uuid } from './TreeBuilder'
 export default Vue.extend({
   name: 'vue-tree',
   props: {

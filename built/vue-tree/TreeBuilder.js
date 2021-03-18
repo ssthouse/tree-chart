@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-const uuid = () => {
+export const uuid = () => {
   const s = []
   const hexDigits = '0123456789abcdef'
   for (let i = 0; i < 36; i++) {
@@ -10,12 +10,12 @@ const uuid = () => {
   s[8] = s[13] = s[18] = s[23] = '-'
   return s.join('')
 }
-const treeBuilder = (rootNode, nodeWidth, levelHeight) => {
+export const treeBuilder = (rootNode, nodeWidth, levelHeight) => {
   const treeBuilder = d3.tree().nodeSize([nodeWidth, levelHeight])
   const tree = treeBuilder(d3.hierarchy(rootNode))
   return [tree.descendants(), tree.links()]
 }
-const addUniqueKey = (rootNode) => {
+export const addUniqueKey = (rootNode) => {
   const queue = [rootNode]
   while (queue.length !== 0) {
     const node = queue.pop()
