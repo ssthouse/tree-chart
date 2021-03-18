@@ -3,17 +3,16 @@
   "version": "0.4.4",
   "description": "A Vue.js project",
   "author": "ssthouse",
-  "main": "library/vue-tree-chart.js",
-  "types": "built/index.d.ts",
   "scripts": {
-    "lint": "eslint --ext .js,.vue src",
-    "dev": "webpack-dev-server --inline --progress --config ./build/webpack.config.dev.js",
     "build": "webpack --config ./build/webpack.config.prod.js",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "eslint --ext .js,.vue,.ts src",
     "build:component": "webpack --config ./build/webpack.config.library.js",
+    "dev": "webpack-dev-server --inline --progress --config ./build/webpack.config.dev.js",
     "prepublish": "tsc"
   },
+  "main": "library/vue-tree-chart.js",
   "dependencies": {
-
     "d3": "^4.13.0",
     "vue": "^2.6.8",
     "vue-router": "^3.0.1",
@@ -23,8 +22,10 @@
     "@types/d3": "^6.3.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
+    "@vue/cli-plugin-unit-jest": "^4.5.12",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "^1.0.3",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -82,15 +83,6 @@
     "webpack-dev-server": "^3.2.1",
     "webpack-merge": "^4.1.0"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "prettier": {
     "#": "prettier config in here :)",
     "singleQuote": true,
@@ -98,6 +90,15 @@
     "arrowParens": "always",
     "space-before-function-paren": "off",
     "trailingComma": "none"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
   },
   "husky": {
     "hooks": {
@@ -116,5 +117,6 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "types": "built/index.d.ts"
 }
