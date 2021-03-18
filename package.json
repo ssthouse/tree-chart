@@ -4,19 +4,23 @@
   "description": "A Vue.js project",
   "author": "ssthouse",
   "main": "library/vue-tree-chart.js",
+  "types": "built/index.d.ts",
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "dev": "webpack-dev-server --inline --progress --config ./build/webpack.config.dev.js",
     "build": "webpack --config ./build/webpack.config.prod.js",
-    "build:component": "webpack --config ./build/webpack.config.library.js"
+    "build:component": "webpack --config ./build/webpack.config.library.js",
+    "prepublish": "tsc"
   },
   "dependencies": {
+
     "d3": "^4.13.0",
     "vue": "^2.6.8",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.18"
   },
   "devDependencies": {
+    "@types/d3": "^6.3.0",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "@vue/eslint-config-prettier": "^6.0.0",
@@ -87,32 +91,6 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/typescript",
-      "@vue/prettier"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "warn",
-        {
-          "#": "prettier config in here :)",
-          "singleQuote": true,
-          "semi": false,
-          "trailingComma": "none",
-          "space-before-function-paren": "off"
-        }
-      ]
-    }
-  },
   "prettier": {
     "#": "prettier config in here :)",
     "singleQuote": true,

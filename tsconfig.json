@@ -1,12 +1,23 @@
 {
   "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM"
+    ],
+    "esModuleInterop": true,
+    "allowJs": true,
     "outDir": "./built/",
     "sourceMap": true,
     "strict": false,
     "noImplicitReturns": true,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "target": "es5"
+    "declaration": true
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*"],
+  "exclude": [
+    "node_modules"
+  ]
 }
