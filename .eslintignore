@@ -3,3 +3,4 @@
 /dist/
 /*.js
 library/*.js
+src/**/*d.ts

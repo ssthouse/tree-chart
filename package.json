@@ -5,7 +5,7 @@
   "author": "ssthouse",
   "main": "library/vue-tree-chart.js",
   "scripts": {
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue,.ts src",
     "dev": "webpack-dev-server --inline --progress --config ./build/webpack.config.dev.js",
     "build": "webpack --config ./build/webpack.config.prod.js",
     "build:component": "webpack --config ./build/webpack.config.library.js"
@@ -87,32 +87,6 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/typescript",
-      "@vue/prettier"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "warn",
-        {
-          "#": "prettier config in here :)",
-          "singleQuote": true,
-          "semi": false,
-          "trailingComma": "none",
-          "space-before-function-paren": "off"
-        }
-      ]
-    }
-  },
   "prettier": {
     "#": "prettier config in here :)",
     "singleQuote": true,
