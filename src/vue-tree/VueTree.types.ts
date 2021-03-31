@@ -4,6 +4,7 @@ export interface VueTreeConfig {
   nodeWidth?: number
   nodeHeight?: number
   levelHeight?: number
+  zoomSteps?: number
 }
 
 export type WithChildren<T> = T & {
@@ -34,7 +35,8 @@ export const DEFAULT_LEVEL_HEIGHT: number = 200
 export const DefaultOptions = (): Required<VueTreeConfig> => ({
   levelHeight: DEFAULT_LEVEL_HEIGHT,
   nodeHeight: DEFAULT_NODE_HEIGHT,
-  nodeWidth: DEFAULT_NODE_WIDTH
+  nodeWidth: DEFAULT_NODE_WIDTH,
+  zoomSteps: 0.2
 })
 
 export type D3TreeNode<T> = HierarchyPointNode<RootNode<T>>

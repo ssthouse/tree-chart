@@ -44,7 +44,7 @@ export default Vue.extend({
     dataset: {
       type: Object,
       required: true
-    } as PropOptions<RootNode<unknown>>,
+    } as PropOptions<RootNode<unknown>>
   },
   data() {
     return {
@@ -117,10 +117,10 @@ export default Vue.extend({
       this.currentTransform.scale = 1
     },
     zoomIn() {
-      this.currentTransform.scale *= 1.2
+      this.currentTransform.scale *= 1 + this.configGetter.zoomSteps
     },
     zoomOut() {
-      this.currentTransform.scale *= 0.8
+      this.currentTransform.scale *= 1 - this.configGetter.zoomSteps
     },
     onMouseDown(event: MouseEvent): void {
       // Check if its a right click
@@ -172,7 +172,6 @@ export default Vue.extend({
         .data(linkDataList, (d: HierarchyPointLink<RootNode<unknown>>) => {
           return `${d.source.data._key}-${d.target.data._key}`
         })
-      console.log(links)
       links
         .enter()
         .append('path')
@@ -203,7 +202,6 @@ export default Vue.extend({
       this.nodeDataList = nodeDataList
     },
     onClickNode(index: number, event: MouseEvent): void {
-      console.log(event)
       // Ignore clicks during dragging or when shift key is pressed
       if (event.button !== 0 || this.isDragging || event.shiftKey) {
         return
