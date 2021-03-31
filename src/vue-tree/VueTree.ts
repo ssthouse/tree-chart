@@ -12,7 +12,13 @@ import {
   Point
 } from './VueTree.types'
 
-import { generateCurvedNodeLinksPath, generateStraightNodeLinksPath, rotatePoint, treeBuilder } from './TreeUtils'
+import {
+  addUniqueKey,
+  generateCurvedNodeLinksPath,
+  generateStraightNodeLinksPath,
+  rotatePoint,
+  treeBuilder
+} from './TreeUtils'
 import { HierarchyPointLink, HierarchyPointNode } from 'd3'
 
 const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i
@@ -38,22 +44,32 @@ export default Vue.extend({
     dataset: {
       type: Object,
       required: true
-    } as PropOptions<RootNode<unknown>>
+    } as PropOptions<RootNode<unknown>>,
   },
   data() {
     return {
+      TreeDrawDirection,
       colors: '568FE1',
       nodeDataList: [] as Array<D3TreeNode<unknown>>,
       linkDataList: [] as Array<D3TreeNodeLink<unknown>>,
-      initTransformX: 0,
-      initTransformY: 0,
-      currentScale: 1,
-      currentTransform: {} as TreeTransformOptions,
+      currentTransform: {
+        scale: 1,
+        translateX: 0,
+        translateY: 0
+      } as TreeTransformOptions,
       // data properties to handle dragging
       isDragging: false,
       dragTransformMemory: {} as TreeTransformOptions,
       dragStartX: 0,
       dragStartY: 0
+    }
+  },
+  watch: {
+    dataset: {
+      deep: true,
+      handler: () => {
+        this.draw()
+      }
     }
   },
   computed: {
@@ -67,7 +83,7 @@ export default Vue.extend({
       }
     },
     datasetGetter(): RootNode<unknown> {
-      return this.dataset as RootNode<unknown>
+      return addUniqueKey(this.dataset as RootNode<unknown>)
     },
     treeContainerElementRef(): HTMLElement {
       return this.$refs.container as HTMLElement
@@ -77,19 +93,19 @@ export default Vue.extend({
     },
     currentStyle(): Partial<CSSStyleDeclaration> {
       return {
-        transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
+        transform: `scale(${this.currentTransform.scale}) translate(${this.currentTransform.translateX}px, ${this.currentTransform.translateY}px)`,
         transformOrigin: 'center'
       }
     },
     transformX(): number {
       const containerWidth = this.treeContainer.offsetWidth
-      if (this.isVertical()) {
+      if (this.isVertical) {
         return Math.floor(containerWidth / 2)
       }
       return Math.floor(this.configGetter.nodeWidth)
     },
     transformY(): number {
-      if (this.isVertical()) {
+      if (this.isVertical) {
         return Math.floor(this.configGetter.nodeHeight)
       }
       const containerHeight = this.treeContainer.offsetHeight
@@ -97,23 +113,39 @@ export default Vue.extend({
     }
   },
   methods: {
+    restoreScale() {
+      this.currentTransform.scale = 1
+    },
+    zoomIn() {
+      this.currentTransform.scale *= 1.2
+    },
+    zoomOut() {
+      this.currentTransform.scale *= 0.8
+    },
     onMouseDown(event: MouseEvent): void {
+      // Check if its a right click
+      if (event.button === 2) {
+        // abort dragging
+        this.onMouseUp()
+        return
+      }
       this.isDragging = true
       this.dragStartX = event.clientX
       this.dragStartY = event.clientY
       this.dragTransformMemory = { ...this.currentTransform }
     },
     onMouseMove(event: MouseEvent): void {
-      if (!this.isDrag) {
+      if (!this.isDragging) {
         return
       }
-
       let newX =
-        Math.floor((event.clientX - this.dragStartX) / this.currentScale) +
-        this.dragTransformMemory.translateX
+        Math.floor(
+          (event.clientX - this.dragStartX) / this.currentTransform.scale
+        ) + this.dragTransformMemory.translateX
       let newY =
-        Math.floor((event.clientY - this.dragStartY) / this.currentScale) +
-        this.dragTransformMemory.translateY
+        Math.floor(
+          (event.clientY - this.dragStartY) / this.currentTransform.scale
+        ) + this.dragTransformMemory.translateY
 
       this.currentTransform.translateX = newX
       this.currentTransform.translateY = newY
@@ -130,7 +162,7 @@ export default Vue.extend({
         this.configGetter.levelHeight
       )
       this.linkDataList = linkDataList
-      const d3SvgSelector = d3.select<Element, D3TreeNodeLink<unknown>>(
+      const d3SvgSelector = d3.select<HTMLElement, D3TreeNodeLink<unknown>>(
         this.svgElementRef
       )
 
@@ -140,7 +172,7 @@ export default Vue.extend({
         .data(linkDataList, (d: HierarchyPointLink<RootNode<unknown>>) => {
           return `${d.source.data._key}-${d.target.data._key}`
         })
-
+      console.log(links)
       links
         .enter()
         .append('path')
@@ -170,6 +202,26 @@ export default Vue.extend({
 
       this.nodeDataList = nodeDataList
     },
+    onClickNode(index: number, event: MouseEvent): void {
+      console.log(event)
+      // Ignore clicks during dragging or when shift key is pressed
+      if (event.button !== 0 || this.isDragging || event.shiftKey) {
+        return
+      }
+      const nodes = this.nodeDataList as Array<D3TreeNode<unknown>>
+      const node = nodes[index].data
+
+      this.$emit('clickNode', [index, node, event])
+      this.draw()
+    },
+    formatDimension(dimension: string | number): string {
+      if (typeof dimension === 'number') return `${dimension}px`
+      if (dimension.indexOf('px') !== -1) {
+        return dimension
+      } else {
+        return `${dimension}px`
+      }
+    },
     generateLinkPath(d: D3TreeNodeLink<unknown>): string {
       switch (this.linkStyle as LinkStyle) {
         case LinkStyle.CURVE:
@@ -178,9 +230,24 @@ export default Vue.extend({
         default:
           return generateStraightNodeLinksPath(d, this.direction)
       }
+    },
+    initTransform(): void {
+      const containerWidth = this.treeContainerElementRef.offsetWidth
+      const containerHeight = this.treeContainerElementRef.offsetHeight
+      if (this.isVertical) {
+        this.currentTransform.translateX = Math.floor(containerWidth / 2)
+        this.currentTransform.translateY = Math.floor(this.config.nodeHeight)
+      } else {
+        this.currentTransform.translateX = Math.floor(this.config.nodeWidth)
+        this.currentTransform.translateY = Math.floor(containerHeight / 2)
+      }
     }
   },
   mounted() {
-    this.draw()
+    const vm = this
+    this.$nextTick(() => {
+      vm.draw()
+      vm.initTransform()
+    })
   }
 })

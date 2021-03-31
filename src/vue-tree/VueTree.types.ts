@@ -12,7 +12,10 @@ export type WithChildren<T> = T & {
 
 export type WithKey<T> = T & { _key?: string }
 
-export type RootNode<T> = WithChildren<WithKey<T>>
+export type RootNode<T> = WithChildren<WithKey<T>> & {
+  _collapsed?: boolean
+  value?: string
+}
 
 export enum LinkStyle {
   CURVE = 'curve',
@@ -37,10 +40,7 @@ export const DefaultOptions = (): Required<VueTreeConfig> => ({
 export type D3TreeNode<T> = HierarchyPointNode<RootNode<T>>
 export type D3TreeNodeLink<T> = HierarchyPointLink<RootNode<T>>
 
-export type TreeNodeMap<T> = [
-  Array<D3TreeNode<T>>,
-  Array<D3TreeNodeLink<T>>
-]
+export type TreeNodeMap<T> = [Array<D3TreeNode<T>>, Array<D3TreeNodeLink<T>>]
 
 export type Point = [number, number]
 

@@ -1,24 +1,26 @@
 <template>
-  <div class="tree-container" ref="container">
-    <svg class="svg vue-tree" ref="svg" :style="initialTransformStyle"></svg>
+  <div
+    class="tree-container"
+    ref="container"
+    @mouseup="onMouseUp"
+    @mousedown="onMouseDown"
+    @mousemove="onMouseMove"
+  >
+    <svg class="svg vue-tree" ref="svg" :style="currentStyle"></svg>
 
-    <div
-      class="dom-container"
-      ref="domContainer"
-      :style="initialTransformStyle"
-    >
+    <div class="dom-container" ref="domContainer" :style="currentStyle">
       <transition-group name="tree-node-item" tag="div">
         <div
           class="node-slot"
           v-for="(node, index) of nodeDataList"
-          @click="onClickNode(index)"
+          @click="onClickNode(index, $event)"
           :key="node.data._key"
           :style="{
             left: formatDimension(
-              direction === DIRECTION.VERTICAL ? node.x : node.y
+              direction === TreeDrawDirection.VERTICAL ? node.x : node.y
             ),
             top: formatDimension(
-              direction === DIRECTION.VERTICAL ? node.y : node.x
+              direction === TreeDrawDirection.VERTICAL ? node.y : node.x
             ),
             width: formatDimension(config.nodeWidth),
             height: formatDimension(config.nodeHeight)

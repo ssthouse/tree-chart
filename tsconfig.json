@@ -16,8 +16,9 @@
     "noImplicitReturns": true,
     "declaration": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*.ts","./src/**/*.vue","./src/**/*.js"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "./src/**/*.spec.ts"
   ]
 }

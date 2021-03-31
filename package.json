@@ -1,6 +1,6 @@
 {
   "name": "@ssthouse/vue-tree-chart",
-  "version": "0.4.4",
+  "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "ssthouse",
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "main": "library/vue-tree-chart.js",
   "dependencies": {
-    "d3": "^4.13.0",
+    "d3": "^6.6.2",
     "lodash": "^4.17.21",
     "vue": "^2.6.8",
     "vue-router": "^3.0.1",

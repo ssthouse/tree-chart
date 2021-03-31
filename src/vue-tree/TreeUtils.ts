@@ -90,7 +90,9 @@ export const generateCurvedNodeLinksPath = <T>(
   treeDir: TreeDrawDirection
 ): string => {
   const isVertical = treeDir === TreeDrawDirection.VERTICAL
-  const linkPath = isVertical ? d3.linkVertical() : d3.linkHorizontal()
+  const linkPath = isVertical
+    ? d3.linkVertical<D3TreeNodeLink<T>, [number, number]>()
+    : d3.linkHorizontal<D3TreeNodeLink<T>, [number, number]>()
   linkPath
     .x(function ([x, y]) {
       return x
@@ -98,15 +100,13 @@ export const generateCurvedNodeLinksPath = <T>(
     .y(function ([x, y]) {
       return y
     })
-    .source(function ({ source }) {
-      const sourcePoint: Point = source
-      return isVertical ? sourcePoint : rotatePoint(sourcePoint)
+    .source(function ({ source: { x, y } }) {
+      return isVertical ? [x, y] : rotatePoint([x, y])
     })
-    .target(function ({ target }) {
-      const targetPoint: Point = target
-      return isVertical ? targetPoint : rotatePoint(targetPoint)
+    .target(function ({ target: { x, y } }) {
+      return isVertical ? [x, y] : rotatePoint([x, y])
     })
-  return linkPath.toString()
+  return linkPath(nodeLink)
 }
 
 export const generateStraightNodeLinksPath = <T>(
@@ -118,7 +118,7 @@ export const generateStraightNodeLinksPath = <T>(
   const linkPath = d3.path()
   let sourcePoint: Point = [nodeLink.source.x, nodeLink.source.y]
   let targetPoint: Point = [nodeLink.target.x, nodeLink.target.y]
-  if (!this.isVertical) {
+  if (!isVertical) {
     sourcePoint = rotatePoint(sourcePoint)
     targetPoint = rotatePoint(targetPoint)
   }
