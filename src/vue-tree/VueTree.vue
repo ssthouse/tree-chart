@@ -149,6 +149,7 @@ export default {
       deep: true,
       handler: function () {
         this.draw()
+        this.initTransform()
       }
     }
   },
