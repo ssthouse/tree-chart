@@ -124,7 +124,7 @@
     <h3>Example of multiple parents</h3>
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
-      :dataset="tier3"
+      :dataset="vehicules"
       :config="treeConfig"
       linkStyle="straight"
     >
@@ -211,7 +211,7 @@ export default {
           }
         ]
       },
-      tier3: {
+      vehicules: {
         name: 'Wheels',
         children: [
           {
