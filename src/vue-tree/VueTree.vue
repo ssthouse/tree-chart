@@ -100,6 +100,10 @@ export default {
       type: String,
       default: DIRECTION.VERTICAL
     },
+    collapseEnabled: {
+      type: Boolean,
+      default: true
+    },
     // 展示的层级数据, 样例数据如: hierachical.json
     dataset: {
       type: Object,
@@ -403,17 +407,19 @@ export default {
       }
     },
     onClickNode(index) {
-      const curNode = this.nodeDataList[index]
-      if (curNode.data.children) {
-        curNode.data._children = curNode.data.children
-        curNode.data.children = null
-        curNode.data._collapsed = true
-      } else {
-        curNode.data.children = curNode.data._children
-        curNode.data._children = null
-        curNode.data._collapsed = false
+      if (this.collapseEnabled) {
+        const curNode = this.nodeDataList[index]
+        if (curNode.data.children) {
+          curNode.data._children = curNode.data.children
+          curNode.data.children = null
+          curNode.data._collapsed = true
+        } else {
+          curNode.data.children = curNode.data._children
+          curNode.data._children = null
+          curNode.data._collapsed = false
+        }
+        this.draw()
       }
-      this.draw()
     },
     formatDimension(dimension) {
       if (typeof dimension === 'number') return `${dimension}px`

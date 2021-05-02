@@ -121,11 +121,12 @@
       </template>
     </vue-tree>
 
-    <h3>Example of multiple parents</h3>
+    <h3>Example of multiple parents with node collapse disabled</h3>
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="vehicules"
       :config="treeConfig"
+      :collapse-enabled="false"
       linkStyle="straight"
     >
       <template v-slot:node="{ node, collapsed }">
@@ -134,7 +135,7 @@
           :style="{ border: collapsed ? '2px solid grey' : '' }"
         >
           <span style="padding: 4px 0; font-weight: bold;"
-            >能力值{{ node.name }}</span
+            >能力值 {{ node.name }}</span
           >
         </div>
       </template>
