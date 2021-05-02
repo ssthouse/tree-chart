@@ -281,12 +281,23 @@ export default {
       const specialLinks = this.dataset['links']
       if (specialLinks && identifier) {
         for (const link of specialLinks) {
-          const parent = this.nodeDataList.find((d) => {
-            return d[identifier] == link.parent
-          })
-          const children = this.nodeDataList.filter((d) => {
-            return d[identifier] == link.child
-          })
+          let parent,
+            children = undefined
+          if (identifier === 'value') {
+            parent = this.nodeDataList.find((d) => {
+              return d[identifier] == link.parent
+            })
+            children = this.nodeDataList.filter((d) => {
+              return d[identifier] == link.child
+            })
+          } else {
+            parent = this.nodeDataList.find((d) => {
+              return d['data'][identifier] == link.parent
+            })
+            children = this.nodeDataList.filter((d) => {
+              return d['data'][identifier] == link.child
+            })
+          }
           if (parent && children) {
             for (const child of children) {
               const new_link = {
@@ -294,22 +305,6 @@ export default {
                 target: child
               }
               this.linkDataList.push(new_link)
-            }
-          } else {
-            const parent = this.nodeDataList.find((d) => {
-              return d['data'][identifier] == link.parent
-            })
-            const children = this.nodeDataList.filter((d) => {
-              return d['data'][identifier] == link.child
-            })
-            if (parent && children) {
-              for (const child of children) {
-                const new_link = {
-                  source: parent,
-                  target: child
-                }
-                this.linkDataList.push(new_link)
-              }
             }
           }
         }
