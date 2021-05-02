@@ -271,6 +271,46 @@ export default {
     draw() {
       const [nodeDataList, linkDataList] = this.buildTree(this.dataset)
       this.linkDataList = linkDataList
+      this.nodeDataList = nodeDataList
+
+      const identifier = this.dataset['identifier']
+      const specialLinks = this.dataset['links']
+      if (specialLinks && identifier) {
+        for (const link of specialLinks) {
+          const parent = this.nodeDataList.find((d) => {
+            return d[identifier] == link.parent
+          })
+          const children = this.nodeDataList.filter((d) => {
+            return d[identifier] == link.child
+          })
+          if (parent && children) {
+            for (const child of children) {
+              const new_link = {
+                source: parent,
+                target: child
+              }
+              this.linkDataList.push(new_link)
+            }
+          } else {
+            const parent = this.nodeDataList.find((d) => {
+              return d['data'][identifier] == link.parent
+            })
+            const children = this.nodeDataList.filter((d) => {
+              return d['data'][identifier] == link.child
+            })
+            if (parent && children) {
+              for (const child of children) {
+                const new_link = {
+                  source: parent,
+                  target: child
+                }
+                this.linkDataList.push(new_link)
+              }
+            }
+          }
+        }
+      }
+
       this.svg = this.d3.select(this.$refs.svg)
 
       const self = this
@@ -304,8 +344,6 @@ export default {
         .ease(d3.easeCubicInOut)
         .style('opacity', 0)
         .remove()
-
-      this.nodeDataList = nodeDataList
     },
     buildTree(rootNode) {
       const treeBuilder = this.d3
