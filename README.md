@@ -393,7 +393,7 @@ export default {
 | dataset   | Object | null                                                                      | nested tree data                                                                   |
 | config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth and nodeHeight config the tree node size. levelHeight is tree row height |
 | linkStyle | String | 'curve'                                                                   | control link style, options: 'curve' or 'straight'                                 |
-| direction | string | 'vertical'
+| direction | string | 'vertical' | control tree chart direction, options: 'vertical' or 'horizontal'                  |
 | collapse-enabled | Boolean | true | Control whether when clicking on a node it collapses its children |
 
 **4.2 slot**
