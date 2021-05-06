@@ -278,6 +278,112 @@ export default {
 
 ![](https://tva1.sinaimg.cn/large/007S8ZIlly1geprx8a8zgj30sh0hdglq.jpg)
 
+**3.4 render tree with multiple parents**
+
+<details>
+  <summary>See Code</summary>
+
+```vue
+<template>
+  <div class='container'>
+    <vue-tree
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="vehicules"
+      :config="treeConfig"
+      linkStyle="straight"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <span style="padding: 4px 0; font-weight: bold;"
+          >能力值{{ node.name }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
+  </div>
+</template>
+<script>
+export default {
+  name: 'treemap',
+  data() {
+    return {
+      vehicules: {
+        name: 'Wheels',
+        children: [
+          {
+            name: 'Wings',
+            children: [
+              {
+                name: 'Plane'
+              }
+            ]
+          },
+          {
+            name: 'Piston',
+            customID: 3
+          },
+          {
+            name: 'Carburetor',
+            children: [
+              {
+                name: 'Truck',
+                customID: 2
+              },
+              {
+                name: 'Car',
+                customID: 2
+              }
+            ]
+          },
+          {
+            name: 'Valve',
+            customID: 4
+          },
+          {
+            name: 'Crankshaft',
+            customID: 1
+          }
+        ],
+        links: [
+          { parent: 1, child: 2 },
+          { parent: 3, child: 2 },
+          { parent: 4, child: 2 }
+        ],
+        identifier: 'customID'
+      },
+      treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
+    }
+  }
+}
+</script>
+
+<style scoped lang="less">
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rich-media-node {
+  width: 80px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  color: white;
+  background-color: #f7c616;
+  border-radius: 4px;
+}
+</style>
+```
+</details>
+
+![](https://github.com/Maxim-Durand/scrapcalculator/blob/143ef85f15aaca1b4044faa6fbfc920922aa5ec2/src/assets/multipleParents.png?raw=true)
+
 #### 4. API
 
 **4.1 props**
@@ -287,7 +393,8 @@ export default {
 | dataset   | Object | null                                                                      | nested tree data                                                                   |
 | config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth and nodeHeight config the tree node size. levelHeight is tree row height |
 | linkStyle | String | 'curve'                                                                   | control link style, options: 'curve' or 'straight'                                 |
-| direction | string | 'vertical'                                                                | control tree chart direction, options: 'vertical' or 'horizontal'                  |
+| direction | string | 'vertical' | control tree chart direction, options: 'vertical' or 'horizontal'                  |
+| collapse-enabled | Boolean | true | Control whether when clicking on a node it collapses its children |
 
 **4.2 slot**
 

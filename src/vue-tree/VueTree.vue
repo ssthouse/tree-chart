@@ -100,6 +100,10 @@ export default {
       type: String,
       default: DIRECTION.VERTICAL
     },
+    collapseEnabled: {
+      type: Boolean,
+      default: true
+    },
     // 展示的层级数据, 样例数据如: hierachical.json
     dataset: {
       type: Object,
@@ -271,6 +275,41 @@ export default {
     draw() {
       const [nodeDataList, linkDataList] = this.buildTree(this.dataset)
       this.linkDataList = linkDataList
+      this.nodeDataList = nodeDataList
+
+      const identifier = this.dataset['identifier']
+      const specialLinks = this.dataset['links']
+      if (specialLinks && identifier) {
+        for (const link of specialLinks) {
+          let parent,
+            children = undefined
+          if (identifier === 'value') {
+            parent = this.nodeDataList.find((d) => {
+              return d[identifier] == link.parent
+            })
+            children = this.nodeDataList.filter((d) => {
+              return d[identifier] == link.child
+            })
+          } else {
+            parent = this.nodeDataList.find((d) => {
+              return d['data'][identifier] == link.parent
+            })
+            children = this.nodeDataList.filter((d) => {
+              return d['data'][identifier] == link.child
+            })
+          }
+          if (parent && children) {
+            for (const child of children) {
+              const new_link = {
+                source: parent,
+                target: child
+              }
+              this.linkDataList.push(new_link)
+            }
+          }
+        }
+      }
+
       this.svg = this.d3.select(this.$refs.svg)
 
       const self = this
@@ -304,8 +343,6 @@ export default {
         .ease(d3.easeCubicInOut)
         .style('opacity', 0)
         .remove()
-
-      this.nodeDataList = nodeDataList
     },
     buildTree(rootNode) {
       const treeBuilder = this.d3
@@ -365,17 +402,19 @@ export default {
       }
     },
     onClickNode(index) {
-      const curNode = this.nodeDataList[index]
-      if (curNode.data.children) {
-        curNode.data._children = curNode.data.children
-        curNode.data.children = null
-        curNode.data._collapsed = true
-      } else {
-        curNode.data.children = curNode.data._children
-        curNode.data._children = null
-        curNode.data._collapsed = false
+      if (this.collapseEnabled) {
+        const curNode = this.nodeDataList[index]
+        if (curNode.data.children) {
+          curNode.data._children = curNode.data.children
+          curNode.data.children = null
+          curNode.data._collapsed = true
+        } else {
+          curNode.data.children = curNode.data._children
+          curNode.data._children = null
+          curNode.data._collapsed = false
+        }
+        this.draw()
       }
-      this.draw()
     },
     formatDimension(dimension) {
       if (typeof dimension === 'number') return `${dimension}px`

@@ -120,6 +120,26 @@
         </div>
       </template>
     </vue-tree>
+
+    <h3>Example of multiple parents with node collapse disabled</h3>
+    <vue-tree
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="vehicules"
+      :config="treeConfig"
+      :collapse-enabled="false"
+      linkStyle="straight"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值 {{ node.name }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
   </div>
 </template>
 
@@ -191,6 +211,50 @@ export default {
               'https://live.yworks.com/demos/complete/interactiveorgchart/resources/usericon_female3.svg'
           }
         ]
+      },
+      vehicules: {
+        name: 'Wheels',
+        children: [
+          {
+            name: 'Wings',
+            children: [
+              {
+                name: 'Plane'
+              }
+            ]
+          },
+          {
+            name: 'Piston',
+            customID: 3
+          },
+          {
+            name: 'Carburetor',
+            children: [
+              {
+                name: 'Truck',
+                customID: 2
+              },
+              {
+                name: 'Car',
+                customID: 2
+              }
+            ]
+          },
+          {
+            name: 'Valve',
+            customID: 4
+          },
+          {
+            name: 'Crankshaft',
+            customID: 1
+          }
+        ],
+        links: [
+          { parent: 1, child: 2 },
+          { parent: 3, child: 2 },
+          { parent: 4, child: 2 }
+        ],
+        identifier: 'customID'
       },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
     }
