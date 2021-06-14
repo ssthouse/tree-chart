@@ -40,6 +40,7 @@
 
 <script>
 import * as d3 from 'd3'
+import { uuid } from '../base/utils'
 
 const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i
 const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
@@ -59,18 +60,6 @@ const DEFAULT_NODE_HEIGHT = 100
 const DEFAULT_LEVEL_HEIGHT = 200
 
 const ANIMATION_DURATION = 800
-
-function uuid() {
-  const s = []
-  const hexDigits = '0123456789abcdef'
-  for (let i = 0; i < 36; i++) {
-    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
-  }
-  s[14] = '4'
-  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
-  s[8] = s[13] = s[18] = s[23] = '-'
-  return s.join('')
-}
 
 function rotatePoint({ x, y }) {
   return {
@@ -488,12 +477,13 @@ export default {
 
   .dom-container {
     z-index: 1;
-    // pointer-events: none;
+    pointer-events: none;
   }
 }
 
 .node-slot {
   cursor: pointer;
+  pointer-events: all;
   position: absolute;
   background-color: transparent;
   box-sizing: border-box;
