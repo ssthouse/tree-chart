@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import Util from '../base/util'
+import Util from '../base/utils'
 
 class OrgChart {
   d3: any
