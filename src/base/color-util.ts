@@ -1,4 +1,4 @@
-export function randomColor() {
+export function randomColor(): string {
   const letters = [
     '0',
     '1',
