@@ -140,6 +140,29 @@
         </div>
       </template>
     </vue-tree>
+
+    <h3>Example of multi-root with changing dataset</h3>
+    <button type="button" class="changeDataset" v-on:click="clicked = !clicked">
+      Change dataset
+    </button>
+    <vue-tree
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="multiRootChoice"
+      :config="treeConfig"
+      :collapse-enabled="true"
+      linkStyle="straight"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值 {{ node.name }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
   </div>
 </template>
 
@@ -256,7 +279,52 @@ export default {
         ],
         identifier: 'customID'
       },
+      clicked: false,
+      multiRoot1: [
+        {
+          name: 'Wheels',
+          children: [
+            {
+              name: 'Wings',
+              children: [
+                {
+                  name: 'Plane'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: 'Wings',
+          children: [
+            {
+              name: 'Plane'
+            }
+          ]
+        }
+      ],
+      multiRoot2: {
+        name: 'Carburetor',
+        children: [
+          {
+            name: 'Truck',
+            customID: 2
+          },
+          {
+            name: 'Car',
+            customID: 2
+          }
+        ]
+      },
       treeConfig: { nodeWidth: 120, nodeHeight: 80, levelHeight: 200 }
+    }
+  },
+  computed: {
+    multiRootChoice() {
+      if (this.clicked) {
+        return this.multiRoot2
+      }
+      return this.multiRoot1
     }
   },
   methods: {
@@ -309,5 +377,19 @@ export default {
 h3 {
   margin-top: 32px;
   margin-bottom: 16px;
+}
+
+.changeDataset {
+  font-size: 1rem;
+  font-weight: 200;
+  letter-spacing: 1px;
+  padding: 10px 45px 10px;
+  outline: 0;
+  border: 1px solid black;
+  cursor: pointer;
+  margin: 1rem;
+  position: relative;
+  background-color: rgb(33, 150, 243);
+  color: whitesmoke;
 }
 </style>

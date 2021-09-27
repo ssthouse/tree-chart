@@ -58,6 +58,12 @@ const DIRECTION = {
 const DEFAULT_NODE_WIDTH = 100
 const DEFAULT_NODE_HEIGHT = 100
 const DEFAULT_LEVEL_HEIGHT = 200
+/**
+ * Used to decrement the height of the 'initTransformY' to center diagrams.
+ * This is only a hotfix caused by the addition of '__invisible_root' node
+ * for multi root purposes.
+ */
+const DEFAULT_HEIGHT_DECREMENT = 200
 
 const ANIMATION_DURATION = 800
 
@@ -95,7 +101,7 @@ export default {
     },
     // 展示的层级数据, 样例数据如: hierachical.json
     dataset: {
-      type: Object,
+      type: [Object, Array],
       required: true
     }
   },
@@ -117,10 +123,10 @@ export default {
         transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
         transformOrigin: 'center'
       }
+    },
+    _dataset() {
+      return this.updatedInternalData(this.dataset)
     }
-  },
-  created() {
-    this.addUniqueKey(this.dataset)
   },
   mounted() {
     this.init()
@@ -178,25 +184,52 @@ export default {
     isVertical() {
       return this.direction === DIRECTION.VERTICAL
     },
-    addUniqueKey(rootNode) {
-      const queue = [rootNode]
-      while (queue.length !== 0) {
-        const node = queue.pop()
-        node._key = uuid()
-        if (node.children) {
-          queue.push(...node.children)
+    /**
+     * Returns updated dataset by deep copying every nodes from the externalData and adding unique '_key' attributes.
+     **/
+    updatedInternalData(externalData) {
+      var data = { name: '__invisible_root', children: [] }
+      if (!externalData) return data
+      if (Array.isArray(externalData)) {
+        for (var i = externalData.length - 1; i >= 0; i--) {
+          data.children.push(this.deepCopy(externalData[i]))
+        }
+      } else {
+        data.children.push(this.deepCopy(externalData))
+      }
+      return data
+    },
+    /**
+     * Returns a deep copy of selected node (copy of itself and it's children).
+     * If selected node or it's children have no '_key' attribute it will assign a new one.
+     **/
+    deepCopy(node) {
+      let obj = { _key: uuid() }
+      for (var key in node) {
+        if (node[key] === null) {
+          obj[key] = null
+        } else if (Array.isArray(node[key])) {
+          obj[key] = node[key].map((x) => this.deepCopy(x))
+        } else if (typeof node[key] === 'object') {
+          obj[key] = this.deepCopy(node[key])
+        } else {
+          obj[key] = node[key]
         }
       }
-      return rootNode
+      return obj
     },
     initTransform() {
       const containerWidth = this.$refs.container.offsetWidth
       const containerHeight = this.$refs.container.offsetHeight
       if (this.isVertical()) {
         this.initTransformX = Math.floor(containerWidth / 2)
-        this.initTransformY = Math.floor(this.config.nodeHeight)
+        this.initTransformY = Math.floor(
+          this.config.nodeHeight - DEFAULT_HEIGHT_DECREMENT
+        )
       } else {
-        this.initTransformX = Math.floor(this.config.nodeWidth)
+        this.initTransformX = Math.floor(
+          this.config.nodeWidth - DEFAULT_HEIGHT_DECREMENT
+        )
         this.initTransformY = Math.floor(containerHeight / 2)
       }
     },
@@ -262,10 +295,14 @@ export default {
     },
     // 使用扇形数据开始绘图
     draw() {
-      const [nodeDataList, linkDataList] = this.buildTree(this.dataset)
+      var [nodeDataList, linkDataList] = this.buildTree(this._dataset)
+      // Do not render the invisible root node.
+      nodeDataList.splice(0, 1)
+      linkDataList = linkDataList.filter(
+        (x) => x.source.data.name !== '__invisible_root'
+      )
       this.linkDataList = linkDataList
       this.nodeDataList = nodeDataList
-
       const identifier = this.dataset['identifier']
       const specialLinks = this.dataset['links']
       if (specialLinks && identifier) {
@@ -421,8 +458,12 @@ export default {
     }
   },
   watch: {
-    dataset() {
-      this.draw()
+    _dataset: {
+      deep: true,
+      handler: function () {
+        this.draw()
+        this.initTransform()
+      }
     }
   }
 }

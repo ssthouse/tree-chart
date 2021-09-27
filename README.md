@@ -390,7 +390,7 @@ export default {
 
 |           | type   | default                                                                   | description                                                                        |
 | --------- | ------ | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| dataset   | Object | null                                                                      | nested tree data                                                                   |
+| dataset   | [Object,Array] | null                                                              | nested tree data or an array of nested tree (multi root tree)                                                                   |
 | config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth and nodeHeight config the tree node size. levelHeight is tree row height |
 | linkStyle | String | 'curve'                                                                   | control link style, options: 'curve' or 'straight'                                 |
 | direction | string | 'vertical' | control tree chart direction, options: 'vertical' or 'horizontal'                  |
