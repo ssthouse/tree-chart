@@ -10,7 +10,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: Cons.CANVAS_TREE
+      redirect: Cons.SVG_TREE
     },
     {
       path: '/' + Cons.CANVAS_TREE,
