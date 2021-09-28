@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h3>基本使用</h3>
+    <h3>Basic usage | 基本使用</h3>
 
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
@@ -9,7 +9,7 @@
     >
     </vue-tree>
 
-    <h3>异化展示折叠节点</h3>
+    <h3>Show different style with folded nodes | 异化展示折叠节点</h3>
 
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
@@ -25,7 +25,7 @@
       </template>
     </vue-tree>
 
-    <h3>富媒体树状图</h3>
+    <h3>Rich media tree chart | 富媒体树状图</h3>
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="richMediaData"
@@ -47,7 +47,7 @@
       </template>
     </vue-tree>
 
-    <h3>直线连接</h3>
+    <h3>Link nodes with straight line | 直线连接</h3>
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="richMediaData"
@@ -70,7 +70,7 @@
       </template>
     </vue-tree>
 
-    <h3>横向树状图</h3>
+    <h3>Horizontal tree chart | 横向树状图</h3>
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="richMediaData"
@@ -93,7 +93,7 @@
       </template>
     </vue-tree>
 
-    <h3>缩放</h3>
+    <h3>Zoom in or out | 缩放</h3>
     <div style="display: flex;">
       <v-btn @click="controlScale('bigger')">+</v-btn>
       <v-btn @click="controlScale('smaller')">-</v-btn>
@@ -121,7 +121,10 @@
       </template>
     </vue-tree>
 
-    <h3>Example of multiple parents with node collapse disabled</h3>
+    <h3>
+      Example of multiple parents with node collapse disabled |
+      支持多父节点(禁用折叠)
+    </h3>
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray;"
       :dataset="vehicules"
@@ -141,7 +144,9 @@
       </template>
     </vue-tree>
 
-    <h3>Example of multi-root with changing dataset</h3>
+    <h3>
+      Example of multi-root with changing dataset | 多根节点, 支持切换数据源
+    </h3>
     <button type="button" class="changeDataset" v-on:click="clicked = !clicked">
       Change dataset
     </button>

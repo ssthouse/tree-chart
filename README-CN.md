@@ -287,7 +287,7 @@ export default {
 
 |           | type   | default                                                                   | description                                                                          |
 | --------- | ------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| dataset   | Object | null                                                                      | nested tree data                                                                     |
+| dataset   | [Object, Array] | null                                                                      | nested tree data or an array of nested tree (multi root tree)                                                                     |
 | config    | Object | {<br />nodeWidth: 100,<br />nodeHeight: 100,<br />levelHeight: 200<br />} | nodeWidth 和 nodeHeight 用于配置树状图节点大小. levelHeight 用于配置树状图一层的高度 |
 | linkStyle | String | 'curve'                                                                   | 控制连接线样式, 可选项: 'curve' 或 'straight'                                        |
 | direction | string | 'vertical'                                                                | 控制树状图方向, 可选项: 'vertical' 或 'horizontal'                                   |
