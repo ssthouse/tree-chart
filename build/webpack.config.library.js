@@ -2,6 +2,7 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
+  mode: 'production',
   entry: './src/vue-tree/index.ts',
   output: {
     path: path.resolve(__dirname, '..', 'library'),
