@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import Util from '../base/utils'
+import { randomColor, getColorStrFromCanvas } from '../base/color-util'
 
 class OrgChart {
   d3: any
@@ -279,9 +280,9 @@ class OrgChart {
     const self = this
     this.virtualContainerNode.selectAll('.orgUnit').each(function () {
       const node = self.d3.select(this)
-      let newColor = Util.randomColor()
+      let newColor = randomColor()
       while (self.colorNodeMap[newColor]) {
-        newColor = Util.randomColor()
+        newColor = randomColor()
       }
       node.attr('colorKey', newColor)
       node.data()[0]['colorKey'] = newColor
@@ -403,7 +404,7 @@ class OrgChart {
   setClickListener() {
     const self = this
     this.canvasNode.node().addEventListener('click', (e) => {
-      const colorStr = Util.getColorStrFromCanvas(
+      const colorStr = getColorStrFromCanvas(
         self.hiddenContext,
         e.layerX,
         e.layerY
