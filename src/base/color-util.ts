@@ -34,10 +34,11 @@ export function getColorStrFromCanvas(
   yIndex: number
 ): string {
   const pixelData = context.getImageData(xIndex, yIndex, 1, 1).data
+  const [r, g, b] = pixelData
   return (
     '#' +
-    appendFront0(pixelData[0].toString(16)) +
-    appendFront0(pixelData[1].toString(16)) +
-    appendFront0(pixelData[2].toString(16))
+    appendFront0(r.toString(16)) +
+    appendFront0(g.toString(16)) +
+    appendFront0(b.toString(16))
   )
 }

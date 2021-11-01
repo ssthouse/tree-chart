@@ -40,7 +40,7 @@
 
 <script>
 import * as d3 from 'd3'
-import { uuid } from '../base/utils'
+import { uuid } from '../base/uuid'
 
 const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i
 const MATCH_SCALE_REGEX = /scale\((\S*)\)/i
