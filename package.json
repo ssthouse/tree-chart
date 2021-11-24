@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "d3": "^4.13.0",
-    "vue": "^2.6.8",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.18"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.8"
   },
   "devDependencies": {
     "@types/d3": "^7.1.0",
