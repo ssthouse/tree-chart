@@ -28,7 +28,7 @@ jobs:
       - name: (vue-tree-chart)Install and Build
         working-directory: packages/vue-tree-chart
         run: |
-          npm run build
+          npm run build:component
       - name: (tree-chart-demo)Install and Build
         working-directory: packages/tree-chart-demo
         run: |
