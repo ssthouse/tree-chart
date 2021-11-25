@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Check Build
 
 on:
   push:
@@ -23,13 +23,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name:  install dependencies
+        run: npm run install:deps
       - name: (vue-tree-chart)Install and Build
         working-directory: packages/vue-tree-chart
         run: |
-          npm install
           npm run build
       - name: (tree-chart-demo)Install and Build
         working-directory: packages/tree-chart-demo
         run: |
-          npm install
           npm run build

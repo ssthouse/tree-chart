@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: "12.x"
           registry-url: "https://registry.npmjs.org"
-      - run: npm install
-        working-directory: packages/vue-tree-chart
+      - name:  install dependencies
+        run: npm run install:deps
       - run: npm run build:component
         working-directory: packages/vue-tree-chart
       - run: npm publish
