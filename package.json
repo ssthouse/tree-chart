@@ -3,6 +3,7 @@
   "private": true,
   "author": "ssthouse",
   "scripts": {
+    "install:deps": "lerna  bootstrap",
     "build:component": "lerna run build:component --scope @ssthouse/vue-tree-chart",
     "build:demo": "lerna run build --scope @ssthouse/vue-tree-chart"
   },

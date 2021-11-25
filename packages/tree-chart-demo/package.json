@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@ssthouse/vue-tree-chart": "^0.5.4",
+    "d3": "^7.1.1",
     "vue": "2.6.8",
-    "vue-router": "^3.5.3"
+    "vue-router": "^3.5.3",
+    "vuetify": "^2.6.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.34.0",
