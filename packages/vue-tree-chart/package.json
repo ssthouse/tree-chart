@@ -4,6 +4,7 @@
   "description": "A Vue.js project",
   "author": "ssthouse",
   "main": "library/vue-tree-chart.js",
+  "module": "src/vue-tree/index.ts",
   "scripts": {
     "lint": "eslint --ext .js,.vue,.ts src",
     "dev": "webpack-dev-server --progress --config ./build/webpack.config.dev.js",
