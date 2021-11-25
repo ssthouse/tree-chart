@@ -23,12 +23,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install and Build
-      working-directory: packages/vue-tree-chart
+      working-directory: packages/tree-chart-demo
       run: |
         npm install
         npm run build
     - name: Deploy 🚀
-      working-directory: packages/vue-tree-chart
+      working-directory: packages/tree-chart-demo
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
