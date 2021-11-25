@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./built/",
+    "outDir": "./build/",
     "sourceMap": true,
     "strict": false,
     "noImplicitReturns": true,
@@ -8,5 +8,5 @@
     "moduleResolution": "node",
     "target": "es5"
   },
-  "include": ["./src/**/*"]
+  "include": ["src/**/*"]
 }
