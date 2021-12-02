@@ -6,8 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   optimizeDeps: {
     include: [
-      // "@ssthouse/vue-tree-chart",
-      // "@ssthouse/vue3-tree-chart"
+      "@ssthouse/vue3-tree-chart"
     ]
   }
 })

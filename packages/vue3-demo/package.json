@@ -7,8 +7,8 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.16",
-    "vue3-tree-chart": "file:../../vue3-tree-chart"
+    "@ssthouse/vue3-tree-chart": "^0.1.0",
+    "vue": "^3.2.16"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.3",

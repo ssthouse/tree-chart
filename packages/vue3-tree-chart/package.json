@@ -11,6 +11,7 @@
   "main": "dist/vue3-tree-chart.umd.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "d3": "^7.1.1",
     "vue": "^3.0.0"
   },
   "devDependencies": {
@@ -42,5 +43,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
 }
