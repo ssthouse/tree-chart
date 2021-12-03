@@ -5,7 +5,15 @@
       style="width: 800px; height: 600px; border: 1px solid gray"
       :dataset="sampleData"
       :config="treeConfig"
-    />
+    >
+      <template v-slot:node="{ node, collapsed }">
+          <span
+            class="tree-node"
+            :style="{ border: collapsed ? '2px solid grey' : '' }"
+            >{{ node.value }}</span
+          >
+      </template>
+    </vue-tree>
   </div>
 </template>
 <script>

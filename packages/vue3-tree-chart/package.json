@@ -2,6 +2,7 @@
   "name": "@ssthouse/vue3-tree-chart",
   "author": "ssthouse",
   "version": "0.1.0",
+  "description": "Tree Component for Vue3 powered by D3.js & SVG",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
