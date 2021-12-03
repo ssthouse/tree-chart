@@ -17,7 +17,7 @@ please refer [vue-tree-chart](./docs/vue-tree-chart.md)
 
 ## Canvas Tree Chart
 
-[canvas tree chart](./docs/canvas-tree-chart.md)
+please refer [canvas tree chart](./docs/canvas-tree-chart.md)
 
 ## Build Setup
 
