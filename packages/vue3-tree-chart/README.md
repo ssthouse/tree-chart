@@ -1,24 +1,9 @@
-# vue3-tree-chart
+# @ssthouse/vue3-tree-chart
 
-## Project setup
-```
-yarn install
-```
+## Docs 
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+[https://github.com/ssthouse/vue-tree-chart](https://github.com/ssthouse/vue-tree-chart)
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## 文档
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[https://github.com/ssthouse/vue-tree-chart](https://github.com/ssthouse/vue-tree-chart)
