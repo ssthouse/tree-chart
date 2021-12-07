@@ -18,9 +18,9 @@ export function deepCopy(node) {
     if (node[key] === null) {
       obj[key] = null;
     } else if (Array.isArray(node[key])) {
-      obj[key] = node[key].map((x) => this.deepCopy(x));
+      obj[key] = node[key].map((x) => deepCopy(x));
     } else if (typeof node[key] === "object") {
-      obj[key] = this.deepCopy(node[key]);
+      obj[key] = deepCopy(node[key]);
     } else {
       obj[key] = node[key];
     }

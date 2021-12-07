@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import { uuid } from '../base/uuid';
 import { ANIMATION_DURATION, DEFAULT_HEIGHT_DECREMENT, DEFAULT_LEVEL_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, MATCH_SCALE_REGEX, MATCH_TRANSLATE_REGEX } from './constant';
 import { TreeDataSet, Direction, TreeLinkStyle } from './tree-chart';
 import { deepCopy, rotatePoint } from './util';
@@ -20,6 +19,7 @@ interface TreeChartCoreParams {
   dataSet: TreeDataSet;
   svgElement: SVGElement;
   domElement: HTMLDivElement;
+  treeContainer: HTMLDivElement;
 }
 
 export default class TreeChartCore {
@@ -29,7 +29,7 @@ export default class TreeChartCore {
     levelHeight: DEFAULT_LEVEL_HEIGHT,
   };
   linkStyle: TreeLinkStyle = TreeLinkStyle.CURVE;
-  direction: Direction = Direction.HORIZONTAL;
+  direction: Direction = Direction.VERTICAL;
   collapseEnabled: boolean;
 
   dataset: TreeDataSet;
@@ -37,6 +37,7 @@ export default class TreeChartCore {
   svgElement: SVGElement;
   svgSelection: any;
   domElement: HTMLDivElement;
+  treeContainer: HTMLDivElement;
 
   nodeDataList: any[];
   linkDataList: any[];
@@ -51,6 +52,7 @@ export default class TreeChartCore {
     }
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
+    this.treeContainer = params.treeContainer;
     this.dataset = params.dataSet;
   }
 
@@ -58,6 +60,17 @@ export default class TreeChartCore {
     this.draw();
     this.enableDrag();
     this.initTransform();
+  }
+
+  getNodeDataList() {
+    return this.nodeDataList;
+  }
+
+  getInitialTransformStyle(): Record<string, string> {
+    return {
+      transform: `scale(1) translate(${this.initTransformX}px, ${this.initTransformY}px)`,
+      transformOrigin: "center",
+    };
   }
 
   zoomIn() {
@@ -283,13 +296,13 @@ export default class TreeChartCore {
     let isDrag = false;
     // 保存鼠标点下时的位移
     let mouseDownTransform = "";
-    this.domElement.onmousedown = (event) => {
+    this.treeContainer.onmousedown = (event) => {
       mouseDownTransform = this.svgElement.style.transform;
       startX = event.clientX;
       startY = event.clientY;
       isDrag = true;
     };
-    this.domElement.onmousemove = (event) => {
+    this.treeContainer.onmousemove = (event) => {
       if (!isDrag) return;
       const originTransform = mouseDownTransform;
       let originOffsetX = 0;
@@ -319,7 +332,7 @@ export default class TreeChartCore {
       this.domElement.style.transform = transformStr;
     };
 
-    this.domElement.onmouseup = () => {
+    this.treeContainer.onmouseup = () => {
       startX = 0;
       startY = 0;
       isDrag = false;
@@ -339,6 +352,22 @@ export default class TreeChartCore {
         this.treeConfig.nodeWidth - DEFAULT_HEIGHT_DECREMENT
       );
       this.initTransformY = Math.floor(containerHeight / 2);
+    }
+  }
+
+  onClickNode(index: number) {
+    if (this.collapseEnabled) {
+      const curNode = this.nodeDataList[index];
+      if (curNode.data.children) {
+        curNode.data._children = curNode.data.children;
+        curNode.data.children = null;
+        curNode.data._collapsed = true;
+      } else {
+        curNode.data.children = curNode.data._children;
+        curNode.data._children = null;
+        curNode.data._collapsed = false;
+      }
+      this.draw();
     }
   }
 }
