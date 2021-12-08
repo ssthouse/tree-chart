@@ -30,7 +30,7 @@ export default class TreeChartCore {
   };
   linkStyle: TreeLinkStyle = TreeLinkStyle.CURVE;
   direction: Direction = Direction.VERTICAL;
-  collapseEnabled: boolean;
+  collapseEnabled: boolean = true
 
   dataset: TreeDataSet;
 
@@ -53,7 +53,8 @@ export default class TreeChartCore {
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
-    this.dataset = params.dataSet;
+    // this.dataset = params.dataSet;
+    this.updateDataset(params.dataSet);
   }
 
   init() {
@@ -186,15 +187,18 @@ export default class TreeChartCore {
     }
   }
 
-  draw() {
-    let [nodeDataList, linkDataList] = this.buildTree(this.dataset)
+  updateDataList() {
+    let [nodeDataList, linkDataList] = this.buildTree()
     nodeDataList.splice(0, 1);
     linkDataList = linkDataList.filter(
       (x) => x.source.data.name !== "__invisible_root"
     );
     this.linkDataList = linkDataList;
     this.nodeDataList = nodeDataList;
+  }
 
+  draw() {
+    this.updateDataList();
     const identifier = this.dataset["identifier"];
     const specialLinks = this.dataset["links"];
     if (specialLinks && identifier) {
@@ -233,7 +237,7 @@ export default class TreeChartCore {
     const self = this;
     const links = this.svgSelection
       .selectAll(".link")
-      .data(linkDataList, (d) => {
+      .data(this.linkDataList, (d) => {
         return `${d.source.data._key}-${d.target.data._key}`;
       });
 
@@ -281,12 +285,11 @@ export default class TreeChartCore {
     return data;
   }
 
-  buildTree(dataSet: TreeDataSet) {
-    const dataSetWithInvisibleRoot = this.updatedInternalData(dataSet);
+  buildTree() {
     const treeBuilder = d3
       .tree()
       .nodeSize([this.treeConfig.nodeWidth, this.treeConfig.levelHeight]);
-    const tree = treeBuilder(d3.hierarchy(dataSetWithInvisibleRoot));
+    const tree = treeBuilder(d3.hierarchy(this.dataset));
     return [tree.descendants(), tree.links()];
   }
 
@@ -369,5 +372,18 @@ export default class TreeChartCore {
       }
       this.draw();
     }
+  }
+
+  updateDataset(dataSet: TreeDataSet) {
+    this.dataset = this.updatedInternalData(dataSet);
+  }
+
+  /**
+   * release all dom reference
+   */
+  destroy() {
+    this.svgElement = null;
+    this.domElement = null;
+    this.treeContainer = null;
   }
 }

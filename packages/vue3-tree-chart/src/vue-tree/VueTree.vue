@@ -129,13 +129,11 @@ export default {
     return {
       treeChartCore: null,
       d3,
-      colors: "568FE1",
       nodeDataList: [],
       linkDataList: [],
       initTransformX: 0,
       initTransformY: 0,
       DIRECTION,
-      currentScale: 1,
       initialTransformStyle: {},
     };
   },
@@ -147,6 +145,9 @@ export default {
   mounted() {
     console.log("mounted");
     this.init();
+  },
+  beforeDestroy() {
+    this.treeChartCore.destroy();
   },
   methods: {
     init() {
@@ -182,6 +183,10 @@ export default {
     },
     onClickNode(index) {
       this.treeChartCore.onClickNode(index);
+      this.nodeDataList = this.treeChartCore.getNodeDataList();
+      // this.treeChartCore.initTransform();
+      // this.initialTransformStyle =
+      //   this.treeChartCore.getInitialTransformStyle();
     },
     formatDimension(dimension) {
       if (typeof dimension === "number") return `${dimension}px`;
