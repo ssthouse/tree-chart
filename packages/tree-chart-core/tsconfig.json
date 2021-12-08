@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "sourceMap": false,
+    "strict": false,
+    "noImplicitReturns": true,
+    "module": "es2015",
+    "lib": ["es2015", "DOM"],
+    "moduleResolution": "node",
+    "target": "es5"
+  },
+  "include": ["src/**/*"]
+}

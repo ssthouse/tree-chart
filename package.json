@@ -1,5 +1,5 @@
 {
-  "name": "tree-chart",
+  "name": "@ssthouse/vue-tree-chart",
   "private": true,
   "author": "ssthouse",
   "scripts": {
