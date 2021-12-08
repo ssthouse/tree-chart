@@ -14,10 +14,10 @@
           :key="node.data._key"
           :style="{
             left: formatDimension(
-              direction === DIRECTION.VERTICAL ? node.x : node.y
+              direction === Direction.VERTICAL ? node.x : node.y
             ),
             top: formatDimension(
-              direction === DIRECTION.VERTICAL ? node.y : node.x
+              direction === Direction.VERTICAL ? node.y : node.x
             ),
             width: formatDimension(config.nodeWidth),
             height: formatDimension(config.nodeHeight),
@@ -38,63 +38,15 @@
 </template>
 
 <script>
-import * as d3 from "d3";
-import { uuid } from "../base/uuid";
-import TreeChartCore from "@ssthouse/tree-chart-core";
-
-const MATCH_TRANSLATE_REGEX = /translate\((-?\d+)px, ?(-?\d+)px\)/i;
-const MATCH_SCALE_REGEX = /scale\((\S*)\)/i;
-
-const LinkStyle = {
-  CURVE: "curve",
-  STRAIGHT: "straight",
-};
-
-const DIRECTION = {
-  VERTICAL: "vertical",
-  HORIZONTAL: "horizontal",
-};
-
-const DEFAULT_NODE_WIDTH = 100;
-const DEFAULT_NODE_HEIGHT = 100;
-const DEFAULT_LEVEL_HEIGHT = 200;
-/**
- * Used to decrement the height of the 'initTransformY' to center diagrams.
- * This is only a hotfix caused by the addition of '__invisible_root' node
- * for multi root purposes.
- */
-const DEFAULT_HEIGHT_DECREMENT = 200;
-
-const ANIMATION_DURATION = 800;
-
-function rotatePoint({ x, y }) {
-  return {
-    x: y,
-    y: x,
-  };
-}
+import TreeChartCore, {
+  DEFAULT_NODE_WIDTH,
+  DEFAULT_NODE_HEIGHT,
+  DEFAULT_LEVEL_HEIGHT,
+  TreeLinkStyle,
+  Direction,
+} from "@ssthouse/tree-chart-core";
 
 export default {
-  // setup(props, context) {
-  //   let container = ref(null);
-  //   let svg = ref(null)
-
-  //   // watchEffect(() => {
-  //   //     // This effect runs before the DOM is updated, and consequently,
-  //   //     // the template ref does not hold a reference to the element yet.
-  //   //     console.log('watchEffectwatchEffect')
-  //   //     console.log(container.value) // => null
-  //   //   })
-  //   onMounted(() => {
-  //     console.log('mounted11111')
-  //     console.log(container.value) // undefined
-  //   })
-
-  //   return  {
-  //       container,
-  //       svg
-  //   }
-  // },
   name: "vue-tree",
   props: {
     config: {
@@ -109,11 +61,11 @@ export default {
     },
     linkStyle: {
       type: String,
-      default: LinkStyle.CURVE,
+      default: TreeLinkStyle.CURVE,
     },
     direction: {
       type: String,
-      default: DIRECTION.VERTICAL,
+      default: Direction.VERTICAL,
     },
     collapseEnabled: {
       type: Boolean,
@@ -128,22 +80,15 @@ export default {
   data() {
     return {
       treeChartCore: null,
-      d3,
       nodeDataList: [],
       linkDataList: [],
       initTransformX: 0,
       initTransformY: 0,
-      DIRECTION,
+      Direction,
       initialTransformStyle: {},
     };
   },
-  computed: {
-    // _dataset() {
-    //   return this.updatedInternalData(this.dataset);
-    // },
-  },
   mounted() {
-    console.log("mounted");
     this.init();
   },
   beforeDestroy() {
@@ -155,17 +100,8 @@ export default {
         svgElement: this.$refs.svg,
         domElement: this.$refs.domContainer,
         treeContainer: this.$refs.container,
-        dataSet: {
-          value: "1",
-          children: [
-            { value: "2", children: [{ value: "4" }, { value: "5" }] },
-            { value: "3" },
-          ],
-        },
+        dataSet: this.dataset,
       });
-      // this.draw();
-      // this.enableDrag();
-      // this.initTransform();
       this.treeChartCore.init();
       this.nodeDataList = this.treeChartCore.getNodeDataList();
       this.initialTransformStyle =
@@ -184,9 +120,6 @@ export default {
     onClickNode(index) {
       this.treeChartCore.onClickNode(index);
       this.nodeDataList = this.treeChartCore.getNodeDataList();
-      // this.treeChartCore.initTransform();
-      // this.initialTransformStyle =
-      //   this.treeChartCore.getInitialTransformStyle();
     },
     formatDimension(dimension) {
       if (typeof dimension === "number") return `${dimension}px`;
@@ -198,13 +131,12 @@ export default {
     },
   },
   watch: {
-    // _dataset: {
-    //   deep: true,
-    //   handler: function () {
-    //     this.draw();
-    //     this.initTransform();
-    //   },
-    // },
+    dataset: {
+      deep: true,
+      handler: function () {
+        this.treeChartCore.updateDataset(this.dataset);
+      },
+    },
   },
 };
 </script>

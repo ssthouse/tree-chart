@@ -53,7 +53,6 @@ export default class TreeChartCore {
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
-    // this.dataset = params.dataSet;
     this.updateDataset(params.dataSet);
   }
 
