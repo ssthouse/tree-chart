@@ -53,7 +53,7 @@ export default class TreeChartCore {
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
-    this.updateDataset(params.dataSet);
+    this.dataset = this.updatedInternalData(params.dataSet);
   }
 
   init() {
@@ -128,7 +128,7 @@ export default class TreeChartCore {
   /**
  * 根据link数据,生成svg path data
  */
-  generateLinkPath(d) {
+  private generateLinkPath(d) {
     const self = this;
     if (this.linkStyle === TreeLinkStyle.CURVE) {
       return this.generateCurceLinkPath(self, d);
@@ -204,7 +204,7 @@ export default class TreeChartCore {
     this.nodeDataList = nodeDataList;
   }
 
-  draw() {
+  private draw() {
     this.updateDataList();
     const identifier = this.dataset["identifier"];
     const specialLinks = this.dataset["links"];
@@ -279,7 +279,7 @@ export default class TreeChartCore {
   /**
  * Returns updated dataset by deep copying every nodes from the externalData and adding unique '_key' attributes.
  **/
-  updatedInternalData(externalData) {
+  private updatedInternalData(externalData) {
     var data = { name: "__invisible_root", children: [] };
     if (!externalData) return data;
     if (Array.isArray(externalData)) {
@@ -292,7 +292,7 @@ export default class TreeChartCore {
     return data;
   }
 
-  buildTree() {
+  private buildTree() {
     const treeBuilder = d3
       .tree()
       .nodeSize([this.treeConfig.nodeWidth, this.treeConfig.levelHeight]);
@@ -300,7 +300,7 @@ export default class TreeChartCore {
     return [tree.descendants(), tree.links()];
   }
 
-  enableDrag() {
+  private enableDrag() {
     let startX = 0;
     let startY = 0;
     let isDrag = false;
@@ -381,8 +381,14 @@ export default class TreeChartCore {
     }
   }
 
+  /**
+   * call this function to update dataset
+   * notice : you need to update the view rendered by `nodeDataList` too
+   * @param dataSet the new dataSet to show in chart
+   */
   updateDataset(dataSet: TreeDataSet) {
     this.dataset = this.updatedInternalData(dataSet);
+    this.draw();
   }
 
   /**

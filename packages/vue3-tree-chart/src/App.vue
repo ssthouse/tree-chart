@@ -1,6 +1,7 @@
 <template>
   <div>
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <button @click="onChangeDataset">change dataset</button>
+
     <vue-tree
       style="width: 800px; height: 600px; border: 1px solid gray"
       :dataset="sampleData"
@@ -28,6 +29,15 @@ export default {
     };
   },
   methods: {
+    onChangeDataset() {
+      this.sampleData = {
+        value: "100",
+        children: [
+          { value: "200" },
+          { value: "300", children: [{ value: "400" }, { value: "500" }] },
+        ],
+      };
+    },
     onClick() {
       this.showTree = true;
     },

@@ -134,7 +134,9 @@ export default {
     dataset: {
       deep: true,
       handler: function () {
+        console.log("dataset changed!!!!!!!");
         this.treeChartCore.updateDataset(this.dataset);
+        this.nodeDataList = this.treeChartCore.getNodeDataList();
       },
     },
   },
