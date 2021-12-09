@@ -9,4 +9,4 @@ export enum TreeLinkStyle {
   STRAIGHT = "straight",
 }
 
-export type TreeDataSet = Object | Object[];
+export type TreeDataset = Object | Object[];

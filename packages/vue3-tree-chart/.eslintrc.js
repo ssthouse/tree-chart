@@ -1,6 +1,3 @@
 module.exports = {
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "sourceType": "module"
-  }
+  "extends": "eslint:recommended"
 }

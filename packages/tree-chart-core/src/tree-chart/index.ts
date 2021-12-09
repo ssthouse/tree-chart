@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { ANIMATION_DURATION, DEFAULT_HEIGHT_DECREMENT, DEFAULT_LEVEL_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, MATCH_SCALE_REGEX, MATCH_TRANSLATE_REGEX } from './constant';
-import { TreeDataSet, Direction, TreeLinkStyle } from './tree-chart';
+import { TreeDataset, Direction, TreeLinkStyle } from './tree-chart';
 import { deepCopy, rotatePoint } from './util';
 
 
@@ -16,7 +16,7 @@ interface TreeChartCoreParams {
   linkStyle?: TreeLinkStyle;
   direction?: Direction;
   collapseEnabled: boolean;
-  dataSet: TreeDataSet;
+  dataset: TreeDataset;
   svgElement: SVGElement;
   domElement: HTMLDivElement;
   treeContainer: HTMLDivElement;
@@ -32,7 +32,7 @@ export default class TreeChartCore {
   direction: Direction = Direction.VERTICAL;
   collapseEnabled: boolean = true
 
-  dataset: TreeDataSet;
+  dataset: TreeDataset;
 
   svgElement: SVGElement;
   svgSelection: any;
@@ -53,7 +53,7 @@ export default class TreeChartCore {
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
-    this.updateDataset(params.dataSet);
+    this.dataset = this.updatedInternalData(params.dataset);
   }
 
   init() {
@@ -128,62 +128,70 @@ export default class TreeChartCore {
   /**
  * 根据link数据,生成svg path data
  */
-  generateLinkPath(d) {
+  private generateLinkPath(d) {
     const self = this;
     if (this.linkStyle === TreeLinkStyle.CURVE) {
-      const linkPath = this.isVertical()
-        ? d3.linkVertical()
-        : d3.linkHorizontal();
-      linkPath
-        .x(function (d) {
-          return d.x;
-        })
-        .y(function (d) {
-          return d.y;
-        })
-        .source(function (d) {
-          const sourcePoint = {
-            x: d.source.x,
-            y: d.source.y,
-          };
-          return self.direction === Direction.VERTICAL
-            ? sourcePoint
-            : rotatePoint(sourcePoint);
-        })
-        .target(function (d) {
-          const targetPoint = {
-            x: d.target.x,
-            y: d.target.y,
-          };
-          return self.direction === Direction.VERTICAL
-            ? targetPoint
-            : rotatePoint(targetPoint);
-        });
-      return linkPath(d);
+      return this.generateCurceLinkPath(self, d);
     }
     if (this.linkStyle === TreeLinkStyle.STRAIGHT) {
       // the link path is: source -> secondPoint -> thirdPoint -> target
-      const linkPath = d3.path();
-      let sourcePoint = { x: d.source.x, y: d.source.y };
-      let targetPoint = { x: d.target.x, y: d.target.y };
-      if (!this.isVertical()) {
-        sourcePoint = rotatePoint(sourcePoint);
-        targetPoint = rotatePoint(targetPoint);
-      }
-      const xOffset = targetPoint.x - sourcePoint.x;
-      const yOffset = targetPoint.y - sourcePoint.y;
-      const secondPoint = this.isVertical()
-        ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
-        : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y };
-      const thirdPoint = this.isVertical()
-        ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
-        : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y };
-      linkPath.moveTo(sourcePoint.x, sourcePoint.y);
-      linkPath.lineTo(secondPoint.x, secondPoint.y);
-      linkPath.lineTo(thirdPoint.x, thirdPoint.y);
-      linkPath.lineTo(targetPoint.x, targetPoint.y);
-      return linkPath.toString();
+      return this.generateStraightLinkPath(d);
     }
+  }
+
+  private generateCurceLinkPath(self: this, d: any) {
+    const linkPath = this.isVertical()
+      ? d3.linkVertical()
+      : d3.linkHorizontal();
+    linkPath
+      .x(function (d) {
+        return d.x;
+      })
+      .y(function (d) {
+        return d.y;
+      })
+      .source(function (d) {
+        const sourcePoint = {
+          x: d.source.x,
+          y: d.source.y,
+        };
+        return self.direction === Direction.VERTICAL
+          ? sourcePoint
+          : rotatePoint(sourcePoint);
+      })
+      .target(function (d) {
+        const targetPoint = {
+          x: d.target.x,
+          y: d.target.y,
+        };
+        return self.direction === Direction.VERTICAL
+          ? targetPoint
+          : rotatePoint(targetPoint);
+      });
+    return linkPath(d);
+  }
+
+  private generateStraightLinkPath(d: any) {
+    const linkPath = d3.path();
+    let sourcePoint = { x: d.source.x, y: d.source.y };
+    let targetPoint = { x: d.target.x, y: d.target.y };
+    if (!this.isVertical()) {
+      sourcePoint = rotatePoint(sourcePoint);
+      targetPoint = rotatePoint(targetPoint);
+    }
+    const xOffset = targetPoint.x - sourcePoint.x;
+    const yOffset = targetPoint.y - sourcePoint.y;
+    const secondPoint = this.isVertical()
+      ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
+      : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y };
+    const thirdPoint = this.isVertical()
+      ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
+      : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y };
+    linkPath.moveTo(sourcePoint.x, sourcePoint.y);
+    linkPath.lineTo(secondPoint.x, secondPoint.y);
+    linkPath.lineTo(thirdPoint.x, thirdPoint.y);
+    linkPath.lineTo(targetPoint.x, targetPoint.y);
+    return linkPath.toString();
   }
 
   updateDataList() {
@@ -196,7 +204,7 @@ export default class TreeChartCore {
     this.nodeDataList = nodeDataList;
   }
 
-  draw() {
+  private draw() {
     this.updateDataList();
     const identifier = this.dataset["identifier"];
     const specialLinks = this.dataset["links"];
@@ -271,7 +279,7 @@ export default class TreeChartCore {
   /**
  * Returns updated dataset by deep copying every nodes from the externalData and adding unique '_key' attributes.
  **/
-  updatedInternalData(externalData) {
+  private updatedInternalData(externalData) {
     var data = { name: "__invisible_root", children: [] };
     if (!externalData) return data;
     if (Array.isArray(externalData)) {
@@ -284,7 +292,7 @@ export default class TreeChartCore {
     return data;
   }
 
-  buildTree() {
+  private buildTree() {
     const treeBuilder = d3
       .tree()
       .nodeSize([this.treeConfig.nodeWidth, this.treeConfig.levelHeight]);
@@ -292,7 +300,7 @@ export default class TreeChartCore {
     return [tree.descendants(), tree.links()];
   }
 
-  enableDrag() {
+  private enableDrag() {
     let startX = 0;
     let startY = 0;
     let isDrag = false;
@@ -373,8 +381,14 @@ export default class TreeChartCore {
     }
   }
 
-  updateDataset(dataSet: TreeDataSet) {
-    this.dataset = this.updatedInternalData(dataSet);
+  /**
+   * call this function to update dataset
+   * notice : you need to update the view rendered by `nodeDataList` too
+   * @param dataset the new dataset to show in chart
+   */
+  updateDataset(dataset: TreeDataset) {
+    this.dataset = this.updatedInternalData(dataset);
+    this.draw();
   }
 
   /**

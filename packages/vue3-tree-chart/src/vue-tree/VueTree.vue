@@ -46,6 +46,15 @@ import TreeChartCore, {
   Direction,
 } from "@ssthouse/tree-chart-core";
 
+const formatDimension = (dimension) => {
+  if (typeof dimension === "number") return `${dimension}px`;
+  if (dimension.indexOf("px") !== -1) {
+    return dimension;
+  } else {
+    return `${dimension}px`;
+  }
+};
+
 export default {
   name: "vue-tree",
   props: {
@@ -79,12 +88,10 @@ export default {
   },
   data() {
     return {
+      formatDimension,
+      Direction,
       treeChartCore: null,
       nodeDataList: [],
-      linkDataList: [],
-      initTransformX: 0,
-      initTransformY: 0,
-      Direction,
       initialTransformStyle: {},
     };
   },
@@ -92,6 +99,7 @@ export default {
     this.init();
   },
   beforeDestroy() {
+    // remove dom reference
     this.treeChartCore.destroy();
   },
   methods: {
@@ -100,13 +108,12 @@ export default {
         svgElement: this.$refs.svg,
         domElement: this.$refs.domContainer,
         treeContainer: this.$refs.container,
-        dataSet: this.dataset,
+        dataset: this.dataset,
       });
       this.treeChartCore.init();
       this.nodeDataList = this.treeChartCore.getNodeDataList();
       this.initialTransformStyle =
         this.treeChartCore.getInitialTransformStyle();
-      console.log(this);
     },
     zoomIn() {
       this.treeChartCore.zoomIn();
@@ -121,20 +128,13 @@ export default {
       this.treeChartCore.onClickNode(index);
       this.nodeDataList = this.treeChartCore.getNodeDataList();
     },
-    formatDimension(dimension) {
-      if (typeof dimension === "number") return `${dimension}px`;
-      if (dimension.indexOf("px") !== -1) {
-        return dimension;
-      } else {
-        return `${dimension}px`;
-      }
-    },
   },
   watch: {
     dataset: {
       deep: true,
       handler: function () {
         this.treeChartCore.updateDataset(this.dataset);
+        this.nodeDataList = this.treeChartCore.getNodeDataList();
       },
     },
   },
