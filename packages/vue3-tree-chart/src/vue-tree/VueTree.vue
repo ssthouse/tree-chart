@@ -46,6 +46,15 @@ import TreeChartCore, {
   Direction,
 } from "@ssthouse/tree-chart-core";
 
+const formatDimension = (dimension) => {
+  if (typeof dimension === "number") return `${dimension}px`;
+  if (dimension.indexOf("px") !== -1) {
+    return dimension;
+  } else {
+    return `${dimension}px`;
+  }
+};
+
 export default {
   name: "vue-tree",
   props: {
@@ -79,12 +88,10 @@ export default {
   },
   data() {
     return {
+      formatDimension,
+      Direction,
       treeChartCore: null,
       nodeDataList: [],
-      linkDataList: [],
-      initTransformX: 0,
-      initTransformY: 0,
-      Direction,
       initialTransformStyle: {},
     };
   },
@@ -92,6 +99,7 @@ export default {
     this.init();
   },
   beforeDestroy() {
+    // remove dom reference
     this.treeChartCore.destroy();
   },
   methods: {
@@ -120,14 +128,6 @@ export default {
     onClickNode(index) {
       this.treeChartCore.onClickNode(index);
       this.nodeDataList = this.treeChartCore.getNodeDataList();
-    },
-    formatDimension(dimension) {
-      if (typeof dimension === "number") return `${dimension}px`;
-      if (dimension.indexOf("px") !== -1) {
-        return dimension;
-      } else {
-        return `${dimension}px`;
-      }
     },
   },
   watch: {

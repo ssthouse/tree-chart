@@ -131,59 +131,67 @@ export default class TreeChartCore {
   generateLinkPath(d) {
     const self = this;
     if (this.linkStyle === TreeLinkStyle.CURVE) {
-      const linkPath = this.isVertical()
-        ? d3.linkVertical()
-        : d3.linkHorizontal();
-      linkPath
-        .x(function (d) {
-          return d.x;
-        })
-        .y(function (d) {
-          return d.y;
-        })
-        .source(function (d) {
-          const sourcePoint = {
-            x: d.source.x,
-            y: d.source.y,
-          };
-          return self.direction === Direction.VERTICAL
-            ? sourcePoint
-            : rotatePoint(sourcePoint);
-        })
-        .target(function (d) {
-          const targetPoint = {
-            x: d.target.x,
-            y: d.target.y,
-          };
-          return self.direction === Direction.VERTICAL
-            ? targetPoint
-            : rotatePoint(targetPoint);
-        });
-      return linkPath(d);
+      return this.generateCurceLinkPath(self, d);
     }
     if (this.linkStyle === TreeLinkStyle.STRAIGHT) {
       // the link path is: source -> secondPoint -> thirdPoint -> target
-      const linkPath = d3.path();
-      let sourcePoint = { x: d.source.x, y: d.source.y };
-      let targetPoint = { x: d.target.x, y: d.target.y };
-      if (!this.isVertical()) {
-        sourcePoint = rotatePoint(sourcePoint);
-        targetPoint = rotatePoint(targetPoint);
-      }
-      const xOffset = targetPoint.x - sourcePoint.x;
-      const yOffset = targetPoint.y - sourcePoint.y;
-      const secondPoint = this.isVertical()
-        ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
-        : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y };
-      const thirdPoint = this.isVertical()
-        ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
-        : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y };
-      linkPath.moveTo(sourcePoint.x, sourcePoint.y);
-      linkPath.lineTo(secondPoint.x, secondPoint.y);
-      linkPath.lineTo(thirdPoint.x, thirdPoint.y);
-      linkPath.lineTo(targetPoint.x, targetPoint.y);
-      return linkPath.toString();
+      return this.generateStraightLinkPath(d);
     }
+  }
+
+  private generateCurceLinkPath(self: this, d: any) {
+    const linkPath = this.isVertical()
+      ? d3.linkVertical()
+      : d3.linkHorizontal();
+    linkPath
+      .x(function (d) {
+        return d.x;
+      })
+      .y(function (d) {
+        return d.y;
+      })
+      .source(function (d) {
+        const sourcePoint = {
+          x: d.source.x,
+          y: d.source.y,
+        };
+        return self.direction === Direction.VERTICAL
+          ? sourcePoint
+          : rotatePoint(sourcePoint);
+      })
+      .target(function (d) {
+        const targetPoint = {
+          x: d.target.x,
+          y: d.target.y,
+        };
+        return self.direction === Direction.VERTICAL
+          ? targetPoint
+          : rotatePoint(targetPoint);
+      });
+    return linkPath(d);
+  }
+
+  private generateStraightLinkPath(d: any) {
+    const linkPath = d3.path();
+    let sourcePoint = { x: d.source.x, y: d.source.y };
+    let targetPoint = { x: d.target.x, y: d.target.y };
+    if (!this.isVertical()) {
+      sourcePoint = rotatePoint(sourcePoint);
+      targetPoint = rotatePoint(targetPoint);
+    }
+    const xOffset = targetPoint.x - sourcePoint.x;
+    const yOffset = targetPoint.y - sourcePoint.y;
+    const secondPoint = this.isVertical()
+      ? { x: sourcePoint.x, y: sourcePoint.y + yOffset / 2 }
+      : { x: sourcePoint.x + xOffset / 2, y: sourcePoint.y };
+    const thirdPoint = this.isVertical()
+      ? { x: targetPoint.x, y: sourcePoint.y + yOffset / 2 }
+      : { x: sourcePoint.x + xOffset / 2, y: targetPoint.y };
+    linkPath.moveTo(sourcePoint.x, sourcePoint.y);
+    linkPath.lineTo(secondPoint.x, secondPoint.y);
+    linkPath.lineTo(thirdPoint.x, thirdPoint.y);
+    linkPath.lineTo(targetPoint.x, targetPoint.y);
+    return linkPath.toString();
   }
 
   updateDataList() {
