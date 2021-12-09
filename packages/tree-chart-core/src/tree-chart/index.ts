@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { ANIMATION_DURATION, DEFAULT_HEIGHT_DECREMENT, DEFAULT_LEVEL_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, MATCH_SCALE_REGEX, MATCH_TRANSLATE_REGEX } from './constant';
-import { TreeDataSet, Direction, TreeLinkStyle } from './tree-chart';
+import { TreeDataset, Direction, TreeLinkStyle } from './tree-chart';
 import { deepCopy, rotatePoint } from './util';
 
 
@@ -16,7 +16,7 @@ interface TreeChartCoreParams {
   linkStyle?: TreeLinkStyle;
   direction?: Direction;
   collapseEnabled: boolean;
-  dataSet: TreeDataSet;
+  dataset: TreeDataset;
   svgElement: SVGElement;
   domElement: HTMLDivElement;
   treeContainer: HTMLDivElement;
@@ -32,7 +32,7 @@ export default class TreeChartCore {
   direction: Direction = Direction.VERTICAL;
   collapseEnabled: boolean = true
 
-  dataset: TreeDataSet;
+  dataset: TreeDataset;
 
   svgElement: SVGElement;
   svgSelection: any;
@@ -53,7 +53,7 @@ export default class TreeChartCore {
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
-    this.dataset = this.updatedInternalData(params.dataSet);
+    this.dataset = this.updatedInternalData(params.dataset);
   }
 
   init() {
@@ -384,10 +384,10 @@ export default class TreeChartCore {
   /**
    * call this function to update dataset
    * notice : you need to update the view rendered by `nodeDataList` too
-   * @param dataSet the new dataSet to show in chart
+   * @param dataset the new dataset to show in chart
    */
-  updateDataset(dataSet: TreeDataSet) {
-    this.dataset = this.updatedInternalData(dataSet);
+  updateDataset(dataset: TreeDataset) {
+    this.dataset = this.updatedInternalData(dataset);
     this.draw();
   }
 

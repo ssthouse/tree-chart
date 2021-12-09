@@ -108,7 +108,7 @@ export default {
         svgElement: this.$refs.svg,
         domElement: this.$refs.domContainer,
         treeContainer: this.$refs.container,
-        dataSet: this.dataset,
+        dataset: this.dataset,
       });
       this.treeChartCore.init();
       this.nodeDataList = this.treeChartCore.getNodeDataList();
