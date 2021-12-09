@@ -114,7 +114,6 @@ export default {
       this.nodeDataList = this.treeChartCore.getNodeDataList();
       this.initialTransformStyle =
         this.treeChartCore.getInitialTransformStyle();
-      console.log(this);
     },
     zoomIn() {
       this.treeChartCore.zoomIn();
@@ -134,7 +133,6 @@ export default {
     dataset: {
       deep: true,
       handler: function () {
-        console.log("dataset changed!!!!!!!");
         this.treeChartCore.updateDataset(this.dataset);
         this.nodeDataList = this.treeChartCore.getNodeDataList();
       },
