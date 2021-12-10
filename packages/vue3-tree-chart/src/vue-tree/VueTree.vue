@@ -98,7 +98,7 @@ export default {
   mounted() {
     this.init();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // remove dom reference
     this.treeChartCore.destroy();
   },
