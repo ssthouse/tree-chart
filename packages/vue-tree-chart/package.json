@@ -6,13 +6,11 @@
   "main": "library/vue-tree-chart.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue,.ts src",
-    "build:component": "webpack --config ./build/webpack.config.library.js"
+    "dev": "webpack serve --config ./build/webpack.config.dev.js",
+    "build:component": "webpack  --config ./build/webpack.config.library.js"
   },
   "dependencies": {
-    "@ssthouse/tree-chart-core": "^1.0.0",
-    "d3": "^4.13.0",
-    "vue-router": "^3.0.1",
-    "vuetify": "^1.0.18"
+    "@ssthouse/tree-chart-core": "^1.0.0"
   },
   "peerDependencies": {
     "vue": "^2.6.8"

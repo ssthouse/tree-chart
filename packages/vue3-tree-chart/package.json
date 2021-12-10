@@ -11,10 +11,7 @@
   },
   "main": "dist/vue3-tree-chart.umd.js",
   "dependencies": {
-    "@ssthouse/tree-chart-core": "^1.0.0",
-    "core-js": "^3.6.5",
-    "d3": "^7.1.1",
-    "vue": "^3.0.0"
+    "@ssthouse/tree-chart-core": "^1.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -25,7 +22,8 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
     "less": "^4.1.2",
-    "less-loader": "^6.0.0"
+    "less-loader": "^6.0.0",
+    "vue": "^3.0.0"
   },
   "eslintConfig": {
     "root": true,

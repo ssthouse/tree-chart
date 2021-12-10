@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Vue3</h1>
-
+    <h1>Vue2</h1>
     <button @click="onChangeDataset">change dataset</button>
 
     <vue-tree
@@ -13,7 +12,7 @@
 </template>
 
 <script>
-import VueTree from "./vue-tree/VueTree.vue";
+import VueTree from "../vue-tree/VueTree.vue";
 
 export default {
   components: { VueTree },
