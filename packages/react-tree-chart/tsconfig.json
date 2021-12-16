@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "declaration": true,
     "lib": [
       "dom",
       "dom.iterable",
@@ -17,10 +18,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src/tree-chart"
   ]
 }

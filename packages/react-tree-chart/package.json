@@ -1,20 +1,23 @@
 {
-  "name": "react-tree-chart",
+  "name": "@ssthouse/react-tree-chart",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@ssthouse/tree-chart-core": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-transition-group": "^1.2.1",
-    "sass": "^1.45.0"
+    "react-transition-group": "^1.2.1"
   },
+  "main": "lib/react-tree-chart.js",
+  "module": "es/react-tree-chart.js",
   "scripts": {
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:component": "rm -rf lib && NODE_ENV=production babel src  --extensions '.tsx,.ts' --out-dir lib --copy-files"
+    "build:component": "rm -rf lib && NODE_ENV=production babel src/tree-chart --extensions '.tsx,.ts' --out-dir lib --copy-files",
+    "build:webpack": "webpack  --config ./build/webpack.config.library.js",
+    "build:rollup": "rollup -c"
   },
   "eslintConfig": {
     "extends": [
@@ -38,6 +41,7 @@
     "@babel/cli": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -45,7 +49,12 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "node-sass": "^7.0.0",
     "react-scripts": "4.0.3",
+    "rollup": "^2.61.1",
+    "rollup-plugin-scss": "3",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "sass": "^1.45.0",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   }

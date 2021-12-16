@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 built/              # Ignore out dir in tsconfig.json
+es
 
 
 # Editor directories and files
