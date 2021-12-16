@@ -51,7 +51,7 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
 
   // init tree chart core with refs
   useEffect(() => {
-    console.log('~~~~~~~~~~~~~~')
+    console.log('update collapse', collapseEnabled)
     const treeChartCore = new TreeChartCore({
       svgElement: svgRef.current as SVGElement,
       domElement: domContainerRef.current as HTMLDivElement,
@@ -59,14 +59,18 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
       dataset,
       collapseEnabled,
     });
+
+    setTreeChartCore(treeChartCore);
+  }, [collapseEnabled, dataset])
+
+  useEffect(() => {
+    if (!treeChartCore) return;
     treeChartCore.init();
     const nodeDataList = treeChartCore.getNodeDataList();
     const initialTransformStyle = treeChartCore.getInitialTransformStyle();
-
-    setTreeChartCore(treeChartCore);
     setInitialTransformStyle(initialTransformStyle)
     setNodeDataList(nodeDataList);
-  }, [])
+  }, [treeChartCore]);
 
   const onClickNode = (index: number) => {
     if (!treeChartCore) return;
