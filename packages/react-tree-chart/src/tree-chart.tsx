@@ -1,5 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import TreeChartCore, { DEFAULT_LEVEL_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, Direction, TreeLinkStyle } from '@ssthouse/tree-chart-core';
+import { CSSTransitionGroup } from 'react-transition-group'
 import './tree-chart.scss';
 
 const formatDimension = (dimension: number | string) => {
@@ -115,34 +116,37 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
       ref={domContainerRef}
       style={initialTransformStyle}
     >
-      {/* <transition-group name="tree-node-item" tag="div"> */}
 
-      {
-        nodeDataList.map((node, index) => {
-          return <div
-            className="node-slot"
-            onClick={() => onClickNode(index)}
-            key={node.data._key}
-            style={{
-              left: formatDimension(
-                direction === Direction.VERTICAL ? node.x : node.y
-              ),
-              top: formatDimension(
-                direction === Direction.VERTICAL ? node.y : node.x
-              ),
-              width: formatDimension(config.nodeWidth),
-              height: formatDimension(config.nodeHeight),
-            }}
-          >
-            {
-              customNode
-                ? customNode({ collapsed: node.data._collapsed, data: node.data })
-                : <span>{node.data.value}</span>
-            }
-          </div>
-        })
-      }
-      {/* </transition - group > */}
+      <CSSTransitionGroup
+        transitionName="tree-node-item"
+        transitionEnterTimeout={800}
+        transitionLeaveTimeout={800}>
+        {
+          nodeDataList.map((node, index) => {
+            return <div
+              className="node-slot"
+              onClick={() => onClickNode(index)}
+              key={node.data._key}
+              style={{
+                left: formatDimension(
+                  direction === Direction.VERTICAL ? node.x : node.y
+                ),
+                top: formatDimension(
+                  direction === Direction.VERTICAL ? node.y : node.x
+                ),
+                width: formatDimension(config.nodeWidth),
+                height: formatDimension(config.nodeHeight),
+              }}
+            >
+              {
+                customNode
+                  ? customNode({ collapsed: node.data._collapsed, data: node.data })
+                  : <span>{node.data.value}</span>
+              }
+            </div>
+          })
+        }
+      </CSSTransitionGroup>
     </div >
   </div >
 });

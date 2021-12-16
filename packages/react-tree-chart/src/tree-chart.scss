@@ -1,14 +1,19 @@
-.tree-node-item-enter,
-.tree-node-item-leave-to {
-  transition-timing-function: ease-in-out;
-  transition: transform 0.8s;
-  opacity: 0;
+.tree-node-item-enter {
+  opacity: 0.01;
 }
 
-.tree-node-item-enter-active,
-.tree-node-item-leave-active {
-  transition-timing-function: ease-in-out;
-  transition: all 0.8s;
+.tree-node-item-enter.tree-node-item-enter-active {
+  opacity: 1;
+  transition: opacity 800md ease-in-out;
+}
+
+.tree-node-item-leave {
+  opacity: 1;
+}
+
+.tree-node-item-leave.tree-node-item-leave-active {
+  opacity: 0.01;
+  transition: opacity 800ms ease-in-out;
 }
 
 .tree-container {
