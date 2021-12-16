@@ -50,6 +50,7 @@ export default class TreeChartCore {
     if (params.treeConfig) {
       this.treeConfig = params.treeConfig;
     }
+    this.collapseEnabled = params.collapseEnabled
     this.svgElement = params.svgElement;
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
