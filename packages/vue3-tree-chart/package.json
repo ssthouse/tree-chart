@@ -7,6 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "release": "npm run build:component && npm publish",
     "build:component": "vue-cli-service build --target lib --name vue3-tree-chart src/vue-tree/index.js"
   },
   "main": "dist/vue3-tree-chart.umd.js",
