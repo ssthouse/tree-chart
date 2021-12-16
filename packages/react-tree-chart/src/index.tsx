@@ -40,7 +40,11 @@ const Demo = () => {
         width: '600px',
         height: '600px',
         border: '1px solid black'
-      }} />
+      }}
+      renderCustomNode={({ data, collapsed }) => <div>
+        <span style={{color: 'green'}}>{(data as any).value + (collapsed ? 'yes' : 'no')}</span>
+      </div>}
+    />
   </div>
 }
 

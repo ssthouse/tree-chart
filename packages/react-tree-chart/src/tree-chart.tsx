@@ -11,6 +11,11 @@ const formatDimension = (dimension: number | string) => {
   }
 };
 
+export interface TreeChartNodeProps {
+  data: unknown;
+  collapsed: boolean;
+}
+
 interface TreeChartConfig {
   nodeWidth: number;
   nodeHeight: number;
@@ -18,12 +23,22 @@ interface TreeChartConfig {
 }
 
 interface TreeChartProps {
+  /** basic tree node size config */
   config?: TreeChartConfig;
+  /** link node with straight line or curve line */
   linkStyle?: TreeLinkStyle;
+  /** chart direction, vertical or horizontal */
   direction?: Direction;
+  /** if chart node can be click to toggle collapse status */
   collapseEnabled?: boolean;
   dataset: Object | Object[];
+  /** css style for contaienr Div */
   style?: React.CSSProperties;
+  /** 
+   * custom tree node component
+   * default node is <span>{value}</span> 
+   * */
+  renderCustomNode?: React.FC<TreeChartNodeProps>;
 }
 
 const DEFAULT_CONFIG = {
@@ -39,6 +54,7 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
     dataset,
     collapseEnabled = true,
     style = {},
+    renderCustomNode: customNode
   } = props;
   const [treeChartCore, setTreeChartCore] = useState<TreeChartCore>();
   const [initialTransformStyle, setInitialTransformStyle] = useState({})
@@ -118,13 +134,11 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
               height: formatDimension(config.nodeHeight),
             }}
           >
-            {/* <slot
-              name="node"
-              v-bind:node="node.data"
-              v-bind:collapsed="node.data._collapsed"
-            > */}
-            <span>{node.data.value}</span>
-            {/* </slot> */}
+            {
+              customNode
+                ? customNode({ collapsed: node.data._collapsed, data: node.data })
+                : <span>{node.data.value}</span>
+            }
           </div>
         })
       }
