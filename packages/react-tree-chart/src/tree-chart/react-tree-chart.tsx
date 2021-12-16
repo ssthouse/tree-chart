@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import TreeChartCore, { DEFAULT_LEVEL_HEIGHT, DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH, Direction, TreeLinkStyle } from '@ssthouse/tree-chart-core';
 import { CSSTransitionGroup } from 'react-transition-group'
-import './tree-chart.scss';
+import './react-tree-chart.scss';
 
 const formatDimension = (dimension: number | string) => {
   if (typeof dimension === "number") return `${dimension}px`;

@@ -5,7 +5,7 @@ import scss from 'rollup-plugin-scss'
 const packageJson = require("./package.json");
 
 export default {
-  input: "./src/tree-chart/tree-chart.tsx",
+  input: "./src/tree-chart/react-tree-chart.tsx",
   output: [
     {
       file: packageJson.main,

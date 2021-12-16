@@ -17,7 +17,7 @@
     "eject": "react-scripts eject",
     "build:component": "rm -rf lib && NODE_ENV=production babel src/tree-chart --extensions '.tsx,.ts' --out-dir lib --copy-files",
     "build:webpack": "webpack  --config ./build/webpack.config.library.js",
-    "build:rollup": "rollup -c"
+    "build:rollup": "rm -rf lib es && rollup -c"
   },
   "eslintConfig": {
     "extends": [
