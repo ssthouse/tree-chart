@@ -1,16 +1,17 @@
 {
   "name": "@ssthouse/vue-tree-chart",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Tree Component for Vue2 powered by D3.js & SVG",
   "author": "ssthouse",
   "main": "library/vue-tree-chart.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue,.ts src",
     "dev": "webpack serve --config ./build/webpack.config.dev.js",
-    "build:component": "webpack  --config ./build/webpack.config.library.js"
+    "build:component": "webpack  --config ./build/webpack.config.library.js",
+    "release": "npm run build:component && npm publish"
   },
   "dependencies": {
-    "@ssthouse/tree-chart-core": "^1.0.0"
+    "@ssthouse/tree-chart-core": "^1.1.0"
   },
   "peerDependencies": {
     "vue": "^2.6.8"

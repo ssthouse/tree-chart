@@ -1,11 +1,12 @@
 {
   "name": "@ssthouse/tree-chart-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "tree chart's core logic (shared by Vue2,Vue3,React)",
   "main": "build/index.js",
   "module": "build/index.js",
   "scripts": {
-    "build": "rm -rf build && npx tsc"
+    "build": "rm -rf build && npx tsc --declaration true",
+    "release": "npm run build && npm publish"
   },
   "author": "ssthouse",
   "license": "ISC",

@@ -1,0 +1,69 @@
+.tree-node-item-enter {
+  opacity: 0.01;
+}
+
+.tree-node-item-enter.tree-node-item-enter-active {
+  opacity: 1;
+  transition: opacity 800md ease-in-out;
+}
+
+.tree-node-item-leave {
+  opacity: 1;
+}
+
+.tree-node-item-leave.tree-node-item-leave-active {
+  opacity: 0.01;
+  transition: opacity 800ms ease-in-out;
+}
+
+.tree-container {
+  position: relative;
+  overflow: hidden;
+
+  .vue-tree {
+    position: relative;
+  }
+
+  > svg,
+  .dom-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: visible;
+    transform-origin: 0 50%;
+  }
+
+  .dom-container {
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.node-slot {
+  cursor: pointer;
+  pointer-events: all;
+  position: absolute;
+  background-color: transparent;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  transition: all 0.8s;
+  transition-timing-function: ease-in-out;
+}
+
+.tree-container {
+  .node {
+    fill: grey !important;
+  }
+
+  .link {
+    stroke-width: 2px !important;
+    fill: transparent !important;
+    stroke: #cecece !important;
+  }
+}

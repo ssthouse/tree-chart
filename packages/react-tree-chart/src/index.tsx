@@ -1,17 +1,56 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import TreeChart from './tree-chart/react-tree-chart';
+
+const sampleData = {
+  value: "1",
+  children: [
+    { value: "2", children: [{ value: "4" }, { value: "5" }] },
+    { value: "3" },
+  ],
+};
+
+const sampleDataTwo = {
+  value: "100",
+  children: [
+    { value: "3" },
+    { value: "2", children: [{ value: "555" }, { value: "444" }] },
+  ],
+};
+
+const Demo = () => {
+  const [dataSet, setDataset] = useState(sampleData);
+  const [enableCollapse, setEnableCollapse] = useState(true);
+  const treeChartRef = useRef<any>(null);
+
+  return <div>
+    <button onClick={() => setDataset(sampleDataTwo)}>change dataset</button>
+    <button onClick={() => {
+      console.log(!enableCollapse)
+      setEnableCollapse(!enableCollapse)
+    }}>toggle collapes enable</button>
+    <button onClick={() => treeChartRef.current.zoomIn()}>zoom in</button>
+    <button onClick={() => treeChartRef.current.zoomOut()}>zoom out</button>
+    <TreeChart
+      dataset={dataSet}
+      ref={treeChartRef}
+      collapseEnabled={enableCollapse}
+      style={{
+        width: '600px',
+        height: '600px',
+        border: '1px solid black'
+      }}
+      renderCustomNode={({ data, collapsed }) => <div>
+        <span style={{color: 'green'}}>{(data as any).value + (collapsed ? 'yes' : 'no')}</span>
+      </div>}
+    />
+  </div>
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Demo />
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
