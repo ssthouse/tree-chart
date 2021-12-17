@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import TreeChart from './tree-chart/tree-chart';
+import TreeChart from './tree-chart/react-tree-chart';
 
 const sampleData = {
   value: "1",

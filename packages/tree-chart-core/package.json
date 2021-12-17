@@ -5,7 +5,8 @@
   "main": "build/index.js",
   "module": "build/index.js",
   "scripts": {
-    "build": "rm -rf build && npx tsc --declaration true"
+    "build": "rm -rf build && npx tsc --declaration true",
+    "release": "npm run build && npm publish"
   },
   "author": "ssthouse",
   "license": "ISC",
