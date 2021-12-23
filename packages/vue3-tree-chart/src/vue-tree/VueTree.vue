@@ -109,6 +109,7 @@ export default {
         domElement: this.$refs.domContainer,
         treeContainer: this.$refs.container,
         dataset: this.dataset,
+        direction: this.direction,
       });
       this.treeChartCore.init();
       this.nodeDataList = this.treeChartCore.getNodeDataList();
