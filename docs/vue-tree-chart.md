@@ -4,7 +4,7 @@
 
 ## Demo page
 
-https://ssthouse.github.io/vue-tree-chart/#/svgTree
+https://ssthouse.github.io/tree-chart/#/svgTree
 
 ## Demo Gif
 
