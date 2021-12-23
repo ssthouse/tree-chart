@@ -7,6 +7,7 @@
       style="width: 800px; height: 600px; border: 1px solid gray"
       :dataset="sampleData"
       :config="treeConfig"
+      direction="horizontal"
     />
   </div>
 </template>

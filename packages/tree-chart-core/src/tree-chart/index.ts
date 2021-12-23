@@ -55,6 +55,7 @@ export default class TreeChartCore {
     this.domElement = params.domElement;
     this.treeContainer = params.treeContainer;
     this.dataset = this.updatedInternalData(params.dataset);
+    if (params.direction) this.direction = params.direction;
   }
 
   init() {
