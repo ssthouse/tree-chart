@@ -4,7 +4,7 @@ import scss from 'rollup-plugin-scss'
 
 const packageJson = require("./package.json");
 
-export default {
+const rollupConfig = {
   input: "./src/tree-chart/react-tree-chart.tsx",
   output: [
     {
@@ -29,3 +29,5 @@ export default {
     commonjs(),
   ]
 };
+
+export default rollupConfig;
