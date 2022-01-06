@@ -1,6 +1,6 @@
 {
   "name": "@ssthouse/vue-tree-chart",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "Tree Component for Vue2 powered by D3.js & SVG",
   "author": "ssthouse",
   "main": "library/vue-tree-chart.js",

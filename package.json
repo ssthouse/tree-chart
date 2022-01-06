@@ -5,7 +5,8 @@
   "scripts": {
     "install:deps": "lerna  bootstrap",
     "build:component": "lerna run build:component --scope @ssthouse/vue-tree-chart",
-    "build:demo": "lerna run build --scope @ssthouse/vue-tree-chart"
+    "build:demo": "lerna run build --scope @ssthouse/vue-tree-chart",
+    "release:all": "lerna run release"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
