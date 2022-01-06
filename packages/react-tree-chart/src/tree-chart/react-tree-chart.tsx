@@ -75,10 +75,11 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
       treeContainer: containerRef.current as HTMLDivElement,
       dataset,
       collapseEnabled,
+      treeConfig: config,
     });
 
     setTreeChartCore(treeChartCore);
-  }, [collapseEnabled, dataset])
+  }, [collapseEnabled, dataset, config])
 
   useEffect(() => {
     if (!treeChartCore) return;
