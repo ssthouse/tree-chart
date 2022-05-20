@@ -112,6 +112,7 @@ export default {
         direction: this.direction,
         treeConfig: this.config,
         collapseEnabled: this.collapseEnabled,
+        linkStyle: this.linkStyle
       });
       this.treeChartCore.init();
       this.nodeDataList = this.treeChartCore.getNodeDataList();
