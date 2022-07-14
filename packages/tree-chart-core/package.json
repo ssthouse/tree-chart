@@ -1,6 +1,6 @@
 {
   "name": "@ssthouse/tree-chart-core",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "tree chart's core logic (shared by Vue2,Vue3,React)",
   "main": "build/index.js",
   "module": "build/index.js",
