@@ -15,7 +15,7 @@ https://ssthouse.github.io/tree-chart/#/svgTree
 
 please refer [vue-tree-chart](./docs/vue-tree-chart.md)
 
-## React Tree Chart (support both Vue2 and Vue3)
+## React Tree Chart
 
 please refer [react-tree-chart](./docs/react-tree-chart.md)
 
