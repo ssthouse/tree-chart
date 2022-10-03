@@ -309,13 +309,13 @@ export default class TreeChartCore {
     let isDrag = false;
     // 保存鼠标点下时的位移
     let mouseDownTransform = "";
-    this.treeContainer.onmousedown = (event) => {
+    this.treeContainer.onpointerdown = (event) => {
       mouseDownTransform = this.svgElement.style.transform;
       startX = event.clientX;
       startY = event.clientY;
       isDrag = true;
     };
-    this.treeContainer.onmousemove = (event) => {
+    this.treeContainer.onpointermove = (event) => {
       if (!isDrag) return;
       const originTransform = mouseDownTransform;
       let originOffsetX = 0;
@@ -345,7 +345,7 @@ export default class TreeChartCore {
       this.domElement.style.transform = transformStr;
     };
 
-    this.treeContainer.onmouseup = () => {
+    this.treeContainer.onpointerup = () => {
       startX = 0;
       startY = 0;
       isDrag = false;
