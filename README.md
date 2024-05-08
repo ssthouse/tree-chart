@@ -1,8 +1,7 @@
 ## [English](./README.md) | [中文](./README-CN.md)
 
-![Node.js CI](https://github.com/ssthouse/vue-tree-chart/workflows/Node.js%20CI/badge.svg?branch=master)
 
-## Demo page
+## Demo
 
 https://ssthouse.github.io/tree-chart/#/svgTree
 
