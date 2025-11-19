@@ -143,7 +143,8 @@ export default class TreeChartCore {
   }
 
   private generateCurceLinkPath(self: this, d: any) {
-    const linkPath = this.isVertical()
+    const isVertical = this.isVertical();
+    const linkPath = isVertical
       ? d3.linkVertical()
       : d3.linkHorizontal();
     linkPath
@@ -392,6 +393,65 @@ export default class TreeChartCore {
   updateDataset(dataset: TreeDataset) {
     this.dataset = this.updatedInternalData(dataset);
     this.draw();
+  }
+
+  /**
+   * call this function to update direction
+   * notice : you need to update the view rendered by `nodeDataList` and `initialTransformStyle` too
+   * @param direction the new direction to show in chart
+   */
+  updateDirection(direction: Direction) {
+    this.direction = direction;
+    this.initTransform();
+    this.updateLinks();
+  }
+
+  /**
+   * Update link paths without rebuilding the tree
+   * This is used when direction changes but node positions remain the same
+   */
+  private updateLinks() {
+    if (!this.svgSelection) {
+      this.svgSelection = d3.select(this.svgElement);
+    }
+    if (!this.linkDataList || this.linkDataList.length === 0) {
+      return;
+    }
+    const self = this;
+    
+    // 重新绑定数据并更新连接线路径
+    const linkSelection = this.svgSelection
+      .selectAll(".link")
+      .data(this.linkDataList, (d) => {
+        return `${d.source.data._key}-${d.target.data._key}`;
+      });
+    
+    // 更新已存在的连接线
+    linkSelection
+      .transition()
+      .duration(ANIMATION_DURATION)
+      .ease(d3.easeCubicInOut)
+      .attr("d", function (d) {
+        return self.generateLinkPath(d);
+      });
+    
+    // 处理新添加的连接线（虽然不应该有，但为了安全）
+    const newLinks = linkSelection
+      .enter()
+      .append("path")
+      .style("opacity", 0)
+      .attr("class", "link");
+    
+    if (newLinks.size() > 0) {
+      newLinks
+        .transition()
+        .duration(ANIMATION_DURATION)
+        .ease(d3.easeCubicInOut)
+        .style("opacity", 1)
+        .attr("d", function (d) {
+          return self.generateLinkPath(d);
+        });
+    }
   }
 
   /**

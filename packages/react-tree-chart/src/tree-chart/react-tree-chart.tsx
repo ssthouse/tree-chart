@@ -76,6 +76,7 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
       dataset,
       collapseEnabled,
       treeConfig: config,
+      direction,
     });
 
     setTreeChartCore(treeChartCore);
@@ -89,6 +90,16 @@ const TreeChart = forwardRef((props: TreeChartProps, ref) => {
     setInitialTransformStyle(initialTransformStyle)
     setNodeDataList(nodeDataList);
   }, [treeChartCore]);
+
+  // update direction when it changes
+  useEffect(() => {
+    if (!treeChartCore) return;
+    treeChartCore.updateDirection(direction);
+    const nodeDataList = treeChartCore.getNodeDataList();
+    const initialTransformStyle = treeChartCore.getInitialTransformStyle();
+    setInitialTransformStyle(initialTransformStyle);
+    setNodeDataList(nodeDataList);
+  }, [direction, treeChartCore]);
 
   const onClickNode = (index: number) => {
     if (!treeChartCore) return;
