@@ -141,6 +141,16 @@ export default {
         this.nodeDataList = this.treeChartCore.getNodeDataList();
       },
     },
+    direction: {
+      handler: function (newDirection) {
+        if (this.treeChartCore) {
+          this.treeChartCore.updateDirection(newDirection);
+          this.nodeDataList = this.treeChartCore.getNodeDataList();
+          this.initialTransformStyle =
+            this.treeChartCore.getInitialTransformStyle();
+        }
+      },
+    },
   },
 };
 </script>

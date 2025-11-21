@@ -93,6 +93,36 @@
       </template>
     </vue-tree>
 
+    <h3>Toggle Direction | 切换方向</h3>
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+      <v-btn @click="toggleDirection" color="primary">
+        切换方向 (当前: {{ currentDirection === 'vertical' ? '垂直' : '水平' }})
+      </v-btn>
+      <span>Direction: {{ currentDirection }}</span>
+    </div>
+    <vue-tree
+      ref="directionTree"
+      style="width: 800px; height: 600px; border: 1px solid gray;"
+      :dataset="richMediaData"
+      :config="treeConfig"
+      :direction="currentDirection"
+    >
+      <template v-slot:node="{ node, collapsed }">
+        <div
+          class="rich-media-node"
+          :style="{ border: collapsed ? '2px solid grey' : '' }"
+        >
+          <img
+            :src="node.avatar"
+            style="width: 48px; height: 48px; border-raduis: 4px;"
+          />
+          <span style="padding: 4px 0; font-weight: bold;"
+            >能力值{{ node.value }}</span
+          >
+        </div>
+      </template>
+    </vue-tree>
+
     <h3>Zoom in or out | 缩放</h3>
     <div style="display: flex;">
       <v-btn @click="controlScale('bigger')">+</v-btn>
@@ -285,6 +315,7 @@ export default {
         identifier: 'customID'
       },
       clicked: false,
+      currentDirection: 'vertical',
       multiRoot1: [
         {
           name: 'Wheels',
@@ -345,6 +376,9 @@ export default {
           this.$refs.scaleTree.restoreScale()
           break
       }
+    },
+    toggleDirection() {
+      this.currentDirection = this.currentDirection === 'vertical' ? 'horizontal' : 'vertical'
     }
   }
 }
