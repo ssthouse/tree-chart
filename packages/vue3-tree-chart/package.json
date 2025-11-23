@@ -1,7 +1,7 @@
 {
   "name": "@ssthouse/vue3-tree-chart",
   "author": "ssthouse",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Tree Component for Vue3 powered by D3.js & SVG",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -12,7 +12,7 @@
   },
   "main": "dist/vue3-tree-chart.umd.js",
   "dependencies": {
-    "@ssthouse/tree-chart-core": "^1.1.0"
+    "@ssthouse/tree-chart-core": "^1.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

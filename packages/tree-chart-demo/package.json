@@ -1,6 +1,6 @@
 {
   "name": "tree-chart-demo",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "tree chart demo page",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "ssthouse",
   "license": "ISC",
   "dependencies": {
-    "@ssthouse/tree-chart-core": "^1.0.0",
+    "@ssthouse/tree-chart-core": "^1.2.0",
     "@ssthouse/vue-tree-chart": "^0.5.4",
     "d3": "^7.1.1",
     "vue": "2.6.8",
