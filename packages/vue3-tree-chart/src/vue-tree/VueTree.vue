@@ -184,6 +184,7 @@ export default {
 }
 
 .tree-container {
+  touch-action: none;
   position: relative;
   overflow: hidden;
 
