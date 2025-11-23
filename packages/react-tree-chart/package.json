@@ -15,7 +15,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:component": "rm -rf lib es && rollup -c",
-    "release": "npm run build:component && npm publish"
+    "release": "npm run build:component && ../../scripts/publish-safe.sh"
   },
   "eslintConfig": {
     "extends": [

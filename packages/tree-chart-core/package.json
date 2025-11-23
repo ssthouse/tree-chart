@@ -6,7 +6,7 @@
   "module": "build/index.js",
   "scripts": {
     "build": "rm -rf build && npx tsc --declaration true",
-    "release": "npm run build && npm publish"
+    "release": "npm run build && ../../scripts/publish-safe.sh"
   },
   "author": "ssthouse",
   "license": "ISC",

@@ -4,11 +4,11 @@
   "version": "0.3.0",
   "description": "Tree Component for Vue3 powered by D3.js & SVG",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "release": "npm run build:component && npm publish",
-    "build:component": "vue-cli-service build --target lib --name vue3-tree-chart src/vue-tree/index.js"
+    "release": "npm run build:component && ../../scripts/publish-safe.sh",
+    "build:component": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build --target lib --name vue3-tree-chart src/vue-tree/index.js"
   },
   "main": "dist/vue3-tree-chart.umd.js",
   "dependencies": {
