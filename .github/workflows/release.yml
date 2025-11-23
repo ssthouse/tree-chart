@@ -18,7 +18,9 @@ jobs:
           node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
       - name:  install dependencies
-        run: npm run install:deps
+        run: |
+          npm install
+          ./node_modules/.bin/lerna bootstrap
       - run: npm run build:component
         working-directory: packages/vue-tree-chart
       - run: npm publish

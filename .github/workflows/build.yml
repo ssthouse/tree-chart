@@ -24,7 +24,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: install dependencies
-        run: npm run install:deps
+        run: |
+          npm install
+          ./node_modules/.bin/lerna bootstrap
       - name: (tree-chart-core)Build
         working-directory: packages/tree-chart-core
         run: npm run build
